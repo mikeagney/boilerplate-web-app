@@ -2,7 +2,7 @@
   "name": "boilerplate-web-app",
   "version": "0.0.1",
   "main": "index.js",
-  "repository": "https://github.com/garymendor/unstoppable-tides.git",
+  "repository": "https://github.com/mithiwithi/boilerplate-web-app",
   "license": "MIT",
   "scripts": {
     "lint": "eslint .",
