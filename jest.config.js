@@ -1,10 +1,15 @@
 module.exports = {
   collectCoverage: true,
-  collectCoverageFrom: [
-    '**/src/**/*.js',
-    '!**/src/**/*.spec.js',
-  ],
+  collectCoverageFrom: ['**/src/**/*.js', '!**/src/**/*.spec.js'],
   coverageDirectory: './build/coverage',
+  coverageThreshold: {
+    global: {
+      branches: 90,
+      functions: 96,
+      lines: 98,
+      statements: 98,
+    },
+  },
   projects: [
     {
       displayName: 'web tests',

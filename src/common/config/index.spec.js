@@ -10,8 +10,10 @@ describe('common/config', () => {
 
   it.each([...environments])('will have a valid environment for %s', (env) => {
     // Arrange
+    process.env.BUILD_ENV = env;
+
     // Act
-    const actualConfig = config({ BUILD_ENV: env });
+    const actualConfig = config();
     const validationResult = Joi.validate(actualConfig, schema());
 
     // Assert
@@ -20,8 +22,10 @@ describe('common/config', () => {
 
   it('will return development environment if environment not specified', () => {
     // Arrange
+    delete process.env.BUILD_ENV;
+
     // Act
-    const actualConfig = config({});
+    const actualConfig = config();
 
     // Assert
     expect(actualConfig.name).toEqual('development');
