@@ -1,5 +1,5 @@
-function config(env = process.env) {
-  const { BUILD_ENV: buildEnv = 'development' } = env;
+function config() {
+  const { BUILD_ENV: buildEnv = 'development' } = process.env;
   // eslint-disable-next-line global-require, import/no-dynamic-require
   return require(`./env/${buildEnv}`).default;
 }

@@ -19,10 +19,7 @@ function baseConfig(params) {
             use: {
               loader: 'babel-loader',
               options: {
-                presets: [
-                  '@babel/preset-env',
-                  '@babel/preset-react',
-                ],
+                presets: ['@babel/preset-env', '@babel/preset-react'],
               },
             },
           },
@@ -37,7 +34,8 @@ function baseConfig(params) {
         development: {
           devtool: 'source-map',
         },
-      }, params,
+      },
+      params,
     ),
   );
 }
@@ -72,6 +70,11 @@ function clientConfig(params) {
         path: path.resolve(__dirname, 'dist/client'),
         filename: 'index.js',
       },
+      optimization: {
+        splitChunks: {
+          chunks: 'all',
+        },
+      },
       plugins: [
         new HtmlWebpackPlugin({
           template: './src/client/html/index.html',
@@ -91,8 +94,5 @@ function processEnv(env) {
 
 module.exports = (env) => {
   const params = processEnv(env);
-  return [
-    serverConfig(params),
-    clientConfig(params),
-  ];
+  return [serverConfig(params), clientConfig(params)];
 };
