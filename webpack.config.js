@@ -69,6 +69,7 @@ function clientConfig(params) {
       output: {
         path: path.resolve(__dirname, 'dist/client/scripts'),
         filename: 'index.js',
+        publicPath: '/',
       },
       optimization: {
         splitChunks: {
