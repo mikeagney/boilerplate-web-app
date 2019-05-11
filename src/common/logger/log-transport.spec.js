@@ -1,15 +1,14 @@
-import Joi from 'joi';
+import Joi from '@hapi/joi';
 import winston from 'winston';
 import logFormatters from './log-formatters';
 import logTransport, { schema } from './log-transport';
 
-jest.mock('./log-formatters')
-  .mock('winston', () => ({
-    transports: {
-      File: jest.fn(),
-      Console: jest.fn(),
-    },
-  }));
+jest.mock('./log-formatters').mock('winston', () => ({
+  transports: {
+    File: jest.fn(),
+    Console: jest.fn(),
+  },
+}));
 
 describe('common/logger/log-transport', () => {
   describe('schema', () => {
@@ -68,21 +67,21 @@ describe('common/logger/log-transport', () => {
     });
   });
 
-  it.each([
-    ['File', winston.transports.File],
-    ['Console', winston.transports.Console],
-  ])('will construct the appropriate winston transport for %s', (type, Transport) => {
-    // Arrange
-    const options = { random: 'value' };
+  it.each([['File', winston.transports.File], ['Console', winston.transports.Console]])(
+    'will construct the appropriate winston transport for %s',
+    (type, Transport) => {
+      // Arrange
+      const options = { random: 'value' };
 
-    // Act
-    const result = logTransport({ type, options });
+      // Act
+      const result = logTransport({ type, options });
 
-    // Assert
-    expect(result).toEqual(expect.any(Transport));
-    expect(logFormatters).not.toHaveBeenCalled();
-    expect(Transport).toHaveBeenCalledWith(options);
-  });
+      // Assert
+      expect(result).toEqual(expect.any(Transport));
+      expect(logFormatters).not.toHaveBeenCalled();
+      expect(Transport).toHaveBeenCalledWith(options);
+    },
+  );
 
   it('will throw if an unsupported trasnport type is passed', () => {
     // Act

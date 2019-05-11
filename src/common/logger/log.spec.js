@@ -1,4 +1,4 @@
-import Joi from 'joi';
+import Joi from '@hapi/joi';
 import log, { schema } from './log';
 import logTransport, { schema as logTransportSchema } from './log-transport';
 import logFormatters from './log-formatters';

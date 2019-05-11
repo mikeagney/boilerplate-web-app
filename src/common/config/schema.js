@@ -1,8 +1,10 @@
-import Joi from 'joi';
+import Joi from '@hapi/joi';
 import { schema as logSchema } from '../logger/log';
 
 const server = () => Joi.object({
-  port: Joi.number().port().required(),
+  port: Joi.number()
+    .port()
+    .required(),
   https: Joi.object({
     enabled: Joi.boolean().required(),
   }).required(),
