@@ -1,9 +1,10 @@
 import '@babel/polyfill';
 import React from 'react';
-import { render } from 'react-dom';
+import { hydrate } from 'react-dom';
+import App from './app';
 
 export default function renderPage() {
-  render(<h1>Hello World from React!</h1>, document.getElementById('root'));
+  hydrate(<App />, document.getElementById('root'));
 }
 
 renderPage();

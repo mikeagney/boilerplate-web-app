@@ -1,8 +1,12 @@
 import express from 'express';
 import path from 'path';
+import RenderReact from './render-react';
 import RootRouter from './root-router';
 
-jest.mock('express').mock('path');
+jest
+  .mock('express')
+  .mock('path')
+  .mock('./render-react');
 
 describe('RootRouter', () => {
   describe('initialize', () => {
@@ -25,9 +29,11 @@ describe('RootRouter', () => {
       // Assert
       expect(result).toBe(mockRouter);
 
-      expect(path.join).toHaveBeenCalledWith(expect.any(String), '../../../dist/client');
+      expect(path.join).toHaveBeenCalledWith(expect.any(String), '../../../dist/client/scripts');
       expect(express.static).toHaveBeenCalledWith(staticRoot);
+      expect(mockRouter.use).toHaveBeenCalledTimes(2);
       expect(mockRouter.use).toHaveBeenCalledWith('/', staticMiddleware);
+      expect(mockRouter.use).toHaveBeenCalledWith('/', RenderReact.route);
     });
   });
 });
