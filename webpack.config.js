@@ -67,8 +67,9 @@ function clientConfig(params) {
       target: 'web',
       entry: path.resolve(__dirname, 'src/client/index.js'),
       output: {
-        path: path.resolve(__dirname, 'dist/client'),
+        path: path.resolve(__dirname, 'dist/client/scripts'),
         filename: 'index.js',
+        publicPath: '/',
       },
       optimization: {
         splitChunks: {
@@ -78,6 +79,7 @@ function clientConfig(params) {
       plugins: [
         new HtmlWebpackPlugin({
           template: './src/client/html/index.html',
+          filename: '../templates/index.html',
         }),
       ],
     },

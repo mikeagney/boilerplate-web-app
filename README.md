@@ -19,9 +19,9 @@ make the actual web application of your choice.
   use it for client-side logging as well).
 
 ## On the roadmap
+
 In no particular order:
 
-- Server-side rendering
 - Page emulation with [react-router](https://reacttraining.com/react-router/)
 - Dynamic loading of page modules with [@loadable/components](https://www.smooth-code.com/open-source/loadable-components/)
 - [Docker](https://www.docker.com/)-based deployment

@@ -1,11 +1,11 @@
-import { render } from 'react-dom';
+import { hydrate } from 'react-dom';
 import renderPage from './index';
 
 jest.mock('react-dom');
 
 describe('client/client', () => {
   beforeEach(() => {
-    render.mockClear();
+    hydrate.mockClear();
     jest.spyOn(document, 'getElementById').mockImplementation(() => {});
   });
 
@@ -21,8 +21,8 @@ describe('client/client', () => {
     renderPage();
 
     // Assert
-    expect(render).toHaveBeenCalledTimes(1);
-    expect(render).toHaveBeenCalledWith(expect.anything(), rootElement);
+    expect(hydrate).toHaveBeenCalledTimes(1);
+    expect(hydrate).toHaveBeenCalledWith(expect.anything(), rootElement);
 
     expect(document.getElementById).toHaveBeenCalledTimes(1);
     expect(document.getElementById).toHaveBeenCalledWith('root');

@@ -19,6 +19,7 @@ module.exports = {
         '**/src/**/?(*.)web.spec.js',
         '!**/src/**/?(*.)node.spec.js',
       ],
+      setupFiles: ['<rootDir>/test/jest-setup.js'],
     },
     {
       displayName: 'node tests',
@@ -28,6 +29,7 @@ module.exports = {
         '**/src/**/?(*.)node.spec.js',
         '!**/src/**/?(*.)web.spec.js',
       ],
+      setupFiles: ['<rootDir>/test/jest-setup.js'],
     },
   ],
   reporters: [

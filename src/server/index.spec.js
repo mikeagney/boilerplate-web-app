@@ -12,6 +12,7 @@ describe('server entry point', () => {
         jest.doMock('./app', () => jest.fn(() => mockApp));
 
         // Act
+        // eslint-disable-next-line global-require
         require('./index');
 
         // Assert

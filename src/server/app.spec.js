@@ -69,7 +69,7 @@ describe('Express app', () => {
       expect(app.app.listen).toHaveBeenCalledWith(12345, expect.anything(Function));
     });
 
-    it('will invoke listen on the initialized app', () => {
+    it('will log startup line after listen setup is complete', () => {
       // Arrange
       const app = new App();
       app.app = {
