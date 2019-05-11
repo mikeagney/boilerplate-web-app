@@ -1,4 +1,4 @@
-import Joi from 'joi';
+import Joi from '@hapi/joi';
 import winston from 'winston';
 import { schema as logFormatterSchema } from './log-formatter';
 import logFormatters from './log-formatters';

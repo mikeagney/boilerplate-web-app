@@ -1,4 +1,4 @@
-import Joi from 'joi';
+import Joi from '@hapi/joi';
 import logTransport, { schema as logTransportSchema } from './log-transport';
 import { schema as logFormatterSchema } from './log-formatter';
 import logFormatters from './log-formatters';
@@ -11,7 +11,10 @@ import logLevelSchema from './log-level-schema';
 export const schema = () => Joi.object({
   level: logLevelSchema().required(),
   format: Joi.array().items(logFormatterSchema()),
-  transports: Joi.array().items(logTransportSchema()).min(1).required(),
+  transports: Joi.array()
+    .items(logTransportSchema())
+    .min(1)
+    .required(),
 }).unknown(true);
 
 /**
@@ -23,11 +26,7 @@ export const schema = () => Joi.object({
  *   An object that can be passed to the constructor for a Winston logger.
  */
 export default function (log) {
-  const {
-    format = null,
-    transports = [],
-    ...finalOptions
-  } = log;
+  const { format = null, transports = [], ...finalOptions } = log;
 
   if (format) {
     finalOptions.format = logFormatters(format);

@@ -1,4 +1,4 @@
-import Joi from 'joi';
+import Joi from '@hapi/joi';
 import config from './index';
 import schema from './schema';
 import environments from './environments';

@@ -1,4 +1,4 @@
-import Joi from 'joi';
+import Joi from '@hapi/joi';
 import winston from 'winston';
 
 const logFormatterType = () => Joi.string();
@@ -10,9 +10,9 @@ const logFormatterType = () => Joi.string();
  */
 export const schema = () => Joi.alternatives().try(
   logFormatterType(),
-  Joi.array().ordered(
-    logFormatterType().required(),
-  ).items(Joi.any()),
+  Joi.array()
+    .ordered(logFormatterType().required())
+    .items(Joi.any()),
 );
 
 /**
