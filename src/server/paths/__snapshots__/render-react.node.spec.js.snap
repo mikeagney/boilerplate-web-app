@@ -1,7 +1,15 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`RenderReact route renderApp will render the expected app 1`] = `
-<div>
-  Mock app
+<div
+  context={
+    Object {
+      "mockContext": "mock",
+    }
+  }
+  location="/"
+>
+  Mock static router
+  <App />
 </div>
 `;

@@ -3,6 +3,8 @@ import path from 'path';
 import React from 'react';
 import { renderToString } from 'react-dom/server';
 import { promisify } from 'util';
+import { matchPath, StaticRouter } from 'react-router-dom';
+import routes from '../../client/pages/routes';
 import App from '../../client/app';
 
 const readFileAsync = promisify(readFile);
@@ -21,10 +23,16 @@ class RenderReact {
 
   /**
    * Renders the React application
+   * @param {string} url The URL being browsed to.
+   * @param {any} context Routing context.
    * @returns {string} The markup for the application.
    */
-  static renderApp() {
-    return renderToString(<App />);
+  static renderApp(url, context) {
+    return renderToString(
+      <StaticRouter location={url} context={context}>
+        <App />
+      </StaticRouter>,
+    );
   }
 
   /**
@@ -34,13 +42,20 @@ class RenderReact {
    * @param {(err?:any)=>void} next
    */
   static async route(req, res, next) {
-    if (req.path !== '/') {
+    const match = routes().find(route => matchPath(req.url, route));
+    if (!match) {
       next();
       return;
     }
 
+    const context = {};
+    const content = RenderReact.renderApp(req.url, context);
+    if (context.url) {
+      res.redirect(context.url);
+      return;
+    }
+
     const template = await RenderReact.getTemplate();
-    const content = RenderReact.renderApp();
     const response = template.replace('{content}', content);
     res.send(response);
   }
