@@ -1,0 +1,24 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Page route table component will render the pages 1`] = `
+<Switch>
+  <Route
+    exact={true}
+    key="root"
+    path="/"
+    render={[Function]}
+  />
+  <Route
+    component={[Function]}
+    exact={true}
+    key="characters"
+    path="/characters"
+  />
+  <Route
+    component={[Function]}
+    exact={true}
+    key="gauntlet"
+    path="/gauntlet"
+  />
+</Switch>
+`;

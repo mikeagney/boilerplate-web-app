@@ -1,0 +1,11 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Header component will render the header component 1`] = `
+<div
+  className="myapp-header"
+>
+  <h1>
+    Header
+  </h1>
+</div>
+`;

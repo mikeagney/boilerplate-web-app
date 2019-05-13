@@ -1,0 +1,9 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Gauntlet page component will render the Gauntlet page 1`] = `
+<div>
+  <h2>
+    Gauntlet
+  </h2>
+</div>
+`;
