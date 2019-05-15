@@ -1,6 +1,7 @@
 import { readFile } from 'fs';
 import path from 'path';
 import React from 'react';
+import { ChunkExtractor } from '@loadable/server';
 import { renderToString } from 'react-dom/server';
 import { promisify } from 'util';
 import { StaticRouter } from 'react-router-dom';
@@ -28,11 +29,18 @@ class RenderReact {
    * @returns {string} The markup for the application.
    */
   static renderApp(url, context) {
-    return renderToString(
+    const statsFile = path.resolve(__dirname, '../../../dist/client/loadable-stats.json');
+    const extractor = new ChunkExtractor({ statsFile });
+    const jsx = extractor.collectChunks(
       <StaticRouter location={url} context={context}>
         <App />
       </StaticRouter>,
     );
+
+    return {
+      content: renderToString(jsx),
+      scriptTags: extractor.getScriptTags(),
+    };
   }
 
   /**
@@ -49,14 +57,14 @@ class RenderReact {
     }
 
     const context = {};
-    const content = RenderReact.renderApp(req.url, context);
+    const { content, scriptTags } = RenderReact.renderApp(req.url, context);
     if (context.url) {
       res.redirect(context.url);
       return;
     }
 
     const template = await RenderReact.getTemplate();
-    const response = template.replace('{content}', content);
+    const response = template.replace('{content}', content).replace('{scriptTags}', scriptTags);
     res.send(response);
   }
 }

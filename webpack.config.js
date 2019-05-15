@@ -1,6 +1,7 @@
 const path = require('path');
 const webpackNodeExternals = require('webpack-node-externals');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
+const LoadablePlugin = require('@loadable/webpack-plugin');
 const merge = require('webpack-merge');
 
 function getEnvironmentConfig(envConfig, params) {
@@ -20,7 +21,11 @@ function baseConfig(params) {
               loader: 'babel-loader',
               options: {
                 presets: ['@babel/preset-env', '@babel/preset-react'],
-                plugins: ['@babel/plugin-proposal-class-properties'],
+                plugins: [
+                  '@babel/plugin-proposal-class-properties',
+                  '@babel/plugin-syntax-dynamic-import',
+                  '@loadable/babel-plugin',
+                ],
               },
             },
           },
@@ -78,10 +83,10 @@ function clientConfig(params) {
         },
       },
       plugins: [
-        new HtmlWebpackPlugin({
-          template: './src/client/html/index.html',
-          filename: '../templates/index.html',
-        }),
+        new LoadablePlugin({ filename: '../loadable-stats.json' }),
+        new CopyWebpackPlugin([
+          { from: './src/client/html/index.html', to: '../templates/index.html' },
+        ]),
       ],
     },
     getEnvironmentConfig({}, params),

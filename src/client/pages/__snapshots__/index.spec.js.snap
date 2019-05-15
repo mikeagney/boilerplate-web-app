@@ -9,13 +9,27 @@ exports[`Page route table component will render the pages 1`] = `
     render={[Function]}
   />
   <Route
-    component={[Function]}
+    component={
+      Object {
+        "$$typeof": Symbol(react.forward_ref),
+        "load": [Function],
+        "preload": [Function],
+        "render": [Function],
+      }
+    }
     exact={true}
     key="characters"
     path="/characters"
   />
   <Route
-    component={[Function]}
+    component={
+      Object {
+        "$$typeof": Symbol(react.forward_ref),
+        "load": [Function],
+        "preload": [Function],
+        "render": [Function],
+      }
+    }
     exact={true}
     key="gauntlet"
     path="/gauntlet"
