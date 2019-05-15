@@ -1,7 +1,6 @@
 import React from 'react';
 import { matchPath, Redirect } from 'react-router-dom';
-import Characters from './characters';
-import Gauntlet from './gauntlet';
+import loadable from '@loadable/component';
 
 /**
  * An entry in a React route table.
@@ -33,6 +32,9 @@ class Routes {
    * @type {()=>Route[]}
    */
   static getRoutes() {
+    const Characters = loadable(() => import('./characters'));
+    const Gauntlet = loadable(() => import('./gauntlet'));
+
     return [
       {
         key: 'root',

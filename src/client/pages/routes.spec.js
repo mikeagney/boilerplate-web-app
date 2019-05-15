@@ -1,12 +1,23 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import toJson from 'enzyme-to-json';
+import loadable from '@loadable/component';
+import Characters from './characters';
+import Gauntlet from './gauntlet';
 import Routes from './routes';
 
+jest.mock('@loadable/component');
+
 describe('React app route table', () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
   describe('getRoutes', () => {
     it('will return valid objects', () => {
       // Arrange
+      loadable.mockReturnValueOnce(Characters).mockReturnValueOnce(Gauntlet);
+
       // Act
       const result = Routes.getRoutes();
 
