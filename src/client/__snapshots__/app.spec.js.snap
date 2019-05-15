@@ -2,7 +2,7 @@
 
 exports[`App root container will render the root app 1`] = `
 <div>
-  <Header />
+  <withRouter(Header) />
   <Pages />
 </div>
 `;

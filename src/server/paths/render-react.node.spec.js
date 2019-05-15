@@ -2,10 +2,10 @@ import { readFile } from 'fs';
 import path from 'path';
 import React from 'react';
 import { renderToString } from 'react-dom/server';
-import { matchPath, StaticRouter } from 'react-router-dom';
+import { StaticRouter } from 'react-router-dom';
 import { shallow } from 'enzyme';
 import toJson from 'enzyme-to-json';
-import routes from '../../client/pages/routes';
+import Routes from '../../client/pages/routes';
 import RenderReact from './render-react';
 
 jest
@@ -100,12 +100,10 @@ describe('RenderReact route', () => {
   describe('route', () => {
     const getTemplate = jest.fn();
     const renderApp = jest.fn();
-    const mockRoutes = [{ key: 'mockRoute1' }, { key: 'mockRoute2' }];
 
     beforeEach(() => {
       jest.spyOn(RenderReact, 'getTemplate').mockImplementation(getTemplate);
       jest.spyOn(RenderReact, 'renderApp').mockImplementation(renderApp);
-      routes.mockReturnValue(mockRoutes);
     });
 
     afterEach(() => {
@@ -118,13 +116,12 @@ describe('RenderReact route', () => {
       const req = {};
       const res = { send: jest.fn() };
       const next = jest.fn();
-      matchPath.mockReturnValue(null);
+      Routes.getMatchingRoute.mockReturnValue(null);
 
       // Act
       await RenderReact.route(req, res, next);
 
       // Assert
-      expect(matchPath).toHaveBeenCalledTimes(2);
       expect(next).toHaveBeenCalledTimes(1);
       expect(res.send).not.toHaveBeenCalled();
     });
@@ -137,7 +134,7 @@ describe('RenderReact route', () => {
       const req = { path: '/' };
       const res = { send: jest.fn(), redirect: jest.fn() };
       const next = jest.fn();
-      matchPath.mockReturnValue({});
+      Routes.getMatchingRoute.mockReturnValue({});
       // eslint-disable-next-line no-return-assign, no-param-reassign
       renderApp.mockImplementation((_, context) => (context.url = '/redirect-url'));
 
@@ -158,7 +155,7 @@ describe('RenderReact route', () => {
       const req = { path: '/' };
       const res = { send: jest.fn() };
       const next = jest.fn();
-      matchPath.mockReturnValue({});
+      Routes.getMatchingRoute.mockReturnValue({});
 
       // Act
       await RenderReact.route(req, res, next);

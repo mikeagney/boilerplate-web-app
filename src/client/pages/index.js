@@ -1,10 +1,10 @@
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
-import routes from './routes';
+import Routes from './routes';
 
 const Pages = () => (
   <Switch>
-    {routes().map(route => (
+    {Routes.getRoutes().map(route => (
       <Route {...route} />
     ))}
   </Switch>
