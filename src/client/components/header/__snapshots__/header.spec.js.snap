@@ -1,0 +1,108 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Header component will render the header component 1`] = `
+<div
+  className="myapp-header"
+>
+  <Bootstrap(undefined)
+    bg="dark"
+    expand="sm"
+    variant="dark"
+  >
+    <NavbarToggle
+      aria-controls="header-nav"
+      as="button"
+      label="Toggle navigation"
+    />
+    <NavbarCollapse
+      id="header-nav"
+    >
+      <Nav
+        as="div"
+        fill={false}
+        justify={false}
+        onSelect={[Function]}
+      >
+        <NavItem
+          as="div"
+          key="route1"
+        >
+          <NavLink
+            as={[Function]}
+            disabled={false}
+            eventKey="route1"
+          >
+            Route 1
+          </NavLink>
+        </NavItem>
+        <NavItem
+          as="div"
+          key="route2"
+        >
+          <NavLink
+            as={[Function]}
+            disabled={false}
+            eventKey="route2"
+          >
+            Route 2
+          </NavLink>
+        </NavItem>
+      </Nav>
+    </NavbarCollapse>
+  </Bootstrap(undefined)>
+</div>
+`;
+
+exports[`Header component will set active nav based on the matched route 1`] = `
+<div
+  className="myapp-header"
+>
+  <Bootstrap(undefined)
+    bg="dark"
+    expand="sm"
+    variant="dark"
+  >
+    <NavbarToggle
+      aria-controls="header-nav"
+      as="button"
+      label="Toggle navigation"
+    />
+    <NavbarCollapse
+      id="header-nav"
+    >
+      <Nav
+        activeKey="route2"
+        as="div"
+        fill={false}
+        justify={false}
+        onSelect={[Function]}
+      >
+        <NavItem
+          as="div"
+          key="route1"
+        >
+          <NavLink
+            as={[Function]}
+            disabled={false}
+            eventKey="route1"
+          >
+            Route 1
+          </NavLink>
+        </NavItem>
+        <NavItem
+          as="div"
+          key="route2"
+        >
+          <NavLink
+            as={[Function]}
+            disabled={false}
+            eventKey="route2"
+          >
+            Route 2
+          </NavLink>
+        </NavItem>
+      </Nav>
+    </NavbarCollapse>
+  </Bootstrap(undefined)>
+</div>
+`;

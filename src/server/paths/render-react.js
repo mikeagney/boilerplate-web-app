@@ -3,8 +3,8 @@ import path from 'path';
 import React from 'react';
 import { renderToString } from 'react-dom/server';
 import { promisify } from 'util';
-import { matchPath, StaticRouter } from 'react-router-dom';
-import routes from '../../client/pages/routes';
+import { StaticRouter } from 'react-router-dom';
+import Routes from '../../client/pages/routes';
 import App from '../../client/app';
 
 const readFileAsync = promisify(readFile);
@@ -42,7 +42,7 @@ class RenderReact {
    * @param {(err?:any)=>void} next
    */
   static async route(req, res, next) {
-    const match = routes().find(route => matchPath(req.url, route));
+    const match = Routes.getMatchingRoute(req.url);
     if (!match) {
       next();
       return;

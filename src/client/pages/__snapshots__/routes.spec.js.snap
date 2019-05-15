@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`React app route table will return valid objects: characters 1`] = `
+exports[`React app route table getRoutes will return valid objects: characters 1`] = `
 <div>
   <h2>
     Characters
@@ -8,7 +8,7 @@ exports[`React app route table will return valid objects: characters 1`] = `
 </div>
 `;
 
-exports[`React app route table will return valid objects: gauntlet 1`] = `
+exports[`React app route table getRoutes will return valid objects: gauntlet 1`] = `
 <div>
   <h2>
     Gauntlet
@@ -16,7 +16,7 @@ exports[`React app route table will return valid objects: gauntlet 1`] = `
 </div>
 `;
 
-exports[`React app route table will return valid objects: root 1`] = `
+exports[`React app route table getRoutes will return valid objects: root 1`] = `
 <Redirect
   to="/characters"
 />
