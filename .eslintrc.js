@@ -21,6 +21,12 @@ module.exports = {
   rules: {
     'react/jsx-filename-extension': 'off',
     'linebreak-style': 'off',
+    'no-underscore-dangle': [
+      'error',
+      {
+        allow: ['__PRELOADED_STATE__', '__REDUX_DEVTOOLS_EXTENSION__'],
+      },
+    ],
   },
   overrides: [
     {

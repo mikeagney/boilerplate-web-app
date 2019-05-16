@@ -7,6 +7,7 @@ import { StaticRouter } from 'react-router-dom';
 import { shallow } from 'enzyme';
 import toJson from 'enzyme-to-json';
 import Routes from '../../client/pages/routes';
+import createStore from '../../client/store';
 import RenderReact from './render-react';
 
 jest
@@ -15,7 +16,8 @@ jest
   .mock('@loadable/server')
   .mock('react-dom/server')
   .mock('react-router-dom')
-  .mock('../../client/pages/routes');
+  .mock('../../client/pages/routes')
+  .mock('../../client/store');
 
 describe('RenderReact route', () => {
   beforeEach(() => {
@@ -86,12 +88,19 @@ describe('RenderReact route', () => {
 
     beforeEach(() => {
       StaticRouter.mockImplementation(props => new MockStaticRouter(props));
+      jest.spyOn(RenderReact, 'createStore');
+    });
+
+    afterEach(() => {
+      RenderReact.createStore.mockRestore();
     });
 
     it('will render the expected app', () => {
       // Arrange
-      const context = { mockContext: 'mock' };
       const statsFile = 'root/dist/client/loadable-stats.json';
+      const initialState = { mockState: true };
+      const store = { getState: jest.fn(() => initialState) };
+      RenderReact.createStore.mockReturnValue(store);
       path.resolve.mockReturnValue(statsFile);
       renderToString.mockReturnValue('Mock app');
       ChunkExtractor.mockImplementation(() => mockChunkExtractor);
@@ -99,17 +108,33 @@ describe('RenderReact route', () => {
       mockChunkExtractor.getScriptTags.mockReturnValue('script tags');
 
       // Act
-      const result = RenderReact.renderApp('/', context);
+      const result = RenderReact.renderApp({ url: '/' });
 
       // Assert
       expect(result).toEqual({
+        context: {},
         content: 'Mock app',
         scriptTags: 'script tags',
+        initialState: JSON.stringify(initialState),
       });
       expect(ChunkExtractor).toHaveBeenCalledWith({ statsFile });
       expect(renderToString).toHaveBeenCalledWith(expect.anything());
       const renderedApp = mockChunkExtractor.collectChunks.mock.calls[0][0];
       expect(toJson(shallow(renderedApp))).toMatchSnapshot();
+    });
+  });
+
+  describe('createStore', () => {
+    it('will call client createStore', () => {
+      // Arrange
+      const store = {};
+      createStore.mockReturnValue(store);
+
+      // Act
+      const result = RenderReact.createStore();
+
+      // Assert
+      expect(result).toBe(store);
     });
   });
 
@@ -146,6 +171,7 @@ describe('RenderReact route', () => {
       // Arrange
       getTemplate.mockResolvedValue('Html template with content "{content}{scriptTags}" here');
       renderApp.mockReturnValue({
+        context: { url: '/redirect-url' },
         content: 'Mock content',
         scriptTags: ' and mock script tags',
       });
@@ -154,8 +180,6 @@ describe('RenderReact route', () => {
       const res = { send: jest.fn(), redirect: jest.fn() };
       const next = jest.fn();
       Routes.getMatchingRoute.mockReturnValue({});
-      // eslint-disable-next-line no-return-assign, no-param-reassign
-      renderApp.mockImplementation((_, context) => (context.url = '/redirect-url'));
 
       // Act
       await RenderReact.route(req, res, next);
@@ -170,6 +194,7 @@ describe('RenderReact route', () => {
       // Arrange
       getTemplate.mockResolvedValue('Html template with content "{content}{scriptTags}" here');
       renderApp.mockReturnValue({
+        context: {},
         content: 'Mock content',
         scriptTags: ' and mock script tags',
       });
