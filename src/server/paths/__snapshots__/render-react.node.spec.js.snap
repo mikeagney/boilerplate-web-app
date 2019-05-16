@@ -2,14 +2,16 @@
 
 exports[`RenderReact route renderApp will render the expected app 1`] = `
 <div
-  context={
-    Object {
-      "mockContext": "mock",
-    }
-  }
+  context={Object {}}
   location="/"
 >
   Mock static router
-  <App />
+  <App
+    initialState={
+      Object {
+        "mockState": true,
+      }
+    }
+  />
 </div>
 `;

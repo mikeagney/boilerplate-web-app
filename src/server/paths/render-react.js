@@ -6,6 +6,7 @@ import { renderToString } from 'react-dom/server';
 import { promisify } from 'util';
 import { StaticRouter } from 'react-router-dom';
 import Routes from '../../client/pages/routes';
+import createStore from '../../client/store';
 import App from '../../client/app';
 
 const readFileAsync = promisify(readFile);
@@ -24,23 +25,32 @@ class RenderReact {
 
   /**
    * Renders the React application
-   * @param {string} url The URL being browsed to.
-   * @param {any} context Routing context.
+   * @param {Express.Request} req The Express request.
+   * @param {string} req.url The URL being browsed to.
    * @returns {string} The markup for the application.
    */
-  static renderApp(url, context) {
+  static renderApp({ url }) {
+    const context = {};
     const statsFile = path.resolve(__dirname, '../../../dist/client/loadable-stats.json');
     const extractor = new ChunkExtractor({ statsFile });
+    const store = RenderReact.createStore();
+    const initialState = store.getState();
     const jsx = extractor.collectChunks(
       <StaticRouter location={url} context={context}>
-        <App />
+        <App initialState={initialState} />
       </StaticRouter>,
     );
 
     return {
+      context,
       content: renderToString(jsx),
       scriptTags: extractor.getScriptTags(),
+      initialState: JSON.stringify(initialState).replace(/</g, '\\u003c'),
     };
+  }
+
+  static createStore() {
+    return createStore();
   }
 
   /**
@@ -56,15 +66,19 @@ class RenderReact {
       return;
     }
 
-    const context = {};
-    const { content, scriptTags } = RenderReact.renderApp(req.url, context);
+    const {
+      context, content, scriptTags, initialState,
+    } = RenderReact.renderApp(req);
     if (context.url) {
       res.redirect(context.url);
       return;
     }
 
     const template = await RenderReact.getTemplate();
-    const response = template.replace('{content}', content).replace('{scriptTags}', scriptTags);
+    const response = template
+      .replace('{content}', content)
+      .replace('{scriptTags}', scriptTags)
+      .replace('{initialState}', initialState);
     res.send(response);
   }
 }
