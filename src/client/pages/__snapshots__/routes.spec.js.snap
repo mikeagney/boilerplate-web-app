@@ -5,6 +5,7 @@ exports[`React app route table getRoutes will return valid objects: characters 1
   <h2>
     Characters
   </h2>
+  <ConnectFunction />
 </div>
 `;
 
