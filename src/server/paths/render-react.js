@@ -5,6 +5,7 @@ import { ChunkExtractor } from '@loadable/server';
 import { renderToString } from 'react-dom/server';
 import { promisify } from 'util';
 import { StaticRouter } from 'react-router-dom';
+import jsonStringify from 'serialize-javascript';
 import Routes from '../../client/pages/routes';
 import createStore from '../../client/store';
 import App from '../../client/app';
@@ -45,7 +46,7 @@ class RenderReact {
       context,
       content: renderToString(jsx),
       scriptTags: extractor.getScriptTags(),
-      initialState: JSON.stringify(initialState).replace(/</g, '\\u003c'),
+      initialState: jsonStringify(initialState, { isJSON: true }),
     };
   }
 

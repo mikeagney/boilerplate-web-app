@@ -1,5 +1,6 @@
 import {
   getCharacterIds,
+  getCharacterNames,
   getSelectedCharacterId,
   createGetCharacterById,
 } from './characters.selectors';
@@ -19,6 +20,29 @@ describe('Character store selectors', () => {
 
       // Assert
       expect(result).toEqual(['1a1', '3a3', '2a2']);
+    });
+  });
+
+  describe('getCharacterNames', () => {
+    it('will get an object with all of the character names', () => {
+      // Arrange
+      const state = {
+        characters: {
+          byId: {
+            '1a1': { name: 'a1a' },
+            '2a2': { name: 'a2a' },
+          },
+        },
+      };
+
+      // Act
+      const result = getCharacterNames(state);
+
+      // Assert
+      expect(result).toEqual({
+        '1a1': 'a1a',
+        '2a2': 'a2a',
+      });
     });
   });
 

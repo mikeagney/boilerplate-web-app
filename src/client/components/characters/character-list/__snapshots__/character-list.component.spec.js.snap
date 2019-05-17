@@ -1,22 +1,33 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`CharacterList component will render Character components with the appropriate character selected 1`] = `
-<ForwardRef>
-  <Bootstrap(ListGroupItem)
+<ForwardRef
+  activeKey="b2b"
+  className="character-list"
+  onSelect={[MockFunction]}
+>
+  <Tab
+    eventKey="a1a"
     key="a1a"
+    title="Mock Character 1"
   >
     <ConnectFunction
       characterId="a1a"
       selected={false}
     />
-  </Bootstrap(ListGroupItem)>
-  <Bootstrap(ListGroupItem)
+  </Tab>
+  <Tab
+    eventKey="b2b"
     key="b2b"
+    title="Mock Character 2"
   >
     <ConnectFunction
       characterId="b2b"
       selected={true}
     />
-  </Bootstrap(ListGroupItem)>
+  </Tab>
+  <Tab
+    title={<MdAdd />}
+  />
 </ForwardRef>
 `;

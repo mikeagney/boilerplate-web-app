@@ -4,6 +4,7 @@ import React from 'react';
 import { ChunkExtractor } from '@loadable/server';
 import { renderToString } from 'react-dom/server';
 import { StaticRouter } from 'react-router-dom';
+import jsonStringify from 'serialize-javascript';
 import { shallow } from 'enzyme';
 import toJson from 'enzyme-to-json';
 import Routes from '../../client/pages/routes';
@@ -115,7 +116,7 @@ describe('RenderReact route', () => {
         context: {},
         content: 'Mock app',
         scriptTags: 'script tags',
-        initialState: JSON.stringify(initialState),
+        initialState: jsonStringify(initialState),
       });
       expect(ChunkExtractor).toHaveBeenCalledWith({ statsFile });
       expect(renderToString).toHaveBeenCalledWith(expect.anything());
@@ -192,11 +193,14 @@ describe('RenderReact route', () => {
 
     it('will load the template, render the app, and return the expected result', async () => {
       // Arrange
-      getTemplate.mockResolvedValue('Html template with content "{content}{scriptTags}" here');
+      getTemplate.mockResolvedValue(
+        'Html template with content "{content}{scriptTags}{initialState}" here',
+      );
       renderApp.mockReturnValue({
         context: {},
         content: 'Mock content',
         scriptTags: ' and mock script tags',
+        initialState: ' and mock initial state',
       });
 
       const req = { path: '/' };
@@ -210,7 +214,7 @@ describe('RenderReact route', () => {
       // Assert
       expect(next).not.toHaveBeenCalled();
       expect(res.send).toHaveBeenCalledWith(
-        'Html template with content "Mock content and mock script tags" here',
+        'Html template with content "Mock content and mock script tags and mock initial state" here',
       );
     });
   });

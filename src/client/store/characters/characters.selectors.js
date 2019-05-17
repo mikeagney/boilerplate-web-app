@@ -1,4 +1,5 @@
 import delve from 'dlv';
+import mapValues from 'lodash/mapValues';
 import { createSelector } from 'reselect';
 
 /**
@@ -10,7 +11,7 @@ import { createSelector } from 'reselect';
 const getCharacters = state => delve(state, 'characters', {});
 
 /**
- * @type {(state:*)=>Object.<string,Character>}
+ * @type {(state:*)=>{[characterId:string]:Character}}
  */
 const getCharactersById = createSelector(
   getCharacters,
@@ -23,6 +24,14 @@ const getCharactersById = createSelector(
 export const getCharacterIds = createSelector(
   getCharacters,
   characters => delve(characters, 'ids', []),
+);
+
+/**
+ * @type {(state:*)=>{[characterId:string]:string}}
+ */
+export const getCharacterNames = createSelector(
+  getCharactersById,
+  charactersById => mapValues(charactersById, character => character.name),
 );
 
 /**

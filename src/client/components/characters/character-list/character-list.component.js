@@ -1,22 +1,29 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { ListGroup } from 'react-bootstrap';
+import { Tabs, Tab } from 'react-bootstrap';
+import { MdAdd } from 'react-icons/md';
 import Character from '../character';
 
-const CharacterList = ({ characterIds, selectedId }) => (
-  <ListGroup>
+const CharacterList = ({
+  characterIds, characterNames, selectedId, setSelected,
+}) => (
+  <Tabs className="character-list" activeKey={selectedId} onSelect={setSelected}>
     {characterIds.map(id => (
-      <ListGroup.Item key={id}>
+      <Tab key={id} eventKey={id} title={characterNames[id]}>
         <Character characterId={id} selected={id === selectedId} />
-      </ListGroup.Item>
+      </Tab>
     ))}
-  </ListGroup>
+    <Tab title={<MdAdd />} />
+  </Tabs>
 );
 
 CharacterList.propTypes = {
   // From mapStateToProps
   characterIds: PropTypes.arrayOf(PropTypes.string).isRequired,
+  characterNames: PropTypes.objectOf(PropTypes.string).isRequired,
   selectedId: PropTypes.string,
+  // From mapDispatchToProps
+  setSelected: PropTypes.func.isRequired,
 };
 
 CharacterList.defaultProps = {
