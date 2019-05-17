@@ -8,6 +8,16 @@ export default handleActions(
       ...state,
       selectedId: characterId,
     }),
+    [ActionTypes.SET_NAME]: (state, { payload: { characterId, name } }) => ({
+      ...state,
+      byId: {
+        ...state.byId,
+        [characterId]: {
+          ...state.byId[characterId],
+          name,
+        },
+      },
+    }),
   },
   initialState,
 );
