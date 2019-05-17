@@ -1,0 +1,22 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`CharacterList component will render Character components with the appropriate character selected 1`] = `
+<ForwardRef>
+  <Bootstrap(ListGroupItem)
+    key="a1a"
+  >
+    <ConnectFunction
+      characterId="a1a"
+      selected={false}
+    />
+  </Bootstrap(ListGroupItem)>
+  <Bootstrap(ListGroupItem)
+    key="b2b"
+  >
+    <ConnectFunction
+      characterId="b2b"
+      selected={true}
+    />
+  </Bootstrap(ListGroupItem)>
+</ForwardRef>
+`;

@@ -1,0 +1,41 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Character component will render Character component when selected=false 1`] = `
+<Card
+  as="div"
+  body={false}
+>
+  <CardHeader
+    as="h5"
+    className=""
+    onClick={[Function]}
+  >
+    Mock name
+  </CardHeader>
+  <CardBody>
+    <CardText>
+      Skills go here
+    </CardText>
+  </CardBody>
+</Card>
+`;
+
+exports[`Character component will render Character component when selected=true 1`] = `
+<Card
+  as="div"
+  body={false}
+>
+  <CardHeader
+    as="h5"
+    className="bg-primary text-white"
+    onClick={[Function]}
+  >
+    Mock name
+  </CardHeader>
+  <CardBody>
+    <CardText>
+      Skills go here
+    </CardText>
+  </CardBody>
+</Card>
+`;

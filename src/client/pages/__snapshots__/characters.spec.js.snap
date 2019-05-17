@@ -5,5 +5,6 @@ exports[`Characters page component will render the Characters page 1`] = `
   <h2>
     Characters
   </h2>
+  <ConnectFunction />
 </div>
 `;
