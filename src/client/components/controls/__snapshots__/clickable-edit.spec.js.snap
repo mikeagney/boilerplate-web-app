@@ -1,0 +1,200 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ClickableEdit common component will not set text when cancel is clicked 1`] = `
+<div>
+  <Bootstrap(Row)>
+    <Col
+      as="div"
+    >
+      foo
+    </Col>
+    <Col
+      as="div"
+      className="px-0"
+      xs="auto"
+    >
+      <Button
+        active={false}
+        className="edit-button"
+        disabled={false}
+        onClick={[Function]}
+        size="sm"
+        type="button"
+        variant="primary"
+      >
+        <MdEdit />
+      </Button>
+    </Col>
+  </Bootstrap(Row)>
+</div>
+`;
+
+exports[`ClickableEdit common component will render expected text changes in edit mode 1`] = `
+<Form
+  as="form"
+  inline={false}
+>
+  <Bootstrap(Row)>
+    <Col
+      as="div"
+    >
+      <FormControl
+        as="input"
+        className="textbox"
+        onChange={[Function]}
+        size="sm"
+        type="text"
+        value="bar"
+      />
+    </Col>
+    <Col
+      as="div"
+      className="px-0"
+      xs="auto"
+    >
+      <Button
+        active={false}
+        className="cancel-button"
+        disabled={false}
+        onClick={[Function]}
+        size="sm"
+        type="button"
+        variant="primary"
+      >
+        <MdCancel />
+      </Button>
+    </Col>
+    <Col
+      as="div"
+      className="px-0"
+      xs="auto"
+    >
+      <Button
+        active={false}
+        className="save-button"
+        disabled={false}
+        onClick={[Function]}
+        size="sm"
+        type="button"
+        variant="primary"
+      >
+        <MdSave />
+      </Button>
+    </Col>
+  </Bootstrap(Row)>
+</Form>
+`;
+
+exports[`ClickableEdit common component will render the expected edit mode when edit is clicked 1`] = `
+<Form
+  as="form"
+  inline={false}
+>
+  <Bootstrap(Row)>
+    <Col
+      as="div"
+    >
+      <FormControl
+        as="input"
+        className="textbox"
+        onChange={[Function]}
+        size="sm"
+        type="text"
+        value="foo"
+      />
+    </Col>
+    <Col
+      as="div"
+      className="px-0"
+      xs="auto"
+    >
+      <Button
+        active={false}
+        className="cancel-button"
+        disabled={false}
+        onClick={[Function]}
+        size="sm"
+        type="button"
+        variant="primary"
+      >
+        <MdCancel />
+      </Button>
+    </Col>
+    <Col
+      as="div"
+      className="px-0"
+      xs="auto"
+    >
+      <Button
+        active={false}
+        className="save-button"
+        disabled={false}
+        onClick={[Function]}
+        size="sm"
+        type="button"
+        variant="primary"
+      >
+        <MdSave />
+      </Button>
+    </Col>
+  </Bootstrap(Row)>
+</Form>
+`;
+
+exports[`ClickableEdit common component will render the expected initial state 1`] = `
+<div>
+  <Bootstrap(Row)>
+    <Col
+      as="div"
+    >
+      foo
+    </Col>
+    <Col
+      as="div"
+      className="px-0"
+      xs="auto"
+    >
+      <Button
+        active={false}
+        className="edit-button"
+        disabled={false}
+        onClick={[Function]}
+        size="sm"
+        type="button"
+        variant="primary"
+      >
+        <MdEdit />
+      </Button>
+    </Col>
+  </Bootstrap(Row)>
+</div>
+`;
+
+exports[`ClickableEdit common component will set text when save is clicked 1`] = `
+<div>
+  <Bootstrap(Row)>
+    <Col
+      as="div"
+    >
+      foo
+    </Col>
+    <Col
+      as="div"
+      className="px-0"
+      xs="auto"
+    >
+      <Button
+        active={false}
+        className="edit-button"
+        disabled={false}
+        onClick={[Function]}
+        size="sm"
+        type="button"
+        variant="primary"
+      >
+        <MdEdit />
+      </Button>
+    </Col>
+  </Bootstrap(Row)>
+</div>
+`;

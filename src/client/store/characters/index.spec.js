@@ -1,4 +1,4 @@
-import { setSelected } from './characters.actions';
+import { setSelected, setName } from './characters.actions';
 import charactersReducer from '.';
 
 describe('Characters store reducer', () => {
@@ -24,6 +24,20 @@ describe('Characters store reducer', () => {
         ...state,
         selectedId: '54321',
       });
+    });
+  });
+
+  describe('setName', () => {
+    it('will update the name of the selected character', () => {
+      // Arrange
+      const action = setName('54321', 'baz');
+
+      // Act
+      const nextState = charactersReducer(state, action);
+
+      // Assert
+      expect(nextState.byId[12345]).toEqual(state.byId[12345]);
+      expect(nextState.byId[54321].name).toEqual('baz');
     });
   });
 });
