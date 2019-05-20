@@ -1,0 +1,47 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`NewCharacter component will render the expected new character form 1`] = `
+<Card
+  as="div"
+  body={false}
+  className="character"
+>
+  <CardHeader
+    as="h5"
+    className="bg-primary text-white"
+  >
+    <ClickableEdit
+      className="name-clickable-edit"
+      setText={[Function]}
+      text="New Character"
+    />
+  </CardHeader>
+  <CardBody>
+    <CardText>
+      Creating a new character
+    </CardText>
+  </CardBody>
+  <CardFooter>
+    <Button
+      active={false}
+      className="save-button mr-1"
+      disabled={false}
+      onClick={[Function]}
+      type="button"
+      variant="primary"
+    >
+      Save
+    </Button>
+    <Button
+      active={false}
+      className="cancel-button"
+      disabled={false}
+      onClick={[Function]}
+      type="button"
+      variant="secondary"
+    >
+      Cancel
+    </Button>
+  </CardFooter>
+</Card>
+`;

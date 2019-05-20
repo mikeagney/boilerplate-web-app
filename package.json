@@ -36,6 +36,7 @@
     "redux-actions": "^2.6.5",
     "reselect": "^4.0.0",
     "serialize-javascript": "^1.7.0",
+    "uuidv4": "^4.0.0",
     "winston": "^3.2.1"
   },
   "devDependencies": {

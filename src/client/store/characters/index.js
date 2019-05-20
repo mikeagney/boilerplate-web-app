@@ -4,6 +4,15 @@ import initialState from './characters.initial-state';
 
 export default handleActions(
   {
+    [ActionTypes.ADD_CHARACTER]: (state, { payload: { characterId, character } }) => ({
+      ...state,
+      byId: {
+        ...state.byId,
+        [characterId]: character,
+      },
+      ids: [...state.ids.filter(id => id !== characterId), characterId],
+      selectedId: characterId,
+    }),
     [ActionTypes.SET_SELECTED]: (state, { payload: { characterId } }) => ({
       ...state,
       selectedId: characterId,
