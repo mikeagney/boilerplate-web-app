@@ -27,7 +27,10 @@ exports[`CharacterList component will render Character components with the appro
     />
   </Tab>
   <Tab
+    eventKey=""
     title={<MdAdd />}
-  />
+  >
+    <ConnectFunction />
+  </Tab>
 </ForwardRef>
 `;

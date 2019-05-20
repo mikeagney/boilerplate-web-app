@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Tabs, Tab } from 'react-bootstrap';
 import { MdAdd } from 'react-icons/md';
 import Character from '../character';
+import NewCharacter from '../new-character';
 
 const CharacterList = ({
   characterIds, characterNames, selectedId, setSelected,
@@ -13,7 +14,9 @@ const CharacterList = ({
         <Character characterId={id} selected={id === selectedId} />
       </Tab>
     ))}
-    <Tab title={<MdAdd />} />
+    <Tab title={<MdAdd />} eventKey="">
+      <NewCharacter />
+    </Tab>
   </Tabs>
 );
 
