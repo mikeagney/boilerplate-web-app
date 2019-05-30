@@ -2,9 +2,7 @@ import express from 'express';
 import Character from './character';
 import ApiRouter from './api-router';
 
-jest
-  .mock('express')
-  .mock('./character');
+jest.mock('express').mock('./character');
 
 describe('ApiRouter v0', () => {
   const characterRouter = {};
@@ -32,7 +30,7 @@ describe('ApiRouter v0', () => {
       expect(result).toBe(mockRouter);
 
       expect(mockRouter.use).toHaveBeenCalledTimes(1);
-      expect(mockRouter.use).toHaveBeenCalledWith('/character', characterRouter);
+      expect(mockRouter.use).toHaveBeenCalledWith('/characters', characterRouter);
     });
   });
 });
