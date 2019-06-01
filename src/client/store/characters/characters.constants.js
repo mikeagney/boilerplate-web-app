@@ -1,9 +1,6 @@
-export const ActionTypePrefix = 'CHARACTERS.';
-
-const ActionTypes = Object.freeze({
-  ADD_CHARACTER: `${ActionTypePrefix}ADD_CHARACTER`,
-  SET_SELECTED: `${ActionTypePrefix}SET_SELECTED`,
-  SET_NAME: `${ActionTypePrefix}SET_NAME`,
+const CharacterActionOptions = Object.freeze({
+  prefix: 'CHARACTER',
+  namespace: '.',
 });
 
-export default ActionTypes;
+export default CharacterActionOptions;

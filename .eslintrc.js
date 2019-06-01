@@ -19,6 +19,7 @@ module.exports = {
   },
   plugins: ['react', 'jest'],
   rules: {
+    'implicit-arrow-linebreak': 'off',
     'react/jsx-filename-extension': 'off',
     'linebreak-style': 'off',
     'no-underscore-dangle': [
