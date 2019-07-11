@@ -4,6 +4,9 @@ export default {
     https: {
       enabled: false,
     },
+    db: {
+      databaseName: 'boilerplate',
+    },
   },
   client: {},
 };
