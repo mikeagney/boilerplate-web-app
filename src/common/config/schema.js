@@ -9,6 +9,10 @@ const server = () => Joi.object({
     enabled: Joi.boolean().required(),
   }).required(),
   log: logSchema().required(),
+  db: Joi.object({
+    connectionString: Joi.string().required(),
+    databaseName: Joi.string().required(),
+  }).required(),
 });
 
 const client = () => Joi.object({

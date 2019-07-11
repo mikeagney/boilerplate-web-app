@@ -1,30 +1,21 @@
 import express from 'express';
 import jsonSerialize from 'serialize-javascript';
+import CharacterProxy from '../../../proxy/character-proxy';
 
 class Character {
   constructor() {
-    this.store = {
-      byId: {
-        a1: {
-          characterId: 'a1',
-          name: 'Armus',
-        },
-        b2: {
-          characterId: 'b2',
-          name: 'The Caretaker',
-        },
-      },
-      ids: ['a1', 'b2'],
-    };
+    this.proxy = new CharacterProxy();
   }
 
-  getCharacterIds = (_req, res) => {
-    res.type('application/json').send(jsonSerialize(this.store.ids));
+  getCharacterIds = async (_req, res) => {
+    const ids = await this.proxy.getCharacterIds();
+    res.type('application/json').send(jsonSerialize(ids));
   };
 
-  getCharacterById = (req, res) => {
+  getCharacterById = async (req, res) => {
     const { characterId } = req.params;
-    const character = this.store.byId[characterId];
+    const character = await this.proxy.getCharacterById(characterId);
+
     if (!character) {
       res
         .status(404)

@@ -1,12 +1,10 @@
 import express from 'express';
-import path from 'path';
 import RenderReact from './render-react';
 import ApiVersionRouter from './api/api-version-router';
 import RootRouter from './root-router';
 
 jest
   .mock('express')
-  .mock('path')
   .mock('./render-react')
   .mock('./api/api-version-router');
 
@@ -23,9 +21,6 @@ describe('RootRouter', () => {
   describe('initialize', () => {
     it('will set up the static route', () => {
       // Arrange
-      const staticRoot = '/dist/client';
-      path.join.mockReturnValue(staticRoot);
-
       const mockRouter = { use: jest.fn() };
       express.Router.mockReturnValue(mockRouter);
 
@@ -40,8 +35,7 @@ describe('RootRouter', () => {
       // Assert
       expect(result).toBe(mockRouter);
 
-      expect(path.join).toHaveBeenCalledWith(expect.any(String), '../../../dist/client/scripts');
-      expect(express.static).toHaveBeenCalledWith(staticRoot);
+      expect(express.static).toHaveBeenCalledWith(expect.any(String));
       expect(mockRouter.use).toHaveBeenCalledTimes(3);
       expect(mockRouter.use).toHaveBeenCalledWith('/', staticMiddleware);
       expect(mockRouter.use).toHaveBeenCalledWith('/', RenderReact.route);

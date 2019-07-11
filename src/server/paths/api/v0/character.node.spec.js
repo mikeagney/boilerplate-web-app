@@ -1,23 +1,25 @@
 import express from 'express';
 import jsonSerialize from 'serialize-javascript';
 import Character from './character';
+import MockCharacterProxy from '../../../proxy/character-proxy/mock-proxy';
 
 jest.mock('express');
 
 describe('Character router', () => {
   describe('getCharacterIds', () => {
-    it('will return the ids from the local store', () => {
+    it('will return the ids from the local store', async () => {
       // Arrange
       const ids = ['abc', 'def', '12345'];
       const router = new Character();
-      router.store.ids = ids;
+      router.proxy = new MockCharacterProxy();
+      router.proxy.store.ids = ids;
       const res = {
         type: jest.fn().mockReturnThis(),
         send: jest.fn(),
       };
 
       // Act
-      router.getCharacterIds({}, res);
+      await router.getCharacterIds({}, res);
 
       // Assert
       expect(res.type).toHaveBeenCalledWith('application/json');
@@ -26,11 +28,12 @@ describe('Character router', () => {
   });
 
   describe('getCharacterById', () => {
-    it('will return 404 if character id does not exist', () => {
+    it('will return 404 if character id does not exist', async () => {
       // Arrange
       const byId = {};
       const router = new Character();
-      router.store.byId = byId;
+      router.proxy = new MockCharacterProxy();
+      router.proxy.store.byId = byId;
       const req = {
         params: {
           characterId: 'abc',
@@ -43,7 +46,7 @@ describe('Character router', () => {
       };
 
       // Act
-      router.getCharacterById(req, res);
+      await router.getCharacterById(req, res);
 
       // Assert
       expect(res.status).toHaveBeenCalledWith(404);
@@ -51,13 +54,14 @@ describe('Character router', () => {
       expect(res.end).toHaveBeenCalledWith();
     });
 
-    it('will return the character if character exists', () => {
+    it('will return the character if character exists', async () => {
       // Arrange
       const byId = {
         abc: { characterId: 'abc', name: 'Foo' },
       };
       const router = new Character();
-      router.store.byId = byId;
+      router.proxy = new MockCharacterProxy();
+      router.proxy.store.byId = byId;
       const req = {
         params: {
           characterId: 'abc',
@@ -70,7 +74,7 @@ describe('Character router', () => {
       };
 
       // Act
-      router.getCharacterById(req, res);
+      await router.getCharacterById(req, res);
 
       // Assert
       expect(res.status).not.toHaveBeenCalled();
