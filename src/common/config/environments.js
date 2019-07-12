@@ -1,1 +1,1 @@
-export default ['development', 'production'];
+module.exports = ['development', 'production'];
