@@ -1,7 +1,7 @@
-import merge from 'merge';
-import all from './all';
+const merge = require('merge');
+const all = require('./all');
 
-export default merge.recursive(all, {
+module.exports = merge.recursive(all, {
   name: 'development',
   server: {
     log: {
