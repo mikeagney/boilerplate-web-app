@@ -10,7 +10,8 @@
     "clean": "rimraf dist/",
     "build": "webpack",
     "test": "jest",
-    "start": "node ./dist/server/index.js"
+    "start": "node ./dist/server/index.js",
+    "start-local": "node -r dotenv/config ./dist/server/index.js"
   },
   "dependencies": {
     "@babel/polyfill": "^7.4.0",
@@ -57,6 +58,7 @@
     "command-line-args": "^5.1.1",
     "command-line-usage": "^6.0.2",
     "copy-webpack-plugin": "^5.0.3",
+    "dotenv": "^8.0.0",
     "enzyme": "^3.9.0",
     "enzyme-adapter-react-16": "^1.12.1",
     "enzyme-to-json": "^3.3.5",

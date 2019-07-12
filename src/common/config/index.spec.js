@@ -5,6 +5,7 @@ import environments from './environments';
 
 describe('common/config', () => {
   beforeEach(() => {
+    delete process.env['BOILERPLATE_CONFIG.name'];
     jest.resetModules();
   });
 
@@ -29,5 +30,16 @@ describe('common/config', () => {
 
     // Assert
     expect(actualConfig.name).toEqual('development');
+  });
+
+  it('will return config from environment variables if specified', () => {
+    // Arrange
+    process.env['BOILERPLATE_CONFIG.name'] = 'mock';
+
+    // Act
+    const actualConfig = config();
+
+    // Assert
+    expect(actualConfig).toEqual({ name: 'mock' });
   });
 });

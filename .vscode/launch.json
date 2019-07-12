@@ -9,6 +9,7 @@
       "request": "launch",
       "name": "Launch Program",
       "console": "integratedTerminal",
+      "envFile": "${workspaceFolder}/.env",
       "program": "${workspaceFolder}/dist/server/index.js"
     }
   ]

@@ -7,9 +7,5 @@ COPY src ./src
 RUN yarn install
 RUN yarn build
 
-# Make configurable with config
-EXPOSE 3000
-
-RUN pwd
 CMD ["yarn", "start"]
 
