@@ -3,6 +3,7 @@ const commandLineArgs = require('command-line-args');
 const path = require('path');
 const flatten = require('flat');
 const environments = require('../src/common/config/environments');
+const { CONFIG_BASE_KEY } = require('../src/common/config/constants');
 
 const optionList = [
   {
@@ -81,7 +82,7 @@ if (!options.verbose) {
   console.log(`Using configuration ${options.env}`);
 }
 
-const flattenedConfig = flatten({ BOILERPLATE_CONFIG: config });
+const flattenedConfig = flatten({ [CONFIG_BASE_KEY]: config });
 Object.keys(flattenedConfig).forEach((configKey) => {
   if (options.verbose) {
     console.log(`${configKey}=${flattenedConfig[configKey]}`);
