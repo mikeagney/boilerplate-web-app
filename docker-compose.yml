@@ -1,0 +1,17 @@
+version: "3.7"
+services:
+  webapp:
+    build: .
+    ports:
+      - "3000:3000"
+    depends_on:
+      - mongodb
+    environment:
+      # Not working yet since dots in environment variables are getting eaten
+      - BOILERPLATE_CONFIG.server.db.connectionString=mongodb://mongodb:27017
+  mongodb:
+    # TODO: Specify a Mongo version
+    image: mongo:latest
+    expose:
+      - "27017"
+
