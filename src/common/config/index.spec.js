@@ -1,11 +1,12 @@
 import Joi from '@hapi/joi';
-import config from './index';
+import config, { clearCache } from './index';
 import schema from './schema';
 import environments from './environments';
 
 describe('common/config', () => {
   beforeEach(() => {
-    delete process.env['BOILERPLATE_CONFIG.name'];
+    delete process.env.BOILERPLATECONFIG_name;
+    clearCache();
     jest.resetModules();
   });
 
@@ -34,12 +35,24 @@ describe('common/config', () => {
 
   it('will return config from environment variables if specified', () => {
     // Arrange
-    process.env['BOILERPLATE_CONFIG.name'] = 'mock';
+    process.env.BOILERPLATECONFIG_name = 'mock';
 
     // Act
     const actualConfig = config();
 
     // Assert
     expect(actualConfig).toEqual({ name: 'mock' });
+  });
+
+  it('will use cached data if config is called twice', () => {
+    // Arrange
+    process.env.BOILERPLATECONFIG_name = 'mock';
+
+    // Act
+    const actualConfig = config();
+    const actualConfig2 = config();
+
+    // Assert
+    expect(actualConfig2).toBe(actualConfig);
   });
 });
