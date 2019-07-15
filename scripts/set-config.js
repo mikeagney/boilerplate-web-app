@@ -58,7 +58,7 @@ function printHelp() {
 const options = commandLineArgs(optionList);
 if (options.help || !options.env) {
   printHelp();
-  return;
+  process.exit(0);
 }
 
 let config = null;
@@ -75,14 +75,14 @@ try {
 if (!config) {
   console.error(`Error: environment ${options.env} not found.`);
   printHelp();
-  return;
+  process.exit(0);
 }
 
 if (!options.verbose) {
   console.log(`Using configuration ${options.env}`);
 }
 
-const flattenedConfig = flatten({ [CONFIG_BASE_KEY]: config });
+const flattenedConfig = flatten({ [CONFIG_BASE_KEY]: config }, { delimiter: '_' });
 Object.keys(flattenedConfig).forEach((configKey) => {
   if (options.verbose) {
     console.log(`${configKey}=${flattenedConfig[configKey]}`);
