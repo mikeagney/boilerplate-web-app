@@ -9,6 +9,7 @@ jest
   .mock('express')
   .mock('../common/config')
   .mock('../common/logger')
+  .mock('./client/db-migrate')
   .mock('./middleware')
   .mock('./paths/root-router');
 
@@ -50,7 +51,7 @@ describe('Express app', () => {
   });
 
   describe('listen', () => {
-    it('will invoke listen on the initialized app', () => {
+    it('will invoke listen on the initialized app', async () => {
       // Arrange
       const app = new App();
       app.app = {
@@ -61,15 +62,17 @@ describe('Express app', () => {
           port: 12345,
         },
       };
+      app.dbMigrate = { up: jest.fn().mockResolvedValue() };
 
       // Act
-      app.listen();
+      await app.listen();
 
       // Assert
+      expect(app.dbMigrate.up).toHaveBeenCalledTimes(1);
       expect(app.app.listen).toHaveBeenCalledWith(12345, expect.anything(Function));
     });
 
-    it('will log startup line after listen setup is complete', () => {
+    it('will log startup line after listen setup is complete', async () => {
       // Arrange
       const app = new App();
       app.app = {
@@ -82,7 +85,8 @@ describe('Express app', () => {
         },
       };
       app.logger = { info: jest.fn() };
-      app.listen();
+      app.dbMigrate = { up: jest.fn().mockResolvedValue() };
+      await app.listen();
       const listenCallback = app.app.listen.mock.calls[0][1];
 
       // Act

@@ -1,6 +1,8 @@
 import express from 'express';
+import retry from 'async-retry';
 import config from '../common/config';
 import { server as serverLogger } from '../common/logger';
+import DbMigrate from './client/db-migrate';
 import { preAppHandlers, postAppHandlers } from './middleware';
 import RootRouter from './paths/root-router';
 
@@ -12,12 +14,15 @@ class App {
     this.app.use(...postAppHandlers());
     this.config = config();
     this.logger = serverLogger();
+    this.dbMigrate = new DbMigrate();
     return this;
   }
 
-  listen() {
+  async listen() {
     const { name, server } = this.config;
     const { port } = server;
+
+    await retry(() => this.dbMigrate.up());
 
     this.app.listen(port, () =>
       this.logger.info(
