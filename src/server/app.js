@@ -19,9 +19,10 @@ class App {
     const { name, server } = this.config;
     const { port } = server;
 
-    this.app.listen(port, () => this.logger.info(
-      `Example app environment "${name}" listening on port ${port} from dir ${__dirname}!`,
-    ));
+    this.app.listen(port, () =>
+      this.logger.info(
+        `Example app environment "${name}" listening on port ${port} from dir ${__dirname}!`,
+      ));
   }
 }
 

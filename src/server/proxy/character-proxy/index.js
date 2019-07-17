@@ -6,17 +6,20 @@ class CharacterProxy {
   }
 
   async getCharacterIds() {
-    return this.dbClient.getCollection('characters', collection =>
-      collection
-        .find({})
+    return this.dbClient.getDatabase(db =>
+      db
+        .collection('characters')
+        .find({ characterId: { $exists: true } })
         .project({ characterId: true })
         .map(character => character.characterId)
         .toArray());
   }
 
   async getCharacterById(characterId) {
-    return this.dbClient.getCollection('characters', collection =>
-      collection.findOne({ characterId }, { fields: { characterId: true, name: true } }));
+    return this.dbClient.getDatabase(db =>
+      db
+        .collection('characters')
+        .findOne({ characterId }, { fields: { characterId: true, name: true } }));
   }
 }
 

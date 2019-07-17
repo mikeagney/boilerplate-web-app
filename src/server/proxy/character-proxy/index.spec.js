@@ -5,7 +5,7 @@ jest.mock('../../client/db-client');
 
 describe('Character proxy', () => {
   const mockDbClient = {
-    getCollection: jest.fn(),
+    getDatabase: jest.fn(),
   };
 
   beforeEach(() => {
@@ -26,7 +26,7 @@ describe('Character proxy', () => {
   });
 
   describe('getCharacterIds', () => {
-    it('will invoke getCollection when called', () => {
+    it('will invoke getDatabase when called', () => {
       // Arrange
       const proxy = new CharacterProxy();
 
@@ -34,8 +34,8 @@ describe('Character proxy', () => {
       proxy.getCharacterIds();
 
       // Assert
-      expect(mockDbClient.getCollection).toHaveBeenCalledTimes(1);
-      expect(mockDbClient.getCollection).toHaveBeenCalledWith('characters', expect.any(Function));
+      expect(mockDbClient.getDatabase).toHaveBeenCalledTimes(1);
+      expect(mockDbClient.getDatabase).toHaveBeenCalledWith(expect.any(Function));
     });
 
     it('will retrieve character IDs from the database', async () => {
@@ -47,17 +47,19 @@ describe('Character proxy', () => {
         map: jest.fn().mockReturnThis(),
         toArray: jest.fn().mockResolvedValue(expectedResult),
       };
+      const db = { collection: jest.fn().mockReturnValue(collection) };
       const proxy = new CharacterProxy();
       proxy.getCharacterIds();
 
-      const callback = mockDbClient.getCollection.mock.calls[0][1];
+      const callback = mockDbClient.getDatabase.mock.calls[0][0];
 
       // Act
-      const result = await callback(collection);
+      const result = await callback(db);
 
       // Assert
       expect(result).toBe(expectedResult);
-      expect(collection.find).toHaveBeenCalledWith({});
+      expect(db.collection).toHaveBeenCalledWith('characters');
+      expect(collection.find).toHaveBeenCalledWith({ characterId: { $exists: true } });
       expect(collection.project).toHaveBeenCalledWith({ characterId: true });
       expect(collection.map).toHaveBeenCalledWith(expect.any(Function));
       expect(collection.toArray).toHaveBeenCalledWith();
@@ -75,7 +77,7 @@ describe('Character proxy', () => {
   });
 
   describe('getCharacterById', () => {
-    it('will invoke getCollection when called', () => {
+    it('will invoke getDatabase when called', () => {
       // Arrange
       const proxy = new CharacterProxy();
 
@@ -83,8 +85,8 @@ describe('Character proxy', () => {
       proxy.getCharacterById('fooId');
 
       // Assert
-      expect(mockDbClient.getCollection).toHaveBeenCalledTimes(1);
-      expect(mockDbClient.getCollection).toHaveBeenCalledWith('characters', expect.any(Function));
+      expect(mockDbClient.getDatabase).toHaveBeenCalledTimes(1);
+      expect(mockDbClient.getDatabase).toHaveBeenCalledWith(expect.any(Function));
     });
 
     it('will retrieve a character from the database', async () => {
@@ -93,16 +95,18 @@ describe('Character proxy', () => {
       const collection = {
         findOne: jest.fn().mockResolvedValue(expectedResult),
       };
+      const db = { collection: jest.fn().mockReturnValue(collection) };
       const proxy = new CharacterProxy();
       proxy.getCharacterById('fooId');
 
-      const callback = mockDbClient.getCollection.mock.calls[0][1];
+      const callback = mockDbClient.getDatabase.mock.calls[0][0];
 
       // Act
-      const result = await callback(collection);
+      const result = await callback(db);
 
       // Assert
       expect(result).toBe(expectedResult);
+      expect(db.collection).toHaveBeenCalledWith('characters');
       expect(collection.findOne).toHaveBeenCalledWith(
         { characterId: 'fooId' },
         { fields: { characterId: true, name: true } },

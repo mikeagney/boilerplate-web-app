@@ -23,9 +23,7 @@ describe('Database client', () => {
     db: jest.fn(),
     close: jest.fn(),
   };
-  const mongoClientDb = {
-    collection: jest.fn(),
-  };
+  const mongoClientDb = {};
 
   beforeEach(() => {
     jest.clearAllMocks();
@@ -57,7 +55,7 @@ describe('Database client', () => {
     });
   });
 
-  describe('getCollection', () => {
+  describe('getDatabase', () => {
     it('will log error when connect fails', async () => {
       // Arrange
       const err = new Error('Mock connection error');
@@ -66,14 +64,12 @@ describe('Database client', () => {
 
       // Act
       const dbClient = new DbClient();
-      await expect(dbClient.getCollection('mockCollection', callback)).rejects.toThrow(
-        'Mock connection error',
-      );
+      await expect(dbClient.getDatabase(callback)).rejects.toThrow('Mock connection error');
 
       // Assert
       expect(callback).not.toHaveBeenCalled();
-      expect(logger.error).toHaveBeenCalledTimes(2);
-      expect(logger.error).toHaveBeenCalledWith(err);
+      expect(logger.error).toHaveBeenCalledTimes(1);
+      expect(logger.error).toHaveBeenCalledWith('Failed with error', err);
       expect(logger.info).toHaveBeenCalledTimes(1);
       expect(logger.verbose).toHaveBeenCalledTimes(2);
     });
@@ -86,15 +82,13 @@ describe('Database client', () => {
 
       // Act
       const dbClient = new DbClient();
-      await expect(dbClient.getCollection('mockCollection', callback)).rejects.toThrow(
-        'Mock callback error',
-      );
+      await expect(dbClient.getDatabase(callback)).rejects.toThrow('Mock callback error');
 
       // Assert
-      expect(logger.error).toHaveBeenCalledTimes(2);
-      expect(logger.error).toHaveBeenCalledWith(err);
+      expect(logger.error).toHaveBeenCalledTimes(1);
+      expect(logger.error).toHaveBeenCalledWith('Failed with error', err);
       expect(logger.info).toHaveBeenCalledTimes(1);
-      expect(logger.verbose).toHaveBeenCalledTimes(4);
+      expect(logger.verbose).toHaveBeenCalledTimes(3);
     });
 
     it('will resolve with callback result', async () => {
@@ -105,13 +99,13 @@ describe('Database client', () => {
 
       // Act
       const dbClient = new DbClient();
-      const actualResult = await dbClient.getCollection('mockCollection', callback);
+      const actualResult = await dbClient.getDatabase(callback);
 
       // Assert
       expect(actualResult).toBe(result);
       expect(logger.error).not.toHaveBeenCalled();
       expect(logger.info).toHaveBeenCalledTimes(2);
-      expect(logger.verbose).toHaveBeenCalledTimes(4);
+      expect(logger.verbose).toHaveBeenCalledTimes(3);
     });
   });
 });

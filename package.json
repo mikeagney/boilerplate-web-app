@@ -11,6 +11,7 @@
     "build": "webpack",
     "test": "jest",
     "start": "node ./dist/server/index.js",
+    "migrate-db": "node ./scripts/migrate-db",
     "start-local": "node -r dotenv/config ./dist/server/index.js"
   },
   "dependencies": {
@@ -40,6 +41,7 @@
     "reselect": "^4.0.0",
     "serialize-javascript": "^1.7.0",
     "swagger-ui": "^3.22.2",
+    "umzug": "^2.2.0",
     "uuidv4": "^4.0.0",
     "winston": "^3.2.1"
   },
@@ -49,6 +51,7 @@
     "@babel/plugin-syntax-dynamic-import": "^7.2.0",
     "@babel/preset-env": "^7.4.1",
     "@babel/preset-react": "^7.0.0",
+    "@babel/register": "^7.4.4",
     "@loadable/babel-plugin": "^5.10.0",
     "@loadable/webpack-plugin": "^5.7.1",
     "babel-eslint": "^10.0.1",

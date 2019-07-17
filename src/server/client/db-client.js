@@ -9,42 +9,33 @@ class DbClient {
   }
 
   /**
-   * Connect to the database and return a collection on the default database.
-   * @param {string} collectionName
-   *   The name of the collection on the database.
-   * @param {(collection:import('mongodb').Collection,db,dbClient)=>Promise<any>} callback
-   *   The method to call once the collection has been obtained.
+   * Connect to the database, perform an operation, and then close.
+   * @param {(db:import('mongodb').Db,dbClient:MongoClient)=>Promise<any>} callback
+   *   The method to call once the connection has been obtained.
+   * @returns {Promise}
+   *   A promise that resolves to whatever the callback resolves to.
    */
-  async getCollection(collectionName, callback) {
-    this.logger.info(`getCollection('${collectionName}'): Called`);
-    const dbClient = new MongoClient(this.dbConfig.connectionString);
+  async getDatabase(callback) {
+    this.logger.info('Called');
+    const dbClient = new MongoClient(this.dbConfig.connectionString, { useNewUrlParser: true });
     try {
       this.logger.verbose(
-        `getCollection('${collectionName}'): Attempting to connect with connection string '${
-          this.dbConfig.connectionString
-        }'`,
+        `Attempting to connect with connection string '${this.dbConfig.connectionString}'`,
       );
       await dbClient.connect();
 
-      this.logger.verbose(
-        `getCollection('${collectionName}'): Obtaining collection from '${
-          this.dbConfig.databaseName
-        }'`,
-      );
       const db = dbClient.db(this.dbConfig.databaseName);
-      const collection = db.collection(collectionName);
 
-      this.logger.verbose(`getCollection('${collectionName}'): Performing database operation`);
-      const result = await callback(collection, db, dbClient);
+      this.logger.verbose('Performing database operation');
+      const result = await callback(db, dbClient);
 
-      this.logger.info(`getCollection('${collectionName}'): Complete`);
+      this.logger.info('Complete');
       return result;
-    } catch (err) {
-      this.logger.error(`getCollection('${collectionName}'): Failed with error`);
-      this.logger.error(err);
-      throw err;
+    } catch (error) {
+      this.logger.error('Failed with error', error);
+      throw error;
     } finally {
-      this.logger.verbose(`getCollection('${collectionName}'): Closing connection`);
+      this.logger.verbose('Closing connection');
       dbClient.close();
     }
   }
