@@ -7,6 +7,7 @@ WORKDIR /usr/src/app
 COPY package.json webpack.config.js yarn.lock ./
 COPY src ./src
 COPY migrations ./migrations
+COPY migrations ./scripts
 
 RUN yarn install && yarn build
 
