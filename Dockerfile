@@ -6,16 +6,14 @@ WORKDIR /usr/src/app
 
 COPY package.json webpack.config.js yarn.lock ./
 COPY src ./src
+COPY migrations ./migrations
 
-RUN yarn install
-RUN yarn build
+RUN yarn install && yarn build
 
 FROM build-debug AS build-production
 WORKDIR /usr/src/app
 
-RUN yarn install --production
-RUN yarn cache clean
-RUN rm -rf src
+RUN yarn install --production && yarn cache clean && rm -rf src
 
 FROM build-${TARGET} as build-target
 
