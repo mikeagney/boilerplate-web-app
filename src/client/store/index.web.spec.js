@@ -1,4 +1,6 @@
-import { createStore, combineReducers } from 'redux';
+import {
+  applyMiddleware, createStore, compose, combineReducers,
+} from 'redux';
 import characters from './characters';
 import store from '.';
 
@@ -7,11 +9,13 @@ jest.mock('redux');
 describe('Root store creator', () => {
   const mockReducer = jest.fn();
   const mockStore = {};
+  const mockMiddleware = jest.fn();
 
   beforeEach(() => {
     jest.clearAllMocks();
     combineReducers.mockReturnValue(mockReducer);
     createStore.mockReturnValue(mockStore);
+    applyMiddleware.mockReturnValue(mockMiddleware);
   });
 
   it('will create the root reducer by combining reducers as expected', () => {
@@ -26,28 +30,32 @@ describe('Root store creator', () => {
   it('will not use Redux devTools when not present', () => {
     // Arrange
     const initialState = {};
-    delete window.__REDUX_DEVTOOLS_EXTENSION__;
+    const defaultEnhancer = jest.fn();
+    delete window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__;
+    compose.mockReturnValue(defaultEnhancer);
 
     // Act
     const result = store(initialState);
 
     // Assert
     expect(result).toBe(mockStore);
-    expect(createStore).toHaveBeenCalledWith(mockReducer, initialState, undefined);
+    expect(compose).toHaveBeenCalledWith(mockMiddleware);
+    expect(createStore).toHaveBeenCalledWith(mockReducer, initialState, defaultEnhancer);
   });
 
   it('will use Redux devTools when present', () => {
     // Arrange
     const devtoolsExtension = jest.fn();
-    const devtoolsExtensionCreator = jest.fn(() => devtoolsExtension);
+    const devtoolsExtensionCompose = jest.fn(() => devtoolsExtension);
     const initialState = {};
-    window.__REDUX_DEVTOOLS_EXTENSION__ = devtoolsExtensionCreator;
+    window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ = devtoolsExtensionCompose;
 
     // Act
     const result = store(initialState);
 
     // Assert
     expect(result).toBe(mockStore);
+    expect(devtoolsExtensionCompose).toHaveBeenCalledWith(mockMiddleware);
     expect(createStore).toHaveBeenCalledWith(mockReducer, initialState, devtoolsExtension);
   });
 });

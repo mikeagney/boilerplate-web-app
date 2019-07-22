@@ -25,7 +25,11 @@ module.exports = {
     'no-underscore-dangle': [
       'error',
       {
-        allow: ['__PRELOADED_STATE__', '__REDUX_DEVTOOLS_EXTENSION__'],
+        allow: [
+          '__PRELOADED_STATE__',
+          '__REDUX_DEVTOOLS_EXTENSION__',
+          '__REDUX_DEVTOOLS_EXTENSION_COMPOSE__',
+        ],
       },
     ],
   },
