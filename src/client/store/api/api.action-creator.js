@@ -62,9 +62,12 @@ export function createApiAction(type, payloadCreator, metaCreator) {
     } catch (error) {
       dispatch({
         type: `${type}.ERROR`,
-        payload,
+        payload: {
+          ...payload,
+          error,
+        },
         meta,
-        error,
+        error: true,
       });
     }
   };
