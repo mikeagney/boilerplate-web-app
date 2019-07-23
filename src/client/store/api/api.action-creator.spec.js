@@ -86,9 +86,9 @@ describe('Axios action creators', () => {
       expect(dispatch).toHaveBeenCalledWith({ type: 'TEST.REQUEST', payload, meta });
       expect(dispatch).toHaveBeenCalledWith({
         type: 'TEST.ERROR',
-        payload,
+        payload: { ...payload, error },
         meta,
-        error,
+        error: true,
       });
     });
   });
