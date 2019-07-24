@@ -1,42 +1,20 @@
-import Joi from '@hapi/joi';
-import config, { clearCache } from './index';
-import schema from './schema';
-import environments from './environments';
+/* eslint-disable no-console */
+import config, { setConfig } from './index';
 
 describe('common/config', () => {
   beforeEach(() => {
-    delete process.env.BOILERPLATECONFIG_name;
-    clearCache();
-    jest.resetModules();
+    process.env.BOILERPLATECONFIG_name = 'mock';
+    setConfig(undefined);
+    jest.clearAllMocks();
+    jest.spyOn(console, 'error').mockImplementation(() => {});
   });
 
-  it.each([...environments])('will have a valid environment for %s', (env) => {
-    // Arrange
-    process.env.BUILD_ENV = env;
-
-    // Act
-    const actualConfig = config();
-    const validationResult = Joi.validate(actualConfig, schema());
-
-    // Assert
-    expect(validationResult).toMatchObject({ error: null });
-  });
-
-  it('will return development environment if environment not specified', () => {
-    // Arrange
-    delete process.env.BUILD_ENV;
-
-    // Act
-    const actualConfig = config();
-
-    // Assert
-    expect(actualConfig.name).toEqual('development');
+  afterEach(() => {
+    console.error.mockRestore();
   });
 
   it('will return config from environment variables if specified', () => {
     // Arrange
-    process.env.BOILERPLATECONFIG_name = 'mock';
-
     // Act
     const actualConfig = config();
 
@@ -46,8 +24,6 @@ describe('common/config', () => {
 
   it('will use cached data if config is called twice', () => {
     // Arrange
-    process.env.BOILERPLATECONFIG_name = 'mock';
-
     // Act
     const actualConfig = config();
     const actualConfig2 = config();
