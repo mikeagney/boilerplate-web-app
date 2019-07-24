@@ -1,17 +1,28 @@
 import express from 'express';
 import jsonSerialize from 'serialize-javascript';
 import Character from './character';
+import CharacterProxy from '../../../proxy/character-proxy';
 import MockCharacterProxy from '../../../proxy/character-proxy/mock-proxy';
 
-jest.mock('express');
+jest.mock('express').mock('../../../proxy/character-proxy');
 
 describe('Character router', () => {
+  describe('constructor', () => {
+    it('will default to the CharacterProxy class', () => {
+      // Arrange
+      // Act
+      const router = new Character();
+
+      // Assert
+      expect(router.proxy).toEqual(expect.any(CharacterProxy));
+    });
+  });
+
   describe('getCharacterIds', () => {
     it('will return the ids from the local store', async () => {
       // Arrange
       const ids = ['abc', 'def', '12345'];
-      const router = new Character();
-      router.proxy = new MockCharacterProxy();
+      const router = new Character(new MockCharacterProxy());
       router.proxy.store.ids = ids;
       const res = {
         type: jest.fn().mockReturnThis(),
@@ -31,8 +42,7 @@ describe('Character router', () => {
     it('will return 404 if character id does not exist', async () => {
       // Arrange
       const byId = {};
-      const router = new Character();
-      router.proxy = new MockCharacterProxy();
+      const router = new Character(new MockCharacterProxy());
       router.proxy.store.byId = byId;
       const req = {
         params: {
@@ -59,8 +69,7 @@ describe('Character router', () => {
       const byId = {
         abc: { characterId: 'abc', name: 'Foo' },
       };
-      const router = new Character();
-      router.proxy = new MockCharacterProxy();
+      const router = new Character(new MockCharacterProxy());
       router.proxy.store.byId = byId;
       const req = {
         params: {

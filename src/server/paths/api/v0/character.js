@@ -3,8 +3,8 @@ import jsonSerialize from 'serialize-javascript';
 import CharacterProxy from '../../../proxy/character-proxy';
 
 class Character {
-  constructor() {
-    this.proxy = new CharacterProxy();
+  constructor(proxy = new CharacterProxy()) {
+    this.proxy = proxy;
   }
 
   getCharacterIds = async (_req, res) => {

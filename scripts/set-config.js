@@ -2,7 +2,7 @@ const commandLineUsage = require('command-line-usage');
 const commandLineArgs = require('command-line-args');
 const path = require('path');
 const flatten = require('flat');
-const environments = require('../src/common/config/environments');
+const environments = require('./config/environments');
 const { CONFIG_BASE_KEY } = require('../src/common/config/constants');
 
 const optionList = [
@@ -63,7 +63,7 @@ if (options.help || !options.env) {
 
 let config = null;
 try {
-  const configPath = path.resolve(__dirname, '../src/common/config/env', options.env);
+  const configPath = path.resolve(__dirname, './config/env', options.env);
   // eslint-disable-next-line global-require, import/no-dynamic-require
   config = require(configPath);
 } catch (e) {
