@@ -52,7 +52,7 @@ exports[`CharacterList component will render Character components with the appro
           eventKey="a1a"
           key="a1a"
         >
-          <ConnectFunction
+          <Connect(Character)
             characterId="a1a"
             selected={false}
           />
@@ -61,7 +61,7 @@ exports[`CharacterList component will render Character components with the appro
           eventKey="b2b"
           key="b2b"
         >
-          <ConnectFunction
+          <Connect(Character)
             characterId="b2b"
             selected={true}
           />
@@ -69,7 +69,7 @@ exports[`CharacterList component will render Character components with the appro
         <TabPane
           eventKey=""
         >
-          <ConnectFunction />
+          <Connect(NewCharacter) />
         </TabPane>
       </Bootstrap(TabContent)>
     </Col>
