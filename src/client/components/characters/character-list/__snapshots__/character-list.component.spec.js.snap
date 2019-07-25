@@ -6,31 +6,73 @@ exports[`CharacterList component will render Character components with the appro
   className="character-list"
   onSelect={[MockFunction]}
 >
-  <Tab
-    eventKey="a1a"
-    key="a1a"
-    title="Mock Character 1"
-  >
-    <ConnectFunction
-      characterId="a1a"
-      selected={false}
-    />
-  </Tab>
-  <Tab
-    eventKey="b2b"
-    key="b2b"
-    title="Mock Character 2"
-  >
-    <ConnectFunction
-      characterId="b2b"
-      selected={true}
-    />
-  </Tab>
-  <Tab
-    eventKey=""
-    title={<MdAdd />}
-  >
-    <ConnectFunction />
-  </Tab>
+  <Bootstrap(Row)>
+    <Col
+      as="div"
+      sm={3}
+    >
+      <Nav
+        as="div"
+        className="flex-column"
+        fill={false}
+        justify={false}
+        variant="pills"
+      >
+        <NavLink
+          as={[Function]}
+          disabled={false}
+          eventKey="a1a"
+          key="a1a"
+        >
+          Mock Character 1
+        </NavLink>
+        <NavLink
+          as={[Function]}
+          disabled={false}
+          eventKey="b2b"
+          key="b2b"
+        >
+          Mock Character 2
+        </NavLink>
+        <NavLink
+          as={[Function]}
+          disabled={false}
+          eventKey=""
+        >
+          <MdAdd />
+        </NavLink>
+      </Nav>
+    </Col>
+    <Col
+      as="div"
+      sm={9}
+    >
+      <Bootstrap(TabContent)>
+        <TabPane
+          eventKey="a1a"
+          key="a1a"
+        >
+          <ConnectFunction
+            characterId="a1a"
+            selected={false}
+          />
+        </TabPane>
+        <TabPane
+          eventKey="b2b"
+          key="b2b"
+        >
+          <ConnectFunction
+            characterId="b2b"
+            selected={true}
+          />
+        </TabPane>
+        <TabPane
+          eventKey=""
+        >
+          <ConnectFunction />
+        </TabPane>
+      </Bootstrap(TabContent)>
+    </Col>
+  </Bootstrap(Row)>
 </ForwardRef>
 `;
