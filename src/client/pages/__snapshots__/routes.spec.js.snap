@@ -2,7 +2,7 @@
 
 exports[`React app route table getRoutes will return valid objects: characters 1`] = `
 <div>
-  <ConnectFunction />
+  <Connect(CharacterList) />
 </div>
 `;
 
