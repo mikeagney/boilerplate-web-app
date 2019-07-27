@@ -43,6 +43,8 @@ describe('Character proxy', () => {
       const expectedResult = ['123', '456'];
       const collection = {
         find: jest.fn().mockReturnThis(),
+        hint: jest.fn().mockReturnThis(),
+        sort: jest.fn().mockReturnThis(),
         project: jest.fn().mockReturnThis(),
         map: jest.fn().mockReturnThis(),
         toArray: jest.fn().mockResolvedValue(expectedResult),
@@ -59,7 +61,9 @@ describe('Character proxy', () => {
       // Assert
       expect(result).toBe(expectedResult);
       expect(db.collection).toHaveBeenCalledWith('characters');
-      expect(collection.find).toHaveBeenCalledWith({ characterId: { $exists: true } });
+      expect(collection.find).toHaveBeenCalledWith({});
+      expect(collection.hint).toHaveBeenCalledWith('dateIdName');
+      expect(collection.sort).toHaveBeenCalledWith({ createdDate: 1 });
       expect(collection.project).toHaveBeenCalledWith({ characterId: true });
       expect(collection.map).toHaveBeenCalledWith(expect.any(Function));
       expect(collection.toArray).toHaveBeenCalledWith();
@@ -107,10 +111,7 @@ describe('Character proxy', () => {
       // Assert
       expect(result).toBe(expectedResult);
       expect(db.collection).toHaveBeenCalledWith('characters');
-      expect(collection.findOne).toHaveBeenCalledWith(
-        { characterId: 'fooId' },
-        { fields: { characterId: true, name: true } },
-      );
+      expect(collection.findOne).toHaveBeenCalledWith({ characterId: 'fooId' });
     });
   });
 });

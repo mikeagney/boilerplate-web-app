@@ -1,4 +1,5 @@
 require('@babel/register');
+require('dotenv/config');
 const commandLineUsage = require('command-line-usage');
 const commandLineArgs = require('command-line-args');
 const DbMigrate = require('../src/server/client/db-migrate').default;
