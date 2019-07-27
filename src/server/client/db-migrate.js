@@ -18,7 +18,7 @@ class DbMigrate {
       logging: message => this.logger.info(message),
       migrations: {
         params: [db],
-        pattern: /^\d+\.\d+\.\d+-[\w-]+\.js$/,
+        pattern: /^\d{8}-\d+\.\d+\.\d+-[\w-]+\.js$/,
         path: path.resolve(__dirname, '../../../migrations'),
       },
     });

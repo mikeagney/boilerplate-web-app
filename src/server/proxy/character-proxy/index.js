@@ -9,17 +9,16 @@ class CharacterProxy {
     return this.dbClient.getDatabase(db =>
       db
         .collection('characters')
-        .find({ characterId: { $exists: true } })
+        .find({})
+        .hint('dateIdName')
+        .sort({ createdDate: 1 })
         .project({ characterId: true })
         .map(character => character.characterId)
         .toArray());
   }
 
   async getCharacterById(characterId) {
-    return this.dbClient.getDatabase(db =>
-      db
-        .collection('characters')
-        .findOne({ characterId }, { fields: { characterId: true, name: true } }));
+    return this.dbClient.getDatabase(db => db.collection('characters').findOne({ characterId }));
   }
 }
 
