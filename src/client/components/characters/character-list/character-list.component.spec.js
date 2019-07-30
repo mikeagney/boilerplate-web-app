@@ -14,7 +14,7 @@ describe('CharacterList component', () => {
     setSelected: jest.fn(),
   };
 
-  it('will render Character components with the appropriate character selected', () => {
+  it('will render one Character component with the appropriate character ID', () => {
     // Arrange
     const props = defaultProps;
 
