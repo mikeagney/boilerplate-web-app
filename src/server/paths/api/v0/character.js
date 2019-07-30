@@ -24,7 +24,7 @@ class Character {
       return;
     }
 
-    res.type('application/json').send(jsonSerialize(character));
+    res.type('application/json').send(jsonSerialize(character, { isJSON: true }));
   };
 
   initialize() {
