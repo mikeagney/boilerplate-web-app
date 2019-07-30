@@ -46,7 +46,6 @@ describe('Character proxy', () => {
         hint: jest.fn().mockReturnThis(),
         sort: jest.fn().mockReturnThis(),
         project: jest.fn().mockReturnThis(),
-        map: jest.fn().mockReturnThis(),
         toArray: jest.fn().mockResolvedValue(expectedResult),
       };
       const db = { collection: jest.fn().mockReturnValue(collection) };
@@ -64,19 +63,12 @@ describe('Character proxy', () => {
       expect(collection.find).toHaveBeenCalledWith({});
       expect(collection.hint).toHaveBeenCalledWith('dateIdName');
       expect(collection.sort).toHaveBeenCalledWith({ createdDate: 1 });
-      expect(collection.project).toHaveBeenCalledWith({ characterId: true });
-      expect(collection.map).toHaveBeenCalledWith(expect.any(Function));
+      expect(collection.project).toHaveBeenCalledWith({
+        characterId: true,
+        name: true,
+        _id: false,
+      });
       expect(collection.toArray).toHaveBeenCalledWith();
-
-      // Arrange
-      const mapCallback = collection.map.mock.calls[0][0];
-      const record = { characterId: 'foo' };
-
-      // Act
-      const mapResult = mapCallback(record);
-
-      // Assert
-      expect(mapResult).toEqual('foo');
     });
   });
 

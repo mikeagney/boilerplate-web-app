@@ -12,8 +12,7 @@ class CharacterProxy {
         .find({})
         .hint('dateIdName')
         .sort({ createdDate: 1 })
-        .project({ characterId: true })
-        .map(character => character.characterId)
+        .project({ characterId: true, name: true, _id: false })
         .toArray());
   }
 
