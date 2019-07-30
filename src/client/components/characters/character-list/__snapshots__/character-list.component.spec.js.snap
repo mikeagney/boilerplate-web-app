@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`CharacterList component will render Character components with the appropriate character selected 1`] = `
+exports[`CharacterList component will render one Character component with the appropriate character ID 1`] = `
 <ForwardRef
   activeKey="b2b"
   className="character-list"
@@ -49,17 +49,7 @@ exports[`CharacterList component will render Character components with the appro
     >
       <Bootstrap(TabContent)>
         <TabPane
-          eventKey="a1a"
-          key="a1a"
-        >
-          <Connect(Character)
-            characterId="a1a"
-            selected={false}
-          />
-        </TabPane>
-        <TabPane
           eventKey="b2b"
-          key="b2b"
         >
           <Connect(Character)
             characterId="b2b"

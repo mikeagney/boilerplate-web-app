@@ -26,11 +26,11 @@ const CharacterList = ({
       </Col>
       <Col sm={9}>
         <Tab.Content>
-          {characterIds.map(id => (
-            <Tab.Pane key={id} eventKey={id}>
-              <Character characterId={id} selected={id === selectedId} />
+          {selectedId && (
+            <Tab.Pane eventKey={selectedId}>
+              <Character characterId={selectedId} selected />
             </Tab.Pane>
-          ))}
+          )}
           <Tab.Pane eventKey="">
             <NewCharacter />
           </Tab.Pane>
