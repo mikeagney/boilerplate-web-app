@@ -82,5 +82,11 @@
     "webpack-cli": "^3.3.0",
     "webpack-merge": "^4.2.1",
     "webpack-node-externals": "^1.7.2"
+  },
+  "resolutions": {
+    "webpack/**/mixin-deep": "^1.3.2",
+    "**/set-value": "^2.0.1",
+    "swagger-ui/**/underscore.string": "^3.3.5",
+    "swagger-ui/**/remarkable": "^1.7.2"
   }
 }
