@@ -16,7 +16,13 @@ class MockCharacterProxy {
   }
 
   async getCharacterIds() {
-    return this.store.ids;
+    return {
+      items: this.store.ids.map(id => ({
+        id,
+        name: this.store.byId[id].name,
+      })),
+      nextCursor: null,
+    };
   }
 
   async getCharacterById(characterId) {
