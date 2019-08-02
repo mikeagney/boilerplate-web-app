@@ -1,5 +1,4 @@
 import express from 'express';
-import jsonSerialize from 'serialize-javascript';
 import Character from './character';
 import CharacterProxy from '../../../proxy/character-proxy';
 import MockCharacterProxy from '../../../proxy/character-proxy/mock-proxy';
@@ -21,20 +20,56 @@ describe('Character router', () => {
   describe('getCharacterIds', () => {
     it('will return the ids from the local store', async () => {
       // Arrange
-      const ids = ['abc', 'def', '12345'];
       const router = new Character(new MockCharacterProxy());
-      router.proxy.store.ids = ids;
       const res = {
         type: jest.fn().mockReturnThis(),
         send: jest.fn(),
       };
 
       // Act
-      await router.getCharacterIds({}, res);
+      await router.getCharacterIds({ baseUrl: '/foo', query: {} }, res);
 
       // Assert
       expect(res.type).toHaveBeenCalledWith('application/json');
-      expect(res.send).toHaveBeenCalledWith(jsonSerialize(ids));
+      expect(res.send).toHaveBeenCalledWith({
+        items: [
+          { id: 'a1', name: 'Armus', href: '/foo/a1' },
+          { id: 'b2', name: 'The Caretaker', href: '/foo/b2' },
+        ],
+        nextCursor: null,
+      });
+    });
+
+    it('will default to limit of 10 with no cursor', async () => {
+      // Arrange
+      const router = new Character(new MockCharacterProxy());
+      jest.spyOn(router.proxy, 'getCharacterIds').mockImplementation(() => ({ items: [] }));
+      const res = {
+        type: jest.fn().mockReturnThis(),
+        send: jest.fn(),
+      };
+
+      // Act
+      await router.getCharacterIds({ baseUrl: '/foo', query: {} }, res);
+
+      // Assert
+      expect(router.proxy.getCharacterIds).toHaveBeenCalledWith(10, null);
+    });
+
+    it('will pass through limit and cursor arguments', async () => {
+      // Arrange
+      const router = new Character(new MockCharacterProxy());
+      jest.spyOn(router.proxy, 'getCharacterIds').mockImplementation(() => ({ items: [] }));
+      const res = {
+        type: jest.fn().mockReturnThis(),
+        send: jest.fn(),
+      };
+
+      // Act
+      await router.getCharacterIds({ baseUrl: '/foo', query: { limit: 5, cursor: '12345' } }, res);
+
+      // Assert
+      expect(router.proxy.getCharacterIds).toHaveBeenCalledWith(5, '12345');
     });
   });
 
@@ -88,7 +123,7 @@ describe('Character router', () => {
       // Assert
       expect(res.status).not.toHaveBeenCalled();
       expect(res.type).toHaveBeenCalledWith('application/json');
-      expect(res.send).toHaveBeenCalledWith(jsonSerialize(byId.abc));
+      expect(res.send).toHaveBeenCalledWith(byId.abc);
     });
   });
 

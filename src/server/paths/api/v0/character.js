@@ -1,5 +1,5 @@
+import Joi from '@hapi/joi';
 import express from 'express';
-import jsonSerialize from 'serialize-javascript';
 import CharacterProxy from '../../../proxy/character-proxy';
 
 class Character {
@@ -7,9 +7,30 @@ class Character {
     this.proxy = proxy;
   }
 
-  getCharacterIds = async (_req, res) => {
-    const ids = await this.proxy.getCharacterIds();
-    res.type('application/json').send(jsonSerialize(ids));
+  getCharacterIdsSchema = () =>
+    Joi.object({
+      query: Joi.object({
+        cursor: Joi.string().default(null),
+        limit: Joi.number()
+          .integer()
+          .positive()
+          .default(10),
+      }),
+    }).unknown(true);
+
+  getCharacterIds = async (req, res) => {
+    // TODO: return 400 error if validation fails
+    const {
+      query: { limit, cursor },
+    } = await Joi.validate(req, this.getCharacterIdsSchema());
+    const ids = await this.proxy.getCharacterIds(limit, cursor);
+    res.type('application/json').send({
+      ...ids,
+      items: ids.items.map(character => ({
+        ...character,
+        href: `${req.baseUrl}/${character.id}`,
+      })),
+    });
   };
 
   getCharacterById = async (req, res) => {
@@ -24,7 +45,7 @@ class Character {
       return;
     }
 
-    res.type('application/json').send(jsonSerialize(character, { isJSON: true }));
+    res.type('application/json').send(character);
   };
 
   initialize() {
