@@ -1,13 +1,18 @@
 import delve from 'dlv';
 import CollectionBaseSelectors from '../collection-base/collection-base.selectors';
 
-const charactersSelectors = new CollectionBaseSelectors(state => delve(state, 'characters', {}));
+class CharactersSelectors extends CollectionBaseSelectors {
+  constructor() {
+    super(state => delve(state, 'characters', {}));
+  }
+}
 
-export const getCharacterIds = charactersSelectors.getIds();
+const charactersSelectors = new CharactersSelectors();
 
-export const getCharacterNames = charactersSelectors.getNames();
-
-export const getSelectedCharacterId = charactersSelectors.getSelectedId();
-
-export const createGetCharacterById = () =>
-  charactersSelectors.getItemById((_state, props) => props.characterId);
+export const {
+  getIds,
+  getNames,
+  getSelectedId,
+  getItemById,
+  getLoadingState,
+} = charactersSelectors;

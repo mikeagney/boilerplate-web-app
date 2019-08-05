@@ -1,12 +1,14 @@
 import { createStructuredSelector } from 'reselect';
 import {
-  getCharacterIds,
-  getSelectedCharacterId,
-  getCharacterNames,
+  getIds,
+  getSelectedId,
+  getNames,
+  getLoadingState,
 } from '../../../store/characters/characters.selectors';
 
 export default createStructuredSelector({
-  characterIds: getCharacterIds,
-  characterNames: getCharacterNames,
-  selectedId: getSelectedCharacterId,
+  characterIds: getIds(),
+  characterNames: getNames(),
+  selectedId: getSelectedId(),
+  loadingState: getLoadingState(),
 });

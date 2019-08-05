@@ -1,3 +1,3 @@
-import { createGetCharacterById } from '../../../store/characters/characters.selectors';
+import { getItemById } from '../../../store/characters/characters.selectors';
 
-export default createGetCharacterById;
+export default () => getItemById((_state, props) => props.characterId);
