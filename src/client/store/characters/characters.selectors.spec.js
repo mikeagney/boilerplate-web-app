@@ -1,12 +1,9 @@
 import {
-  getCharacterIds,
-  getCharacterNames,
-  getSelectedCharacterId,
-  createGetCharacterById,
+  getIds, getNames, getSelectedId, getItemById,
 } from './characters.selectors';
 
 describe('Character store selectors', () => {
-  describe('getCharacterIds', () => {
+  describe('getIds', () => {
     it('will select the list of character ids', () => {
       // Arrange
       const state = {
@@ -16,14 +13,14 @@ describe('Character store selectors', () => {
       };
 
       // Act
-      const result = getCharacterIds(state);
+      const result = getIds()(state);
 
       // Assert
       expect(result).toEqual(['1a1', '3a3', '2a2']);
     });
   });
 
-  describe('getCharacterNames', () => {
+  describe('getNames', () => {
     it('will get an object with all of the character names', () => {
       // Arrange
       const state = {
@@ -36,7 +33,7 @@ describe('Character store selectors', () => {
       };
 
       // Act
-      const result = getCharacterNames(state);
+      const result = getNames()(state);
 
       // Assert
       expect(result).toEqual({
@@ -46,7 +43,7 @@ describe('Character store selectors', () => {
     });
   });
 
-  describe('getSelectedCharacterId', () => {
+  describe('getSelectedId', () => {
     it('will get the selected character id', () => {
       // Arrange
       const state = {
@@ -56,14 +53,14 @@ describe('Character store selectors', () => {
       };
 
       // Act
-      const result = getSelectedCharacterId(state);
+      const result = getSelectedId()(state);
 
       // Assert
       expect(result).toEqual('12345');
     });
   });
 
-  describe('createGetCharacterById', () => {
+  describe('getItemById', () => {
     it('will create a selector that gets a selected character', () => {
       // Arrange
       const state = {
@@ -74,7 +71,7 @@ describe('Character store selectors', () => {
           },
         },
       };
-      const getCharacterById = createGetCharacterById();
+      const getCharacterById = getItemById((_state, props) => props.characterId);
 
       // Act
       const result = getCharacterById(state, { characterId: '2a2' });
