@@ -80,10 +80,11 @@ describe('Characters store reducer', () => {
         const action = { type: 'CHARACTER.GET_CHARACTER_IDS.REQUEST' };
 
         // Act
-        const nextState = charactersReducer(state, action);
+        const nextState = charactersReducer({ ...state, pending: true }, action);
 
         // Assert
         expect(nextState.loading).toBeTruthy();
+        expect(nextState.pending).toBeFalsy();
       });
     });
 
@@ -93,7 +94,12 @@ describe('Characters store reducer', () => {
         const action = {
           type: 'CHARACTER.GET_CHARACTER_IDS.RESPONSE',
           payload: {
-            response: { data: ['c1', 'd2'] },
+            response: {
+              data: {
+                items: [{ id: 'c1', name: 'Foo' }, { id: 'd2', name: 'Bar' }],
+                nextCursor: 'abcd',
+              },
+            },
           },
         };
 
@@ -101,9 +107,42 @@ describe('Characters store reducer', () => {
         const nextState = charactersReducer(state, action);
 
         // Assert
-        expect(nextState.loading).not.toBeTruthy();
-        // Change to just 'ids' and set selectedId when everything is in order
-        expect(nextState.idsFromApi).toEqual(['c1', 'd2']);
+        expect(nextState).toMatchObject({
+          loading: false,
+          nextCursor: 'abcd',
+          ids: ['12345', '54321', 'c1', 'd2'],
+          byId: expect.objectContaining({
+            c1: {
+              name: 'Foo',
+              pending: true,
+            },
+            d2: {
+              name: 'Bar',
+              pending: true,
+            },
+          }),
+        });
+      });
+
+      it('wil update selectedId if not already set', () => {
+        // Arrange
+        const action = {
+          type: 'CHARACTER.GET_CHARACTER_IDS.RESPONSE',
+          payload: {
+            response: {
+              data: {
+                items: [{ id: 'c1', name: 'Foo' }, { id: 'd2', name: 'Bar' }],
+                nextCursor: 'abcd',
+              },
+            },
+          },
+        };
+
+        // Act
+        const nextState = charactersReducer({ ...state, selectedId: null }, action);
+
+        // Assert
+        expect(nextState.selectedId).toEqual('c1');
       });
     });
 
@@ -157,7 +196,7 @@ describe('Characters store reducer', () => {
         const nextState = charactersReducer(state, action);
 
         // Assert
-        expect(nextState.byId.foobar).toEqual({ loading: true });
+        expect(nextState.byId.foobar).toEqual({ loading: true, pending: false });
       });
     });
 
