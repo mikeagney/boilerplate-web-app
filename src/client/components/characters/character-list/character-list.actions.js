@@ -1,3 +1,3 @@
-import { setSelected } from '../../../store/characters/characters.actions';
+import { setSelected, getCharacterIds } from '../../../store/characters/characters.actions';
 
-export default { setSelected };
+export default { setSelected, getCharacterIds };

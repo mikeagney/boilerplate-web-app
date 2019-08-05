@@ -41,6 +41,7 @@ export default {
       },
     },
   },
-  ids: ['a1', 'b2'],
-  selectedId: 'b2',
+  ids: [],
+  selectedId: null,
+  pending: true,
 };
