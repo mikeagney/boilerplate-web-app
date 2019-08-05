@@ -1,5 +1,75 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`Character component will display a loading spinner if loading is true 1`] = `
+<Card
+  as="div"
+  body={false}
+  className="character"
+  key="b2b"
+>
+  <CardHeader
+    as="h5"
+    className="bg-primary text-white"
+  >
+    <ClickableEdit
+      setText={[Function]}
+      text="Mock name"
+    />
+  </CardHeader>
+  <CardBody>
+    <CardText>
+      <Bootstrap(Spinner)
+        animation="border"
+        className="test-loading-spinner"
+        role="status"
+        variant="secondary"
+      >
+        <span
+          className="sr-only"
+        >
+          Loading...
+        </span>
+      </Bootstrap(Spinner)>
+    </CardText>
+  </CardBody>
+</Card>
+`;
+
+exports[`Character component will display a loading spinner if pending is true 1`] = `
+<Card
+  as="div"
+  body={false}
+  className="character"
+  key="b2b"
+>
+  <CardHeader
+    as="h5"
+    className="bg-primary text-white"
+  >
+    <ClickableEdit
+      setText={[Function]}
+      text="Mock name"
+    />
+  </CardHeader>
+  <CardBody>
+    <CardText>
+      <Bootstrap(Spinner)
+        animation="border"
+        className="test-loading-spinner"
+        role="status"
+        variant="secondary"
+      >
+        <span
+          className="sr-only"
+        >
+          Loading...
+        </span>
+      </Bootstrap(Spinner)>
+    </CardText>
+  </CardBody>
+</Card>
+`;
+
 exports[`Character component will render Character component 1`] = `
 <Card
   as="div"

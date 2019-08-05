@@ -9,7 +9,12 @@ describe('Character component', () => {
     characterId: 'b2b',
     name: 'Mock name',
     setName: jest.fn(),
+    getCharacterById: jest.fn(),
   };
+
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
 
   it('will render Character component', () => {
     // Arrange
@@ -37,5 +42,84 @@ describe('Character component', () => {
 
     // Assert
     expect(props.setName).toHaveBeenCalledWith(props.characterId, 'new text');
+  });
+
+  it('will display a loading spinner if pending is true', () => {
+    // Arrange
+    const props = {
+      ...defaultProps,
+      pending: true,
+    };
+
+    // Act
+    const wrapper = shallow(<Character {...props} />);
+
+    // Assert
+    expect(toJson(wrapper)).toMatchSnapshot();
+    expect(wrapper.find('.test-loading-spinner').length).toEqual(1);
+  });
+
+  it('will display a loading spinner if loading is true', () => {
+    // Arrange
+    const props = {
+      ...defaultProps,
+      loading: true,
+    };
+
+    // Act
+    const wrapper = shallow(<Character {...props} />);
+
+    // Assert
+    expect(toJson(wrapper)).toMatchSnapshot();
+    expect(wrapper.find('.test-loading-spinner').length).toEqual(1);
+  });
+
+  describe('useEffect', () => {
+    beforeEach(() => {
+      jest.spyOn(React, 'useEffect');
+    });
+
+    afterEach(() => {
+      React.useEffect.mockRestore();
+    });
+
+    it('will set up useEffect hook', () => {
+      // Arrange
+      const props = { ...defaultProps, pending: true };
+
+      // Act
+      shallow(<Character {...props} />);
+
+      // Assert
+      expect(React.useEffect).toHaveBeenCalledTimes(1);
+      expect(React.useEffect).toHaveBeenCalledWith(expect.any(Function), [true]);
+    });
+
+    it('will not invoke getCharacterById if not pending', () => {
+      // Arrange
+      const props = { ...defaultProps, pending: false };
+      shallow(<Character {...props} />);
+      const effectFunc = React.useEffect.mock.calls[0][0];
+
+      // Act
+      effectFunc();
+
+      // Assert
+      expect(props.getCharacterById).not.toHaveBeenCalled();
+    });
+
+    it('will invoke getCharacterById if pending', () => {
+      // Arrange
+      const props = { ...defaultProps, pending: true };
+      shallow(<Character {...props} />);
+      const effectFunc = React.useEffect.mock.calls[0][0];
+
+      // Act
+      effectFunc();
+
+      // Assert
+      expect(props.getCharacterById).toHaveBeenCalledTimes(1);
+      expect(props.getCharacterById).toHaveBeenCalledWith(props.characterId);
+    });
   });
 });
