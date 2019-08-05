@@ -6,10 +6,11 @@ export const { add: addCharacter, setSelected, setName } = createCollectionActio
   CharacterActionOptions,
 );
 
-export const getCharacterIds = createApiAction('CHARACTER.GET_CHARACTER_IDS', () => ({
+export const getCharacterIds = createApiAction('CHARACTER.GET_CHARACTER_IDS', (cursor, limit) => ({
   request: {
     method: 'get',
     url: '/characters',
+    params: { limit, cursor },
   },
 }));
 

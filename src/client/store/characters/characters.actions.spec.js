@@ -18,13 +18,17 @@ describe('Character actions', () => {
       const payloadCreator = getCharacterIds[1];
 
       // Act
-      const payload = payloadCreator();
+      const payload = payloadCreator('12345', 5);
 
       // Assert
       expect(payload).toEqual({
         request: {
           method: 'get',
           url: '/characters',
+          params: {
+            cursor: '12345',
+            limit: 5,
+          },
         },
       });
     });
