@@ -1,5 +1,82 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`CharacterList component will render More button if nextCursor is not null 1`] = `
+<ForwardRef
+  activeKey="b2b"
+  className="character-list"
+  onSelect={[MockFunction]}
+>
+  <Bootstrap(Row)>
+    <Col
+      as="div"
+      sm={3}
+    >
+      <Nav
+        as="div"
+        className="flex-column"
+        fill={false}
+        justify={false}
+        variant="pills"
+      >
+        <NavLink
+          as={[Function]}
+          disabled={false}
+          eventKey="a1a"
+          key="a1a"
+        >
+          Mock Character 1
+        </NavLink>
+        <NavLink
+          as={[Function]}
+          disabled={false}
+          eventKey="b2b"
+          key="b2b"
+        >
+          Mock Character 2
+        </NavLink>
+        <NavLink
+          as={[Function]}
+          disabled={false}
+          eventKey=""
+        >
+          <MdAdd />
+        </NavLink>
+      </Nav>
+      <Button
+        active={false}
+        className="test-more-button"
+        disabled={false}
+        onClick={[Function]}
+        type="button"
+        variant="outline-primary"
+      >
+        <MdExpandMore />
+      </Button>
+    </Col>
+    <Col
+      as="div"
+      sm={9}
+    >
+      <Bootstrap(TabContent)>
+        <TabPane
+          eventKey="b2b"
+        >
+          <Connect(Character)
+            characterId="b2b"
+            selected={true}
+          />
+        </TabPane>
+        <TabPane
+          eventKey=""
+        >
+          <Connect(NewCharacter) />
+        </TabPane>
+      </Bootstrap(TabContent)>
+    </Col>
+  </Bootstrap(Row)>
+</ForwardRef>
+`;
+
 exports[`CharacterList component will render one Character component with the appropriate character ID 1`] = `
 <ForwardRef
   activeKey="b2b"
@@ -42,6 +119,172 @@ exports[`CharacterList component will render one Character component with the ap
           <MdAdd />
         </NavLink>
       </Nav>
+    </Col>
+    <Col
+      as="div"
+      sm={9}
+    >
+      <Bootstrap(TabContent)>
+        <TabPane
+          eventKey="b2b"
+        >
+          <Connect(Character)
+            characterId="b2b"
+            selected={true}
+          />
+        </TabPane>
+        <TabPane
+          eventKey=""
+        >
+          <Connect(NewCharacter) />
+        </TabPane>
+      </Bootstrap(TabContent)>
+    </Col>
+  </Bootstrap(Row)>
+</ForwardRef>
+`;
+
+exports[`CharacterList component will render spinner if loading is true 1`] = `
+<ForwardRef
+  activeKey="b2b"
+  className="character-list"
+  onSelect={[MockFunction]}
+>
+  <Bootstrap(Row)>
+    <Col
+      as="div"
+      sm={3}
+    >
+      <Nav
+        as="div"
+        className="flex-column"
+        fill={false}
+        justify={false}
+        variant="pills"
+      >
+        <NavLink
+          as={[Function]}
+          disabled={false}
+          eventKey="a1a"
+          key="a1a"
+        >
+          Mock Character 1
+        </NavLink>
+        <NavLink
+          as={[Function]}
+          disabled={false}
+          eventKey="b2b"
+          key="b2b"
+        >
+          Mock Character 2
+        </NavLink>
+        <NavLink
+          as={[Function]}
+          disabled={false}
+          eventKey=""
+        >
+          <MdAdd />
+        </NavLink>
+      </Nav>
+      <div
+        className="text-center test-loading-spinner"
+      >
+        <Bootstrap(Spinner)
+          animation="border"
+          role="status"
+          size="sm"
+          variant="secondary"
+        >
+          <span
+            className="sr-only"
+          >
+            Loading...
+          </span>
+        </Bootstrap(Spinner)>
+      </div>
+    </Col>
+    <Col
+      as="div"
+      sm={9}
+    >
+      <Bootstrap(TabContent)>
+        <TabPane
+          eventKey="b2b"
+        >
+          <Connect(Character)
+            characterId="b2b"
+            selected={true}
+          />
+        </TabPane>
+        <TabPane
+          eventKey=""
+        >
+          <Connect(NewCharacter) />
+        </TabPane>
+      </Bootstrap(TabContent)>
+    </Col>
+  </Bootstrap(Row)>
+</ForwardRef>
+`;
+
+exports[`CharacterList component will render spinner if pending is true 1`] = `
+<ForwardRef
+  activeKey="b2b"
+  className="character-list"
+  onSelect={[MockFunction]}
+>
+  <Bootstrap(Row)>
+    <Col
+      as="div"
+      sm={3}
+    >
+      <Nav
+        as="div"
+        className="flex-column"
+        fill={false}
+        justify={false}
+        variant="pills"
+      >
+        <NavLink
+          as={[Function]}
+          disabled={false}
+          eventKey="a1a"
+          key="a1a"
+        >
+          Mock Character 1
+        </NavLink>
+        <NavLink
+          as={[Function]}
+          disabled={false}
+          eventKey="b2b"
+          key="b2b"
+        >
+          Mock Character 2
+        </NavLink>
+        <NavLink
+          as={[Function]}
+          disabled={false}
+          eventKey=""
+        >
+          <MdAdd />
+        </NavLink>
+      </Nav>
+      <div
+        className="text-center test-loading-spinner"
+      >
+        <Bootstrap(Spinner)
+          animation="border"
+          role="status"
+          size="sm"
+          variant="secondary"
+        >
+          <span
+            className="sr-only"
+          >
+            Loading...
+          </span>
+        </Bootstrap(Spinner)>
+      </div>
     </Col>
     <Col
       as="div"
