@@ -1,3 +1,3 @@
-import { setName } from '../../../store/characters/characters.actions';
+import { getCharacterById, setName } from '../../../store/characters/characters.actions';
 
-export default { setName };
+export default { getCharacterById, setName };
