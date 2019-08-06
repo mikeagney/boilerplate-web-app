@@ -6,8 +6,9 @@ import NewCharacter from './new-character.component';
 describe('NewCharacter component', () => {
   const defaultProps = {
     characterIds: ['a1a', 'b2b'],
+    loading: false,
     setSelected: jest.fn(),
-    addCharacter: jest.fn(),
+    createCharacter: jest.fn(),
   };
 
   beforeEach(() => {
@@ -23,6 +24,19 @@ describe('NewCharacter component', () => {
 
     // Assert
     expect(toJson(wrapper)).toMatchSnapshot();
+    expect(wrapper.find('.test-creating-spinner').length).toEqual(0);
+  });
+
+  it('will render a spinner in place of the edit buttons when creating', () => {
+    // Arrange
+    const props = { ...defaultProps, loading: true };
+
+    // Act
+    const wrapper = shallow(<NewCharacter {...props} />);
+
+    // Assert
+    expect(toJson(wrapper)).toMatchSnapshot();
+    expect(wrapper.find('.test-creating-spinner').length).toEqual(1);
   });
 
   it('will update the edit field when name edit is committed', () => {
@@ -71,7 +85,7 @@ describe('NewCharacter component', () => {
     expect(props.setSelected).toHaveBeenCalledWith('');
   });
 
-  it('will reset to default name and invoke addCharacter on save', () => {
+  it('will reset to default name and invoke createCharacter on save', () => {
     // Arrange
     const props = defaultProps;
     const wrapper = shallow(<NewCharacter {...props} />);
@@ -85,8 +99,8 @@ describe('NewCharacter component', () => {
 
     // Assert
     expect(wrapper.find('.name-clickable-edit').props().text).toEqual('New Character');
-    expect(props.addCharacter).toHaveBeenCalledTimes(1);
-    expect(props.addCharacter).toHaveBeenCalledWith(expect.any(String), {
+    expect(props.createCharacter).toHaveBeenCalledTimes(1);
+    expect(props.createCharacter).toHaveBeenCalledWith({
       name: 'Changed Character',
     });
   });

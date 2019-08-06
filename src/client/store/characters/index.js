@@ -88,6 +88,26 @@ export default createReducer(
         },
       }),
     },
+    CREATE_CHARACTER: {
+      REQUEST: state => ({
+        ...state,
+        addStatus: {
+          loading: true,
+        },
+      }),
+      // The actual character add is done with an onResponse thunk in the action
+      RESPONSE: state => ({
+        ...state,
+        addStatus: null,
+      }),
+      ERROR: (state, { payload: { error } }) => ({
+        ...state,
+        addStatus: {
+          loading: false,
+          error,
+        },
+      }),
+    },
   },
   initialState,
   CharacterActionOptions,

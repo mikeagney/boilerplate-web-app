@@ -239,4 +239,49 @@ describe('Characters store reducer', () => {
       });
     });
   });
+
+  describe('createCharacter', () => {
+    describe('request', () => {
+      it('will set addStatus.loading to true on the global state', () => {
+        // Arrange
+        const action = { type: 'CHARACTER.CREATE_CHARACTER.REQUEST' };
+
+        // Act
+        const nextState = charactersReducer(state, action);
+
+        // Assert
+        expect(nextState.addStatus).toEqual({ loading: true });
+      });
+    });
+
+    describe('response', () => {
+      it('will clear addStatus on the global state', () => {
+        // Arrange
+        const action = { type: 'CHARACTER.CREATE_CHARACTER.RESPONSE' };
+
+        // Act
+        const nextState = charactersReducer({ ...state, addStatus: { loading: true } }, action);
+
+        // Assert
+        expect(nextState.addStatus).toBeFalsy();
+      });
+    });
+
+    describe('error', () => {
+      it('will set the error object', () => {
+        // Arrange
+        const action = {
+          type: 'CHARACTER.CREATE_CHARACTER.ERROR',
+          payload: { error: 'failed' },
+          error: true,
+        };
+
+        // Act
+        const nextState = charactersReducer(state, action);
+
+        // Assert
+        expect(nextState.addStatus).toEqual({ loading: false, error: 'failed' });
+      });
+    });
+  });
 });

@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import uuid from 'uuidv4';
-import { Button, Card } from 'react-bootstrap';
+import { Button, Card, Spinner } from 'react-bootstrap';
 import ClickableEdit from '../../controls/clickable-edit';
 
-const NewCharacter = ({ characterIds, setSelected, addCharacter }) => {
+const NewCharacter = ({
+  characterIds, setSelected, createCharacter, loading,
+}) => {
   const defaultCharacterName = 'New Character';
   const [firstCharacterId = ''] = characterIds;
   const [name, setName] = useState(defaultCharacterName);
@@ -15,7 +16,7 @@ const NewCharacter = ({ characterIds, setSelected, addCharacter }) => {
   };
   const onSave = () => {
     setName(defaultCharacterName);
-    addCharacter(uuid(), { name });
+    createCharacter({ name });
   };
 
   return (
@@ -27,12 +28,25 @@ const NewCharacter = ({ characterIds, setSelected, addCharacter }) => {
         <Card.Text>Creating a new character</Card.Text>
       </Card.Body>
       <Card.Footer>
-        <Button className="save-button mr-1" variant="primary" onClick={onSave}>
-          Save
-        </Button>
-        <Button className="cancel-button" variant="secondary" onClick={onCancel}>
-          Cancel
-        </Button>
+        {loading ? (
+          <Spinner
+            className="test-creating-spinner"
+            animation="border"
+            variant="secondary"
+            role="status"
+          >
+            <span className="sr-only">Creating...</span>
+          </Spinner>
+        ) : (
+          <>
+            <Button className="save-button mr-1" variant="primary" onClick={onSave}>
+              Save
+            </Button>
+            <Button className="cancel-button" variant="secondary" onClick={onCancel}>
+              Cancel
+            </Button>
+          </>
+        )}
       </Card.Footer>
     </Card>
   );
@@ -41,9 +55,14 @@ const NewCharacter = ({ characterIds, setSelected, addCharacter }) => {
 NewCharacter.propTypes = {
   // From mapStateToProps
   characterIds: PropTypes.arrayOf(PropTypes.string).isRequired,
+  loading: PropTypes.bool,
   // From mapDispatchToProps
   setSelected: PropTypes.func.isRequired,
-  addCharacter: PropTypes.func.isRequired,
+  createCharacter: PropTypes.func.isRequired,
+};
+
+NewCharacter.defaultProps = {
+  loading: false,
 };
 
 export default NewCharacter;

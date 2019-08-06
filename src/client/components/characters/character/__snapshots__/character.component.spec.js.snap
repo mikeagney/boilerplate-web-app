@@ -17,20 +17,18 @@ exports[`Character component will display a loading spinner if loading is true 1
     />
   </CardHeader>
   <CardBody>
-    <CardText>
-      <Bootstrap(Spinner)
-        animation="border"
-        className="test-loading-spinner"
-        role="status"
-        variant="secondary"
+    <Bootstrap(Spinner)
+      animation="border"
+      className="test-loading-spinner"
+      role="status"
+      variant="secondary"
+    >
+      <span
+        className="sr-only"
       >
-        <span
-          className="sr-only"
-        >
-          Loading...
-        </span>
-      </Bootstrap(Spinner)>
-    </CardText>
+        Loading...
+      </span>
+    </Bootstrap(Spinner)>
   </CardBody>
 </Card>
 `;
@@ -52,20 +50,18 @@ exports[`Character component will display a loading spinner if pending is true 1
     />
   </CardHeader>
   <CardBody>
-    <CardText>
-      <Bootstrap(Spinner)
-        animation="border"
-        className="test-loading-spinner"
-        role="status"
-        variant="secondary"
+    <Bootstrap(Spinner)
+      animation="border"
+      className="test-loading-spinner"
+      role="status"
+      variant="secondary"
+    >
+      <span
+        className="sr-only"
       >
-        <span
-          className="sr-only"
-        >
-          Loading...
-        </span>
-      </Bootstrap(Spinner)>
-    </CardText>
+        Loading...
+      </span>
+    </Bootstrap(Spinner)>
   </CardBody>
 </Card>
 `;
