@@ -11,14 +11,19 @@ describe('Axios action creators', () => {
   describe('createApiAction', () => {
     const payload = { request: { method: 'get' } };
     const payloadCreator = jest.fn();
-    const meta = { foo: 'bar' };
+    const defaultMeta = {
+      foo: 'bar',
+      onRequest: jest.fn(),
+      onResponse: jest.fn(),
+      onError: jest.fn(),
+    };
     const metaCreator = jest.fn();
     const mockResponse = {};
 
     beforeEach(() => {
       axios.mockResolvedValue(mockResponse);
       payloadCreator.mockReturnValue(payload);
-      metaCreator.mockReturnValue(meta);
+      metaCreator.mockReturnValue(defaultMeta);
     });
 
     it('will fail if there is no payloadCreator method', () => {
@@ -50,47 +55,81 @@ describe('Axios action creators', () => {
       expect(dispatch).toHaveBeenCalledWith({ type: 'TEST.REQUEST', payload, meta: undefined });
     });
 
-    it('will dispatch REQUEST and RESPONSE actions when axios succeeds', async () => {
-      // Arrange
-      const actionCreator = createApiAction('TEST', payloadCreator, metaCreator);
-      const thunk = actionCreator('foo', 'bar');
-      const dispatch = jest.fn();
+    it.each([false, true])(
+      'will dispatch REQUEST and RESPONSE actions when axios succeeds',
+      async (withCallbacks) => {
+        // Arrange
+        const actionCreator = createApiAction('TEST', payloadCreator, metaCreator);
+        const thunk = actionCreator('foo', 'bar');
+        const dispatch = jest.fn();
+        const getState = jest.fn();
+        const meta = withCallbacks ? defaultMeta : { foo: 'bar ' };
+        metaCreator.mockReturnValue(meta);
 
-      // Act
-      await thunk(dispatch);
+        // Act
+        await thunk(dispatch, getState);
 
-      // Assert
-      expect(axios).toHaveBeenCalledWith({ baseURL: DEFAULT_BASE_URL, method: 'get' });
-      expect(dispatch).toHaveBeenCalledTimes(2);
-      expect(dispatch).toHaveBeenCalledWith({ type: 'TEST.REQUEST', payload, meta });
-      expect(dispatch).toHaveBeenCalledWith({
-        type: 'TEST.RESPONSE',
-        payload: { ...payload, response: mockResponse },
-        meta,
-      });
-    });
+        // Assert
+        expect(axios).toHaveBeenCalledWith({ baseURL: DEFAULT_BASE_URL, method: 'get' });
+        expect(dispatch).toHaveBeenCalledTimes(2);
+        expect(dispatch).toHaveBeenCalledWith({
+          type: 'TEST.REQUEST',
+          payload,
+          meta,
+        });
+        expect(dispatch).toHaveBeenCalledWith({
+          type: 'TEST.RESPONSE',
+          payload: { ...payload, response: mockResponse },
+          meta,
+        });
+        if (withCallbacks) {
+          expect(defaultMeta.onRequest).toHaveBeenCalledWith(dispatch, getState);
+          expect(defaultMeta.onResponse).toHaveBeenCalledWith(dispatch, getState, mockResponse);
+          expect(defaultMeta.onError).not.toHaveBeenCalled();
+        } else {
+          expect(defaultMeta.onRequest).not.toHaveBeenCalled();
+          expect(defaultMeta.onResponse).not.toHaveBeenCalled();
+          expect(defaultMeta.onError).not.toHaveBeenCalled();
+        }
+      },
+    );
 
-    it('will dispatch REQUEST and ERROR actions when axios fails', async () => {
-      // Arrange
-      const actionCreator = createApiAction('TEST', payloadCreator, metaCreator);
-      const thunk = actionCreator('foo', 'bar');
-      const dispatch = jest.fn();
-      const error = { baz: 'quux' };
-      axios.mockRejectedValue(error);
+    it.each([false, true])(
+      'will dispatch REQUEST and ERROR actions when axios fails',
+      async (withCallbacks) => {
+        // Arrange
+        const actionCreator = createApiAction('TEST', payloadCreator, metaCreator);
+        const thunk = actionCreator('foo', 'bar');
+        const dispatch = jest.fn();
+        const getState = jest.fn();
+        const meta = withCallbacks ? defaultMeta : { foo: 'bar ' };
+        metaCreator.mockReturnValue(meta);
+        const error = { baz: 'quux' };
+        axios.mockRejectedValue(error);
 
-      // Act
-      await thunk(dispatch);
+        // Act
+        await thunk(dispatch, getState);
 
-      // Assert
-      expect(dispatch).toHaveBeenCalledTimes(2);
-      expect(dispatch).toHaveBeenCalledWith({ type: 'TEST.REQUEST', payload, meta });
-      expect(dispatch).toHaveBeenCalledWith({
-        type: 'TEST.ERROR',
-        payload: { ...payload, error },
-        meta,
-        error: true,
-      });
-    });
+        // Assert
+        expect(dispatch).toHaveBeenCalledTimes(2);
+        expect(dispatch).toHaveBeenCalledWith({ type: 'TEST.REQUEST', payload, meta });
+        expect(dispatch).toHaveBeenCalledWith({
+          type: 'TEST.ERROR',
+          payload: { ...payload, error },
+          meta,
+          error: true,
+        });
+        if (withCallbacks) {
+          expect(defaultMeta.onRequest).toHaveBeenCalledWith(dispatch, getState);
+          expect(defaultMeta.onResponse).not.toHaveBeenCalled();
+          expect(defaultMeta.onError).toHaveBeenCalledWith(dispatch, getState, error);
+        } else {
+          expect(defaultMeta.onRequest).not.toHaveBeenCalled();
+          expect(defaultMeta.onResponse).not.toHaveBeenCalled();
+          expect(defaultMeta.onError).not.toHaveBeenCalled();
+        }
+      },
+    );
   });
 
   describe('createApiActions', () => {

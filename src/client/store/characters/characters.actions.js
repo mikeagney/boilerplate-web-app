@@ -21,3 +21,21 @@ export const getCharacterById = createApiAction('CHARACTER.GET_CHARACTER_BY_ID',
     url: `/characters/${encodeURIComponent(characterId)}`,
   },
 }));
+
+export const createCharacter = createApiAction(
+  'CHARACTER.CREATE_CHARACTER',
+  character => ({
+    character,
+    request: {
+      method: 'post',
+      url: '/characters',
+      data: character,
+    },
+  }),
+  () => ({
+    onResponse: (dispatch, _getState, { data, headers: { location } }) => {
+      const characterId = location.split('/').pop();
+      dispatch(addCharacter(characterId, data));
+    },
+  }),
+);

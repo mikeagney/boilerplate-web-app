@@ -26,6 +26,11 @@ export const DEFAULT_BASE_URL = '/api/v0';
  * @param {(...args:any[])=>any} metaCreator
  *  Optional function that returns a meta object for the actions
  *  that will be dispatched.
+ *  If the created meta object has properties named `onRequest`, `onResponse`,
+ *  or `onError`, those methods will be called with arguments of `dispatch` and
+ *  `getState` at the appropriate stage. This will occur after the `REQUEST`,
+ *  `RESPONSE`, and `ERROR` actions are dispatched, so the callbacks may assume
+ *  that the reducer has already been applied.
  * @returns {(...args:any[])=>Function}
  *  Returns a generator method. Call the supplied method with the
  *  appropriate arguments to create an async action that can be
@@ -36,15 +41,19 @@ export function createApiAction(type, payloadCreator, metaCreator) {
     throw new Error('createApiAction must be called with a payloadCreator.');
   }
 
-  return (...args) => async (dispatch) => {
+  return (...args) => async (dispatch, getState) => {
     const payload = payloadCreator(...args);
     const meta = metaCreator && metaCreator(...args);
+    const { onRequest = null, onResponse = null, onError = null } = meta || {};
 
     dispatch({
       type: `${type}.REQUEST`,
       payload,
       meta,
     });
+    if (onRequest) {
+      onRequest(dispatch, getState);
+    }
 
     try {
       const response = await axios({
@@ -59,6 +68,9 @@ export function createApiAction(type, payloadCreator, metaCreator) {
         },
         meta,
       });
+      if (onResponse) {
+        onResponse(dispatch, getState, response);
+      }
     } catch (error) {
       dispatch({
         type: `${type}.ERROR`,
@@ -69,6 +81,9 @@ export function createApiAction(type, payloadCreator, metaCreator) {
         meta,
         error: true,
       });
+      if (onError) {
+        onError(dispatch, getState, error);
+      }
     }
   };
 }

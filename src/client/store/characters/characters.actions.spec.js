@@ -1,4 +1,9 @@
-import { getCharacterIds, getCharacterById } from './characters.actions';
+import {
+  getCharacterIds,
+  getCharacterById,
+  createCharacter,
+  addCharacter,
+} from './characters.actions';
 
 jest.mock('../api/api.action-creator', () => ({
   createApiAction: jest.fn().mockImplementation((...args) => [...args]),
@@ -57,6 +62,72 @@ describe('Character actions', () => {
           url: '/characters/foo%20bar',
         },
       });
+    });
+  });
+
+  describe('createCharacter', () => {
+    it('will have the expected arguments', () => {
+      // Arrange
+      // Act
+      // Assert
+      expect(createCharacter).toEqual([
+        'CHARACTER.CREATE_CHARACTER',
+        expect.any(Function),
+        expect.any(Function),
+      ]);
+    });
+
+    it('will create the expected payload', () => {
+      // Arrange
+      const payloadCreator = createCharacter[1];
+      const character = { name: 'Foobar' };
+
+      // Act
+      const payload = payloadCreator(character);
+
+      // Assert
+      expect(payload).toEqual({
+        character,
+        request: {
+          method: 'post',
+          url: '/characters',
+          data: character,
+        },
+      });
+    });
+
+    it('will create the expected meta', () => {
+      // Arrange
+      const metaCreator = createCharacter[2];
+
+      // Act
+      const meta = metaCreator();
+
+      // Assert
+      expect(meta).toEqual({
+        onResponse: expect.any(Function),
+      });
+    });
+
+    it('will dispatch an add action on response', () => {
+      // Arrange
+      const metaCreator = createCharacter[2];
+      const meta = metaCreator();
+      const dispatch = jest.fn();
+      const getState = jest.fn();
+      const response = {
+        data: { name: 'Foobar' },
+        headers: {
+          location: '/characters/bazquux',
+        },
+      };
+      const expectedAddAction = addCharacter('bazquux', response.data);
+
+      // Act
+      meta.onResponse(dispatch, getState, response);
+
+      // Assert
+      expect(dispatch).toHaveBeenCalledWith(expectedAddAction);
     });
   });
 });

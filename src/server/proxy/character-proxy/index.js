@@ -69,8 +69,8 @@ class CharacterProxy {
         createdDate: new Date(),
       };
 
-      await db.collection('characters').insertOne(characterRecord);
-      return characterId;
+      const response = await db.collection('characters').insertOne(characterRecord);
+      return response.ops[0];
     });
   }
 }

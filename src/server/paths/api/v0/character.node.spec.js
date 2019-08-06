@@ -137,7 +137,8 @@ describe('Character router', () => {
       const res = {
         status: jest.fn().mockReturnThis(),
         location: jest.fn().mockReturnThis(),
-        end: jest.fn(),
+        type: jest.fn().mockReturnThis(),
+        send: jest.fn(),
       };
 
       // Act
@@ -154,7 +155,8 @@ describe('Character router', () => {
       const res = {
         status: jest.fn().mockReturnThis(),
         location: jest.fn().mockReturnThis(),
-        end: jest.fn(),
+        type: jest.fn().mockReturnThis(),
+        send: jest.fn(),
       };
 
       // Act
@@ -173,7 +175,13 @@ describe('Character router', () => {
       const res = {
         status: jest.fn().mockReturnThis(),
         location: jest.fn().mockReturnThis(),
-        end: jest.fn(),
+        type: jest.fn().mockReturnThis(),
+        send: jest.fn(),
+      };
+      const expectedCharacter = {
+        name: 'Foobar',
+        createdDate: expect.any(Date),
+        characterId: expect.any(String),
       };
 
       // Act
@@ -184,14 +192,11 @@ describe('Character router', () => {
       expect(router.proxy.store.ids.length).toEqual(INITIAL_STORE_LENGTH + 1);
       const characterId = router.proxy.store.ids[INITIAL_STORE_LENGTH];
       const createdCharacter = router.proxy.store.byId[characterId];
-      expect(createdCharacter).toEqual({
-        name: 'Foobar',
-        createdDate: expect.any(Date),
-        characterId,
-      });
+      expect(createdCharacter).toEqual(expectedCharacter);
       expect(res.status).toHaveBeenCalledWith(201);
       expect(res.location).toHaveBeenCalledWith(`/foo/${characterId}`);
-      expect(res.end).toHaveBeenCalledWith();
+      expect(res.type).toHaveBeenCalledWith('application/json');
+      expect(res.send).toHaveBeenCalledWith(expectedCharacter);
     });
   });
 

@@ -58,11 +58,12 @@ class Character {
   createCharacter = async (req, res) => {
     // TODO: return 400 error if validation fails
     const { body: character } = await Joi.validate(req, this.createCharacterSchema());
-    const id = await this.proxy.createCharacter(character);
+    const createdCharacter = await this.proxy.createCharacter(character);
     res
       .status(201)
-      .location(`${req.baseUrl}/${id}`)
-      .end();
+      .location(`${req.baseUrl}/${createdCharacter.characterId}`)
+      .type('application/json')
+      .send(createdCharacter);
   };
 
   initialize() {
