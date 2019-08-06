@@ -1,3 +1,4 @@
+import uuid from 'uuidv4';
 import DbClient from '../../client/db-client';
 
 class CharacterProxy {
@@ -57,6 +58,20 @@ class CharacterProxy {
 
   async getCharacterById(characterId) {
     return this.dbClient.getDatabase(db => db.collection('characters').findOne({ characterId }));
+  }
+
+  async createCharacter(character) {
+    return this.dbClient.getDatabase(async (db) => {
+      const characterId = uuid();
+      const characterRecord = {
+        ...character,
+        characterId,
+        createdDate: new Date(),
+      };
+
+      await db.collection('characters').insertOne(characterRecord);
+      return characterId;
+    });
   }
 }
 

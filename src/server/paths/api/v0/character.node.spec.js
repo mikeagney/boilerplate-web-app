@@ -127,10 +127,78 @@ describe('Character router', () => {
     });
   });
 
+  describe('createCharacter', () => {
+    it('will throw if the request has no body', async () => {
+      // Arrange
+      const router = new Character(new MockCharacterProxy());
+      const req = {
+        baseUrl: '/foo',
+      };
+      const res = {
+        status: jest.fn().mockReturnThis(),
+        location: jest.fn().mockReturnThis(),
+        end: jest.fn(),
+      };
+
+      // Act
+      await expect(router.createCharacter(req, res)).rejects.toThrow('"body" is required');
+    });
+
+    it('will throw if the request body has no name', async () => {
+      // Arrange
+      const router = new Character(new MockCharacterProxy());
+      const req = {
+        baseUrl: '/foo',
+        body: {},
+      };
+      const res = {
+        status: jest.fn().mockReturnThis(),
+        location: jest.fn().mockReturnThis(),
+        end: jest.fn(),
+      };
+
+      // Act
+      await expect(router.createCharacter(req, res)).rejects.toThrow('"name" is required');
+    });
+
+    it('will call the proxy to create the character and return its id', async () => {
+      // Arrange
+      const router = new Character(new MockCharacterProxy());
+      const req = {
+        baseUrl: '/foo',
+        body: {
+          name: 'Foobar',
+        },
+      };
+      const res = {
+        status: jest.fn().mockReturnThis(),
+        location: jest.fn().mockReturnThis(),
+        end: jest.fn(),
+      };
+
+      // Act
+      await router.createCharacter(req, res);
+
+      // Assert
+      const INITIAL_STORE_LENGTH = 2; // How many IDs are in the mock store when created
+      expect(router.proxy.store.ids.length).toEqual(INITIAL_STORE_LENGTH + 1);
+      const characterId = router.proxy.store.ids[INITIAL_STORE_LENGTH];
+      const createdCharacter = router.proxy.store.byId[characterId];
+      expect(createdCharacter).toEqual({
+        name: 'Foobar',
+        createdDate: expect.any(Date),
+        characterId,
+      });
+      expect(res.status).toHaveBeenCalledWith(201);
+      expect(res.location).toHaveBeenCalledWith(`/foo/${characterId}`);
+      expect(res.end).toHaveBeenCalledWith();
+    });
+  });
+
   describe('initialize', () => {
     it('will set up the API routes', () => {
       // Arrange
-      const mockRouter = { get: jest.fn() };
+      const mockRouter = { get: jest.fn(), post: jest.fn() };
       express.Router.mockReturnValue(mockRouter);
       const router = new Character();
 
@@ -143,6 +211,8 @@ describe('Character router', () => {
       expect(mockRouter.get).toHaveBeenCalledTimes(2);
       expect(mockRouter.get).toHaveBeenCalledWith('/:characterId', router.getCharacterById);
       expect(mockRouter.get).toHaveBeenCalledWith('/', router.getCharacterIds);
+      expect(mockRouter.post).toHaveBeenCalledTimes(1);
+      expect(mockRouter.post).toHaveBeenCalledWith('/', router.createCharacter);
     });
   });
 });

@@ -6,6 +6,7 @@ jest.mock('express').mock('./character');
 
 describe('ApiRouter v0', () => {
   const characterRouter = {};
+  const jsonMiddleware = jest.fn();
 
   beforeEach(() => {
     jest.clearAllMocks();
@@ -13,6 +14,7 @@ describe('ApiRouter v0', () => {
       initialize: jest.fn().mockReturnThis(),
       router: characterRouter,
     }));
+    express.json.mockReturnValue(jsonMiddleware);
   });
 
   describe('initialize', () => {
@@ -29,7 +31,8 @@ describe('ApiRouter v0', () => {
       // Assert
       expect(result).toBe(mockRouter);
 
-      expect(mockRouter.use).toHaveBeenCalledTimes(1);
+      expect(mockRouter.use).toHaveBeenCalledTimes(2);
+      expect(mockRouter.use).toHaveBeenCalledWith(jsonMiddleware);
       expect(mockRouter.use).toHaveBeenCalledWith('/characters', characterRouter);
     });
   });
