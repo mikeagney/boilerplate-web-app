@@ -7,6 +7,27 @@ import axios from 'axios';
 export const DEFAULT_BASE_URL = '/api/v0';
 
 /**
+ * An object for specifying additional thunks to apply to the Axios request lifecycle.
+ * The Axios API action creator uses these fields; action implementors are free to add
+ * additional meta values if they would be useful in the reducer.
+ *
+ * The thunks documented in this call are invoked after the relevant actions are
+ * dispatched, meaning that they can count on the Redux state being updated accordingly.
+ *
+ * These thunks may be used to perform any action not readily expressible in the reducer.
+ *
+ * @typedef {Object} AxiosActionMeta
+ * @property {(dispatch:Function,getState:function,response:any)=>void} onRequest
+ *   If present, call this method before making the Axios request.
+ * @property {(dispatch:Function,getState:function,response:any)=>void} onResponse
+ *   If present, call this method after the Axios request completes, passing the
+ *   response from the Axios call.
+ * @property {(dispatch:Function,getState:function,error:any)=>void} onError
+ *   If present, call this method after the Axios request fails, passing the
+ *   error from the Axios call.
+ */
+
+/**
  * Returns an action creator that creates async Axios actions. Intended
  * primarily for invoking the back-end API supplied with the application,
  * but can be used to call any service accessible by HTTP.
@@ -23,7 +44,7 @@ export const DEFAULT_BASE_URL = '/api/v0';
  *  The payload must contain a request property containing enough information
  *  to make a successful Axios call (save for `baseUrl`, which will be set
  *  to `DEFAULT_BASE_URL` if it is not supplied).
- * @param {(...args:any[])=>any} metaCreator
+ * @param {(...args:any[])=>AxiosActionMeta} metaCreator
  *  Optional function that returns a meta object for the actions
  *  that will be dispatched.
  * @returns {(...args:any[])=>Function}
@@ -36,15 +57,19 @@ export function createApiAction(type, payloadCreator, metaCreator) {
     throw new Error('createApiAction must be called with a payloadCreator.');
   }
 
-  return (...args) => async (dispatch) => {
+  return (...args) => async (dispatch, getState) => {
     const payload = payloadCreator(...args);
     const meta = metaCreator && metaCreator(...args);
+    const { onRequest = null, onResponse = null, onError = null } = meta || {};
 
     dispatch({
       type: `${type}.REQUEST`,
       payload,
       meta,
     });
+    if (onRequest) {
+      onRequest(dispatch, getState);
+    }
 
     try {
       const response = await axios({
@@ -59,6 +84,9 @@ export function createApiAction(type, payloadCreator, metaCreator) {
         },
         meta,
       });
+      if (onResponse) {
+        onResponse(dispatch, getState, response);
+      }
     } catch (error) {
       dispatch({
         type: `${type}.ERROR`,
@@ -69,6 +97,9 @@ export function createApiAction(type, payloadCreator, metaCreator) {
         meta,
         error: true,
       });
+      if (onError) {
+        onError(dispatch, getState, error);
+      }
     }
   };
 }

@@ -234,8 +234,22 @@ describe('Character proxy', () => {
 
     it('will add an entry to the database', async () => {
       // Arrange
+      const expectedCharacter = {
+        name: 'Foobar',
+        characterId: expect.any(String),
+        createdDate: expect.any(Date),
+      };
+      const createdCharacter = {
+        name: 'Foobar',
+        mock: true,
+        characterId: 'bazquux',
+        createdDate: new Date(),
+      };
+      const dbResponse = {
+        ops: [createdCharacter],
+      };
       const collection = {
-        insertOne: jest.fn().mockResolvedValue(),
+        insertOne: jest.fn().mockResolvedValue(dbResponse),
       };
 
       const db = { collection: jest.fn().mockReturnValue(collection) };
@@ -248,14 +262,9 @@ describe('Character proxy', () => {
       const result = await callback(db);
 
       // Assert
+      expect(result).toBe(createdCharacter);
       expect(db.collection).toHaveBeenCalledWith('characters');
-      expect(collection.insertOne).toHaveBeenCalledWith({
-        name: 'Foobar',
-        characterId: expect.any(String),
-        createdDate: expect.any(Date),
-      });
-      const { characterId } = collection.insertOne.mock.calls[0][0];
-      expect(result).toEqual(characterId);
+      expect(collection.insertOne).toHaveBeenCalledWith(expectedCharacter);
     });
   });
 });

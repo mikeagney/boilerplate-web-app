@@ -39,7 +39,7 @@ class MockCharacterProxy {
       createdDate: new Date(),
     };
     this.store.ids.push(characterId);
-    return characterId;
+    return this.store.byId[characterId];
   }
 }
 
