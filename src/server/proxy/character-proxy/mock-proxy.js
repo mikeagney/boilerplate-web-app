@@ -1,3 +1,5 @@
+import uuid from 'uuidv4';
+
 class MockCharacterProxy {
   constructor() {
     this.store = {
@@ -27,6 +29,17 @@ class MockCharacterProxy {
 
   async getCharacterById(characterId) {
     return this.store.byId[characterId];
+  }
+
+  async createCharacter(character) {
+    const characterId = uuid();
+    this.store.byId[characterId] = {
+      ...character,
+      characterId,
+      createdDate: new Date(),
+    };
+    this.store.ids.push(characterId);
+    return characterId;
   }
 }
 

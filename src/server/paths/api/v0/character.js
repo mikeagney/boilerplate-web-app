@@ -18,6 +18,13 @@ class Character {
       }),
     }).unknown(true);
 
+  createCharacterSchema = () =>
+    Joi.object({
+      body: Joi.object({
+        name: Joi.string().required(),
+      }).required(),
+    }).unknown(true);
+
   getCharacterIds = async (req, res) => {
     // TODO: return 400 error if validation fails
     const {
@@ -48,10 +55,21 @@ class Character {
     res.type('application/json').send(character);
   };
 
+  createCharacter = async (req, res) => {
+    // TODO: return 400 error if validation fails
+    const { body: character } = await Joi.validate(req, this.createCharacterSchema());
+    const id = await this.proxy.createCharacter(character);
+    res
+      .status(201)
+      .location(`${req.baseUrl}/${id}`)
+      .end();
+  };
+
   initialize() {
     this.router = express.Router();
     this.router.get('/:characterId', this.getCharacterById);
     this.router.get('/', this.getCharacterIds);
+    this.router.post('/', this.createCharacter);
     return this;
   }
 }

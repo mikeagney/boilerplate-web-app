@@ -218,4 +218,44 @@ describe('Character proxy', () => {
       expect(collection.findOne).toHaveBeenCalledWith({ characterId: 'fooId' });
     });
   });
+
+  describe('createCharacter', () => {
+    it('will invoke getDatabase when called', () => {
+      // Arrange
+      const proxy = new CharacterProxy();
+
+      // Act
+      proxy.createCharacter({ name: 'Foobar' });
+
+      // Assert
+      expect(mockDbClient.getDatabase).toHaveBeenCalledTimes(1);
+      expect(mockDbClient.getDatabase).toHaveBeenCalledWith(expect.any(Function));
+    });
+
+    it('will add an entry to the database', async () => {
+      // Arrange
+      const collection = {
+        insertOne: jest.fn().mockResolvedValue(),
+      };
+
+      const db = { collection: jest.fn().mockReturnValue(collection) };
+      const proxy = new CharacterProxy();
+      proxy.createCharacter({ name: 'Foobar' });
+
+      const callback = mockDbClient.getDatabase.mock.calls[0][0];
+
+      // Act
+      const result = await callback(db);
+
+      // Assert
+      expect(db.collection).toHaveBeenCalledWith('characters');
+      expect(collection.insertOne).toHaveBeenCalledWith({
+        name: 'Foobar',
+        characterId: expect.any(String),
+        createdDate: expect.any(Date),
+      });
+      const { characterId } = collection.insertOne.mock.calls[0][0];
+      expect(result).toEqual(characterId);
+    });
+  });
 });

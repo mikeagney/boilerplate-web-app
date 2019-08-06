@@ -4,6 +4,7 @@ import Character from './character';
 class ApiRouter {
   initialize() {
     this.router = express.Router();
+    this.router.use(express.json());
     this.router.use('/characters', new Character().initialize().router);
     return this;
   }
