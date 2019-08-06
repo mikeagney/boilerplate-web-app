@@ -20,20 +20,18 @@ const Character = ({
         <ClickableEdit text={name} setText={newName => setName(characterId, newName)} />
       </Card.Header>
       <Card.Body>
-        <Card.Text>
-          {loaded ? (
-            <>Skills go here</>
-          ) : (
-            <Spinner
-              className="test-loading-spinner"
-              animation="border"
-              variant="secondary"
-              role="status"
-            >
-              <span className="sr-only">Loading...</span>
-            </Spinner>
-          )}
-        </Card.Text>
+        {loaded ? (
+          <Card.Text>Skills go here</Card.Text>
+        ) : (
+          <Spinner
+            className="test-loading-spinner"
+            animation="border"
+            variant="secondary"
+            role="status"
+          >
+            <span className="sr-only">Loading...</span>
+          </Spinner>
+        )}
       </Card.Body>
     </Card>
   );

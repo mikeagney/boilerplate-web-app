@@ -1,5 +1,43 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`NewCharacter component will render a spinner in place of the edit buttons when creating 1`] = `
+<Card
+  as="div"
+  body={false}
+  className="character"
+>
+  <CardHeader
+    as="h5"
+    className="bg-primary text-white"
+  >
+    <ClickableEdit
+      className="name-clickable-edit"
+      setText={[Function]}
+      text="New Character"
+    />
+  </CardHeader>
+  <CardBody>
+    <CardText>
+      Creating a new character
+    </CardText>
+  </CardBody>
+  <CardFooter>
+    <Bootstrap(Spinner)
+      animation="border"
+      className="test-creating-spinner"
+      role="status"
+      variant="secondary"
+    >
+      <span
+        className="sr-only"
+      >
+        Creating...
+      </span>
+    </Bootstrap(Spinner)>
+  </CardFooter>
+</Card>
+`;
+
 exports[`NewCharacter component will render the expected new character form 1`] = `
 <Card
   as="div"

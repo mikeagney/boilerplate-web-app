@@ -5,6 +5,8 @@ class CharactersSelectors extends CollectionBaseSelectors {
   constructor() {
     super(state => delve(state, 'characters', {}));
   }
+
+  getAddStatusLoading = () => this.getRootNodeSelector('addStatus.loading', false);
 }
 
 const charactersSelectors = new CharactersSelectors();
@@ -15,4 +17,5 @@ export const {
   getSelectedId,
   getItemById,
   getLoadingState,
+  getAddStatusLoading,
 } = charactersSelectors;
