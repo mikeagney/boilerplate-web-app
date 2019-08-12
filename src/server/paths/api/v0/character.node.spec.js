@@ -1,9 +1,9 @@
-import express from 'express';
+import promiseRouter from 'express-promise-router';
 import Character from './character';
 import CharacterProxy from '../../../proxy/character-proxy';
 import MockCharacterProxy from '../../../proxy/character-proxy/mock-proxy';
 
-jest.mock('express').mock('../../../proxy/character-proxy');
+jest.mock('express-promise-router').mock('../../../proxy/character-proxy');
 
 describe('Character router', () => {
   describe('constructor', () => {
@@ -91,12 +91,11 @@ describe('Character router', () => {
       };
 
       // Act
-      await router.getCharacterById(req, res);
-
       // Assert
-      expect(res.status).toHaveBeenCalledWith(404);
-      expect(res.type).toHaveBeenCalledWith('application/json');
-      expect(res.end).toHaveBeenCalledWith();
+      await expect(router.getCharacterById(req, res)).rejects.toThrow({
+        status: 404,
+        message: 'Not Found',
+      });
     });
 
     it('will return the character if character exists', async () => {
@@ -204,7 +203,7 @@ describe('Character router', () => {
     it('will set up the API routes', () => {
       // Arrange
       const mockRouter = { get: jest.fn(), post: jest.fn() };
-      express.Router.mockReturnValue(mockRouter);
+      promiseRouter.mockReturnValue(mockRouter);
       const router = new Character();
 
       // Act
