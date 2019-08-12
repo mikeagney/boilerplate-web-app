@@ -1,8 +1,12 @@
 import express from 'express';
+import promiseRouter from 'express-promise-router';
 import Character from './character';
 import ApiRouter from './api-router';
 
-jest.mock('express').mock('./character');
+jest
+  .mock('express')
+  .mock('express-promise-router')
+  .mock('./character');
 
 describe('ApiRouter v0', () => {
   const characterRouter = {};
@@ -21,7 +25,7 @@ describe('ApiRouter v0', () => {
     it('will set up the API routes', () => {
       // Arrange
       const mockRouter = { use: jest.fn() };
-      express.Router.mockReturnValue(mockRouter);
+      promiseRouter.mockReturnValue(mockRouter);
 
       const router = new ApiRouter();
 
