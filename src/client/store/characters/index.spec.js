@@ -284,4 +284,188 @@ describe('Characters store reducer', () => {
       });
     });
   });
+
+  describe('patchCharacter', () => {
+    describe('request', () => {
+      it('will set patchStatus.loading to true on the character', () => {
+        // Arrange
+        const action = {
+          type: 'CHARACTER.PATCH_CHARACTER.REQUEST',
+          payload: {
+            characterId: '12345',
+            character: {
+              name: 'baz',
+            },
+          },
+        };
+
+        // Act
+        const nextState = charactersReducer(state, action);
+
+        // Assert
+        expect(nextState.byId[12345].patchStatus).toEqual({ loading: true });
+      });
+    });
+
+    describe('response', () => {
+      it('will update the character data for the specified id', () => {
+        // Arrange
+        const action = {
+          type: 'CHARACTER.PATCH_CHARACTER.RESPONSE',
+          payload: {
+            characterId: '12345',
+            character: {
+              name: 'baz',
+            },
+          },
+        };
+
+        // Act
+        const nextState = charactersReducer(state, action);
+
+        // Assert
+        expect(nextState.byId[12345]).toEqual({ name: 'baz' });
+      });
+    });
+
+    describe('error', () => {
+      it('will set the error object', () => {
+        // Arrange
+        const action = {
+          type: 'CHARACTER.PATCH_CHARACTER.ERROR',
+          payload: { characterId: 12345, error: 'failed' },
+          error: true,
+        };
+
+        // Act
+        const nextState = charactersReducer(state, action);
+
+        // Assert
+        expect(nextState.byId[12345]).toMatchObject({
+          patchStatus: {
+            loading: false,
+            error: 'failed',
+          },
+        });
+      });
+    });
+  });
+
+  describe('deleteCharacter', () => {
+    describe('request', () => {
+      it('will set deleteStatus.loading to true on the character', () => {
+        // Arrange
+        const action = {
+          type: 'CHARACTER.DELETE_CHARACTER.REQUEST',
+          payload: {
+            characterId: '12345',
+          },
+        };
+
+        // Act
+        const nextState = charactersReducer(state, action);
+
+        // Assert
+        expect(nextState.byId[12345].deleteStatus).toEqual({ loading: true });
+      });
+    });
+
+    describe('response', () => {
+      it('will remove the character data for the specified id', () => {
+        // Arrange
+        const action = {
+          type: 'CHARACTER.DELETE_CHARACTER.RESPONSE',
+          payload: {
+            characterId: '12345',
+          },
+        };
+
+        // Act
+        const nextState = charactersReducer(state, action);
+
+        // Assert
+        expect(nextState.byId[12345]).toBeFalsy();
+        expect(nextState.ids).toEqual(['54321']);
+      });
+
+      it('will not change the selected ID if a different character is deleted', () => {
+        // Arrange
+        const action = {
+          type: 'CHARACTER.DELETE_CHARACTER.RESPONSE',
+          payload: {
+            characterId: '54321',
+          },
+        };
+
+        // Act
+        const nextState = charactersReducer(state, action);
+
+        // Assert
+        expect(nextState.selectedId).toEqual('12345');
+      });
+
+      it('will set the selected ID to the second character if the first character is deleted', () => {
+        // Arrange
+        const action = {
+          type: 'CHARACTER.DELETE_CHARACTER.RESPONSE',
+          payload: {
+            characterId: '12345',
+          },
+        };
+
+        // Act
+        const nextState = charactersReducer(state, action);
+
+        // Assert
+        expect(nextState.selectedId).toEqual('54321');
+      });
+
+      it('will set the selected ID to nothing if the only character is deleted', () => {
+        // Arrange
+        const action = {
+          type: 'CHARACTER.DELETE_CHARACTER.RESPONSE',
+          payload: {
+            characterId: '12345',
+          },
+        };
+        const testState = {
+          selectedId: '12345',
+          byId: {
+            12345: state.byId[12345],
+          },
+          ids: ['12345'],
+        };
+
+        // Act
+        const nextState = charactersReducer(testState, action);
+
+        // Assert
+        expect(nextState.selectedId).toBeFalsy();
+        expect(nextState.byId).toEqual({});
+        expect(nextState.ids).toEqual([]);
+      });
+    });
+
+    describe('error', () => {
+      it('will set the error object', () => {
+        // Arrange
+        const action = {
+          type: 'CHARACTER.DELETE_CHARACTER.ERROR',
+          payload: { characterId: 12345, error: 'failed' },
+          error: true,
+        };
+
+        // Act
+        const nextState = charactersReducer(state, action);
+
+        // Assert
+        expect(nextState.byId[12345]).toMatchObject({
+          deleteStatus: {
+            loading: false,
+            error: 'failed',
+          },
+        });
+      });
+    });
+  });
 });
