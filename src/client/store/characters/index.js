@@ -1,4 +1,5 @@
 import fromPairs from 'lodash/fromPairs';
+import pickBy from 'lodash/pickBy';
 import createReducer from '../collection-base/collection-base.reducer';
 import CharacterActionOptions from './characters.constants';
 import initialState from './characters.initial-state';
@@ -105,6 +106,86 @@ export default createReducer(
         addStatus: {
           loading: false,
           error,
+        },
+      }),
+    },
+    PATCH_CHARACTER: {
+      REQUEST: (state, { payload: { characterId } }) => ({
+        ...state,
+        byId: {
+          ...state.byId,
+          [characterId]: {
+            ...state.byId[characterId],
+            patchStatus: {
+              loading: true,
+            },
+          },
+        },
+      }),
+      RESPONSE: (state, { payload: { characterId, character } }) => ({
+        ...state,
+        byId: {
+          ...state.byId,
+          [characterId]: pickBy({
+            // by default _.pickBy returns only the keys with truthy values.
+            // This takes care of removing the patchStatus node as well as any keys
+            // where the patch document value was null.
+            ...state.byId[characterId],
+            patchStatus: null,
+            ...character,
+          }),
+        },
+      }),
+      ERROR: (state, { payload: { characterId, error } }) => ({
+        ...state,
+        byId: {
+          ...state.byId,
+          [characterId]: {
+            ...state.byId[characterId],
+            patchStatus: {
+              loading: false,
+              error,
+            },
+          },
+        },
+      }),
+    },
+    DELETE_CHARACTER: {
+      REQUEST: (state, { payload: { characterId } }) => ({
+        ...state,
+        byId: {
+          ...state.byId,
+          [characterId]: {
+            ...state.byId[characterId],
+            deleteStatus: {
+              loading: true,
+            },
+          },
+        },
+      }),
+      RESPONSE: (state, { payload: { characterId } }) => ({
+        ...state,
+        byId: pickBy({
+          ...state.byId,
+          [characterId]: null,
+        }),
+        ids: state.ids.filter(id => id !== characterId),
+        selectedId:
+          state.selectedId !== characterId
+            ? state.selectedId
+            : state.ids.filter(id => id !== characterId)[0],
+      }),
+      ERROR: (state, { payload: { characterId, error } }) => ({
+        ...state,
+        byId: {
+          ...state.byId,
+          [characterId]: {
+            ...state.byId[characterId],
+            deleteStatus: {
+              loading: false,
+              error,
+            },
+          },
         },
       }),
     },

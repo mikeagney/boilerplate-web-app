@@ -2,6 +2,8 @@ import {
   getCharacterIds,
   getCharacterById,
   createCharacter,
+  patchCharacter,
+  deleteCharacter,
   addCharacter,
 } from './characters.actions';
 
@@ -128,6 +130,63 @@ describe('Character actions', () => {
 
       // Assert
       expect(dispatch).toHaveBeenCalledWith(expectedAddAction);
+    });
+  });
+
+  describe('patchCharacter', () => {
+    it('will have the expected arguments', () => {
+      // Arrange
+      // Act
+      // Assert
+      expect(patchCharacter).toEqual(['CHARACTER.PATCH_CHARACTER', expect.any(Function)]);
+    });
+
+    it('will create the expected payload', () => {
+      // Arrange
+      const payloadCreator = patchCharacter[1];
+      const characterId = 'foo bar';
+      const character = { name: 'Baz Quux' };
+
+      // Act
+      const payload = payloadCreator(characterId, character);
+
+      // Assert
+      expect(payload).toEqual({
+        characterId,
+        character,
+        request: {
+          method: 'patch',
+          url: `/characters/${encodeURIComponent(characterId)}`,
+          data: character,
+        },
+      });
+    });
+  });
+
+  describe('deleteCharacter', () => {
+    it('will have the expected arguments', () => {
+      // Arrange
+      // Act
+      // Assert
+      expect(deleteCharacter).toEqual(['CHARACTER.DELETE_CHARACTER', expect.any(Function)]);
+    });
+
+    it('will create the expected payload', () => {
+      // Arrange
+      const payloadCreator = deleteCharacter[1];
+      const characterId = 'foo bar';
+
+      // Act
+      const payload = payloadCreator(characterId);
+
+      // Assert
+      expect(payload).toEqual({
+        characterId,
+        request: {
+          method: 'delete',
+          url: `/characters/${encodeURIComponent(characterId)}`,
+        },
+      });
     });
   });
 });
