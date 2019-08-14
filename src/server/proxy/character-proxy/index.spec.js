@@ -267,4 +267,151 @@ describe('Character proxy', () => {
       expect(collection.insertOne).toHaveBeenCalledWith(expectedCharacter);
     });
   });
+
+  describe('patchCharacter', () => {
+    it('will invoke getDatabase when called', () => {
+      // Arrange
+      const proxy = new CharacterProxy();
+
+      // Act
+      proxy.patchCharacter('foo', { name: 'Foobar' });
+
+      // Assert
+      expect(mockDbClient.getDatabase).toHaveBeenCalledTimes(1);
+      expect(mockDbClient.getDatabase).toHaveBeenCalledWith(expect.any(Function));
+    });
+
+    it('will only specify $set if no fields are null', async () => {
+      // Arrange
+      const dbResponse = {
+        matchedCount: 1,
+      };
+      const collection = {
+        updateOne: jest.fn().mockResolvedValue(dbResponse),
+      };
+
+      const db = { collection: jest.fn().mockReturnValue(collection) };
+      const proxy = new CharacterProxy();
+      proxy.patchCharacter('foo', { name: 'Foobar' });
+
+      const callback = mockDbClient.getDatabase.mock.calls[0][0];
+
+      // Act
+      const result = await callback(db);
+
+      // Assert
+      expect(result).toBeTruthy();
+      expect(db.collection).toHaveBeenCalledWith('characters');
+      expect(collection.updateOne).toHaveBeenCalledWith(
+        { characterId: 'foo' },
+        { $set: { name: 'Foobar' } },
+      );
+    });
+
+    it('will only specify $unset if all fields are null', async () => {
+      // Arrange
+      const dbResponse = {
+        matchedCount: 1,
+      };
+      const collection = {
+        updateOne: jest.fn().mockResolvedValue(dbResponse),
+      };
+
+      const db = { collection: jest.fn().mockReturnValue(collection) };
+      const proxy = new CharacterProxy();
+      proxy.patchCharacter('foo', { name: null });
+
+      const callback = mockDbClient.getDatabase.mock.calls[0][0];
+
+      // Act
+      const result = await callback(db);
+
+      // Assert
+      expect(result).toBeTruthy();
+      expect(db.collection).toHaveBeenCalledWith('characters');
+      expect(collection.updateOne).toHaveBeenCalledWith(
+        { characterId: 'foo' },
+        { $unset: { name: null } },
+      );
+    });
+  });
+
+  describe('replaceCharacter', () => {
+    it('will invoke getDatabase when called', () => {
+      // Arrange
+      const proxy = new CharacterProxy();
+
+      // Act
+      proxy.replaceCharacter('foo', { name: 'Foobar' });
+
+      // Assert
+      expect(mockDbClient.getDatabase).toHaveBeenCalledTimes(1);
+      expect(mockDbClient.getDatabase).toHaveBeenCalledWith(expect.any(Function));
+    });
+
+    it('will specify $set even if some fields are null', async () => {
+      // Arrange
+      const dbResponse = {
+        matchedCount: 1,
+      };
+      const collection = {
+        updateOne: jest.fn().mockResolvedValue(dbResponse),
+      };
+
+      const db = { collection: jest.fn().mockReturnValue(collection) };
+      const proxy = new CharacterProxy();
+      proxy.replaceCharacter('foo', { name: null });
+
+      const callback = mockDbClient.getDatabase.mock.calls[0][0];
+
+      // Act
+      const result = await callback(db);
+
+      // Assert
+      expect(result).toBeTruthy();
+      expect(db.collection).toHaveBeenCalledWith('characters');
+      expect(collection.updateOne).toHaveBeenCalledWith(
+        { characterId: 'foo' },
+        { $set: { name: null } },
+      );
+    });
+  });
+
+  describe('deleteCharacter', () => {
+    it('will invoke getDatabase when called', () => {
+      // Arrange
+      const proxy = new CharacterProxy();
+
+      // Act
+      proxy.deleteCharacter('foo');
+
+      // Assert
+      expect(mockDbClient.getDatabase).toHaveBeenCalledTimes(1);
+      expect(mockDbClient.getDatabase).toHaveBeenCalledWith(expect.any(Function));
+    });
+
+    it('will remove the character from the database', async () => {
+      // Arrange
+      const dbResponse = {
+        deletedCount: 1,
+      };
+      const collection = {
+        deleteOne: jest.fn().mockResolvedValue(dbResponse),
+      };
+
+      const db = { collection: jest.fn().mockReturnValue(collection) };
+      const proxy = new CharacterProxy();
+      proxy.deleteCharacter('foo');
+
+      const callback = mockDbClient.getDatabase.mock.calls[0][0];
+
+      // Act
+      const result = await callback(db);
+
+      // Assert
+      expect(result).toBeTruthy();
+      expect(db.collection).toHaveBeenCalledWith('characters');
+      expect(collection.deleteOne).toHaveBeenCalledWith({ characterId: 'foo' });
+    });
+  });
 });

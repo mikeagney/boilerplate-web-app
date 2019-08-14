@@ -1,12 +1,19 @@
 import promiseRouter from 'express-promise-router';
 import ApiRouterV0 from './v0/api-router';
+import { server as serverLogger } from '../../../common/logger';
 import ApiVersionRouter from './api-version-router';
 import HttpError from '../../http-error';
 
-jest.mock('express-promise-router').mock('./v0/api-router');
+jest
+  .mock('express-promise-router')
+  .mock('./v0/api-router')
+  .mock('../../../common/logger');
 
 describe('ApiVersionRouter', () => {
   const routerv0 = {};
+  const logger = {
+    error: jest.fn(),
+  };
 
   beforeEach(() => {
     jest.clearAllMocks();
@@ -14,6 +21,7 @@ describe('ApiVersionRouter', () => {
       initialize: jest.fn().mockReturnThis(),
       router: routerv0,
     }));
+    serverLogger.mockReturnValue(logger);
   });
 
   describe('error', () => {
@@ -40,9 +48,10 @@ describe('ApiVersionRouter', () => {
       // Arrange
       const router = new ApiVersionRouter();
       const next = jest.fn();
+      const err = new Error('mock');
 
       // Act
-      router.error(new Error('mock'), null, mockResponse, next);
+      router.error(err, null, mockResponse, next);
 
       // Assert
       expect(next).not.toHaveBeenCalled();
@@ -50,6 +59,8 @@ describe('ApiVersionRouter', () => {
       expect(mockResponse.type).toHaveBeenCalledWith('application/json');
       expect(mockResponse.set).not.toHaveBeenCalled();
       expect(mockResponse.send).toHaveBeenCalledWith({ status: 500, message: 'mock' });
+      expect(serverLogger).toHaveBeenCalledWith('rest');
+      expect(logger.error).toHaveBeenCalledWith('Failed with error', err);
     });
 
     it('will use status and headers from the exception', () => {

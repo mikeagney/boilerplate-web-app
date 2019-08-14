@@ -41,6 +41,39 @@ class MockCharacterProxy {
     this.store.ids.push(characterId);
     return this.store.byId[characterId];
   }
+
+  async patchCharacter(characterId, character) {
+    if (!this.store.byId[characterId]) {
+      return false;
+    }
+    // Not bothering to remove keys with null values
+    this.store.byId[characterId] = {
+      ...this.store.byId[character],
+      ...character,
+    };
+    return true;
+  }
+
+  async replaceCharacter(characterId, character) {
+    if (!this.store.byId[characterId]) {
+      return false;
+    }
+    this.store.byId[characterId] = {
+      ...character,
+      characterId: this.store.byId[characterId].characterId,
+      createdDate: this.store.byId[characterId].createdDate,
+    };
+    return true;
+  }
+
+  async deleteCharacter(characterId) {
+    if (!this.store.byId[characterId]) {
+      return false;
+    }
+    delete this.store.byId[characterId];
+    this.store.ids = this.store.ids.filter(id => id !== characterId);
+    return true;
+  }
 }
 
 export default MockCharacterProxy;
