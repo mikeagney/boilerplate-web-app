@@ -1,5 +1,6 @@
 import router from 'express-promise-router';
 import ApiRouterV0 from './v0/api-router';
+import { server as serverLogger } from '../../../common/logger';
 
 class ApiVersionRouter {
   /**
@@ -19,6 +20,8 @@ class ApiVersionRouter {
       next(err);
       return;
     }
+
+    serverLogger('rest').error('Failed with error', err);
 
     const { status = 500, headers = {}, message } = err;
     res.status(status).type('application/json');

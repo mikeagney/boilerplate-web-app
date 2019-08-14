@@ -199,10 +199,175 @@ describe('Character router', () => {
     });
   });
 
+  describe('patchCharacter', () => {
+    const res = {
+      status: jest.fn().mockReturnThis(),
+      end: jest.fn(),
+    };
+
+    it('will throw if the request has no body', async () => {
+      // Arrange
+      const router = new Character(new MockCharacterProxy());
+      const req = {
+        baseUrl: '/foo',
+        params: { characterId: 'baz' },
+      };
+
+      // Act
+      await expect(router.patchCharacter(req, res)).rejects.toThrow('"body" is required');
+    });
+
+    it('will throw 404 if the character does not exist', async () => {
+      // Arrange
+      const router = new Character(new MockCharacterProxy());
+      const req = {
+        params: { characterId: 'c3' },
+        body: {
+          name: 'Foobar',
+        },
+      };
+
+      // Act
+      // Assert
+      await expect(router.patchCharacter(req, res)).rejects.toThrow(
+        expect.objectContaining({ status: 404 }),
+      );
+    });
+
+    it('will call the proxy to modify the character and return success', async () => {
+      // Arrange
+      const router = new Character(new MockCharacterProxy());
+      const req = {
+        params: { characterId: 'b2' },
+        body: {
+          name: 'Foobar',
+        },
+      };
+
+      // Act
+      await router.patchCharacter(req, res);
+
+      // Assert
+      expect(router.proxy.store.byId.b2.name).toEqual('Foobar');
+      expect(res.status).toHaveBeenCalledWith(204);
+      expect(res.end).toHaveBeenCalledWith();
+    });
+  });
+
+  describe('replaceCharacter', () => {
+    const res = {
+      status: jest.fn().mockReturnThis(),
+      end: jest.fn(),
+    };
+
+    it('will throw if the request has no body', async () => {
+      // Arrange
+      const router = new Character(new MockCharacterProxy());
+      const req = {
+        baseUrl: '/foo',
+        params: { characterId: 'baz' },
+      };
+
+      // Act
+      await expect(router.replaceCharacter(req, res)).rejects.toThrow('"body" is required');
+    });
+
+    it('will throw 404 if the character does not exist', async () => {
+      // Arrange
+      const router = new Character(new MockCharacterProxy());
+      const req = {
+        params: { characterId: 'c3' },
+        body: {
+          name: 'Foobar',
+        },
+      };
+
+      // Act
+      // Assert
+      await expect(router.replaceCharacter(req, res)).rejects.toThrow(
+        expect.objectContaining({ status: 404 }),
+      );
+    });
+
+    it('will call the proxy to modify the character and return its id', async () => {
+      // Arrange
+      const router = new Character(new MockCharacterProxy());
+      const req = {
+        params: { characterId: 'b2' },
+        body: {
+          name: 'Foobar',
+        },
+      };
+
+      // Act
+      await router.replaceCharacter(req, res);
+
+      // Assert
+      expect(router.proxy.store.byId.b2.name).toEqual('Foobar');
+      expect(res.status).toHaveBeenCalledWith(204);
+      expect(res.end).toHaveBeenCalledWith();
+    });
+  });
+
+  describe('deleteCharacter', () => {
+    const res = {
+      status: jest.fn().mockReturnThis(),
+      end: jest.fn(),
+    };
+
+    it('will throw if the request has no character Id', async () => {
+      // Arrange
+      const router = new Character(new MockCharacterProxy());
+      const req = {
+        baseUrl: '/foo',
+        params: {},
+      };
+
+      // Act
+      await expect(router.deleteCharacter(req, res)).rejects.toThrow('"characterId" is required');
+    });
+
+    it('will throw 404 if the character does not exist', async () => {
+      // Arrange
+      const router = new Character(new MockCharacterProxy());
+      const req = {
+        params: { characterId: 'c3' },
+      };
+
+      // Act
+      // Assert
+      await expect(router.deleteCharacter(req, res)).rejects.toThrow(
+        expect.objectContaining({ status: 404 }),
+      );
+    });
+
+    it('will call the proxy to delete the character and return success', async () => {
+      // Arrange
+      const router = new Character(new MockCharacterProxy());
+      const req = {
+        params: { characterId: 'b2' },
+      };
+
+      // Act
+      await router.deleteCharacter(req, res);
+
+      // Assert
+      const INITIAL_STORE_LENGTH = 2; // How many IDs are in the mock store when created
+      expect(router.proxy.store.ids.length).toEqual(INITIAL_STORE_LENGTH - 1);
+      expect(router.proxy.store.byId.b2).toBeFalsy();
+    });
+  });
+
   describe('initialize', () => {
     it('will set up the API routes', () => {
       // Arrange
-      const mockRouter = { get: jest.fn(), post: jest.fn() };
+      const mockRouter = {
+        get: jest.fn(),
+        post: jest.fn(),
+        patch: jest.fn(),
+        put: jest.fn(),
+        delete: jest.fn(),
+      };
       promiseRouter.mockReturnValue(mockRouter);
       const router = new Character();
 
@@ -217,6 +382,12 @@ describe('Character router', () => {
       expect(mockRouter.get).toHaveBeenCalledWith('/', router.getCharacterIds);
       expect(mockRouter.post).toHaveBeenCalledTimes(1);
       expect(mockRouter.post).toHaveBeenCalledWith('/', router.createCharacter);
+      expect(mockRouter.patch).toHaveBeenCalledTimes(1);
+      expect(mockRouter.patch).toHaveBeenCalledWith('/:characterId', router.patchCharacter);
+      expect(mockRouter.put).toHaveBeenCalledTimes(1);
+      expect(mockRouter.put).toHaveBeenCalledWith('/:characterId', router.replaceCharacter);
+      expect(mockRouter.delete).toHaveBeenCalledTimes(1);
+      expect(mockRouter.delete).toHaveBeenCalledWith('/:characterId', router.deleteCharacter);
     });
   });
 });
