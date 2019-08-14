@@ -12,6 +12,7 @@ exports[`NewCharacter component will render a spinner in place of the edit butto
   >
     <ClickableEdit
       className="name-clickable-edit"
+      loading={false}
       setText={[Function]}
       text="New Character"
     />
@@ -50,6 +51,7 @@ exports[`NewCharacter component will render the expected new character form 1`] 
   >
     <ClickableEdit
       className="name-clickable-edit"
+      loading={false}
       setText={[Function]}
       text="New Character"
     />

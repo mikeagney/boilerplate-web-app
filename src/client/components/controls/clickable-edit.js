@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import {
-  Button, Form, Row, Col,
+  Button, Form, Row, Col, Spinner,
 } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import { MdCancel, MdSave, MdEdit } from 'react-icons/md';
 
-const ClickableEdit = ({ text, setText }) => {
+const ClickableEdit = ({ text, setText, loading }) => {
   const [isEditing, setEditing] = useState(false);
   const [currentText, setCurrentText] = useState(text);
 
@@ -31,13 +31,24 @@ const ClickableEdit = ({ text, setText }) => {
             onChange={event => setCurrentText(event.target.value)}
           />
         </Col>
+        {loading && (
+          <Col xs="auto" className="px-0">
+            <Spinner
+              className="test-loading-spinner"
+              size="sm"
+              animation="border"
+              variant="secondary"
+              role="status"
+            />
+          </Col>
+        )}
         <Col xs="auto" className="px-0">
-          <Button className="cancel-button" size="sm" onClick={onCancel}>
+          <Button className="cancel-button" size="sm" onClick={onCancel} disabled={loading}>
             <MdCancel />
           </Button>
         </Col>
         <Col xs="auto" className="px-0">
-          <Button className="save-button" size="sm" onClick={onSave}>
+          <Button className="save-button" size="sm" onClick={onSave} disabled={loading}>
             <MdSave />
           </Button>
         </Col>
@@ -47,8 +58,24 @@ const ClickableEdit = ({ text, setText }) => {
     <div>
       <Row>
         <Col>{text}</Col>
+        {loading && (
+          <Col xs="auto" className="px-0">
+            <Spinner
+              className="test-loading-spinner"
+              size="sm"
+              animation="border"
+              variant="secondary"
+              role="status"
+            />
+          </Col>
+        )}
         <Col xs="auto" className="px-0">
-          <Button className="edit-button" size="sm" onClick={() => setEditing(true)}>
+          <Button
+            className="edit-button"
+            size="sm"
+            onClick={() => setEditing(true)}
+            disabled={loading}
+          >
             <MdEdit />
           </Button>
         </Col>
@@ -60,6 +87,11 @@ const ClickableEdit = ({ text, setText }) => {
 ClickableEdit.propTypes = {
   text: PropTypes.string.isRequired,
   setText: PropTypes.func.isRequired,
+  loading: PropTypes.bool,
+};
+
+ClickableEdit.defaultProps = {
+  loading: false,
 };
 
 export default ClickableEdit;

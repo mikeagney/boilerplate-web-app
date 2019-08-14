@@ -8,8 +8,9 @@ describe('Character component', () => {
   const defaultProps = {
     characterId: 'b2b',
     name: 'Mock name',
-    setName: jest.fn(),
     getCharacterById: jest.fn(),
+    patchCharacter: jest.fn(),
+    deleteCharacter: jest.fn(),
   };
 
   beforeEach(() => {
@@ -29,7 +30,23 @@ describe('Character component', () => {
     expect(toJson(wrapper)).toMatchSnapshot();
   });
 
-  it('will call setText when ClickableEdit sets text', () => {
+  it('will set ClickableEdit.loading to true if patchCharacter is in progress', () => {
+    // Arrange
+    const props = {
+      ...defaultProps,
+      patchStatus: {
+        loading: true,
+      },
+    };
+
+    // Act
+    const wrapper = shallow(<Character {...props} />);
+
+    // Assert
+    expect(toJson(wrapper)).toMatchSnapshot();
+  });
+
+  it('will call patchCharacter when ClickableEdit sets text', () => {
     // Arrange
     const props = {
       ...defaultProps,
@@ -41,7 +58,7 @@ describe('Character component', () => {
     setText('new text');
 
     // Assert
-    expect(props.setName).toHaveBeenCalledWith(props.characterId, 'new text');
+    expect(props.patchCharacter).toHaveBeenCalledWith(props.characterId, { name: 'new text' });
   });
 
   it('will display a loading spinner if pending is true', () => {

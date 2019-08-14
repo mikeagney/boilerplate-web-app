@@ -12,6 +12,7 @@ exports[`Character component will display a loading spinner if loading is true 1
     className="bg-primary text-white"
   >
     <ClickableEdit
+      loading={false}
       setText={[Function]}
       text="Mock name"
     />
@@ -45,6 +46,7 @@ exports[`Character component will display a loading spinner if pending is true 1
     className="bg-primary text-white"
   >
     <ClickableEdit
+      loading={false}
       setText={[Function]}
       text="Mock name"
     />
@@ -78,6 +80,32 @@ exports[`Character component will render Character component 1`] = `
     className="bg-primary text-white"
   >
     <ClickableEdit
+      loading={false}
+      setText={[Function]}
+      text="Mock name"
+    />
+  </CardHeader>
+  <CardBody>
+    <CardText>
+      Skills go here
+    </CardText>
+  </CardBody>
+</Card>
+`;
+
+exports[`Character component will set ClickableEdit.loading to true if patchCharacter is in progress 1`] = `
+<Card
+  as="div"
+  body={false}
+  className="character"
+  key="b2b"
+>
+  <CardHeader
+    as="h5"
+    className="bg-primary text-white"
+  >
+    <ClickableEdit
+      loading={true}
       setText={[Function]}
       text="Mock name"
     />

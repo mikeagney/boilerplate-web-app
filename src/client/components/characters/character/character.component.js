@@ -4,7 +4,15 @@ import { Card, Spinner } from 'react-bootstrap';
 import ClickableEdit from '../../controls/clickable-edit';
 
 const Character = ({
-  characterId, name, pending, loading, setName, getCharacterById,
+  characterId,
+  name,
+  pending,
+  loading,
+  patchStatus: { loading: patchLoading },
+  // deleteStatus: { loading: deleteLoading },
+  getCharacterById,
+  patchCharacter,
+  // deleteCharacter,
 }) => {
   // Using namespace so that we can spy on it. This may be changed if we find a better way
   // to access React hooks in the shallow renderer.
@@ -17,7 +25,11 @@ const Character = ({
   return (
     <Card key={characterId} className="character">
       <Card.Header as="h5" className="bg-primary text-white">
-        <ClickableEdit text={name} setText={newName => setName(characterId, newName)} />
+        <ClickableEdit
+          text={name}
+          setText={newName => patchCharacter(characterId, { name: newName })}
+          loading={patchLoading}
+        />
       </Card.Header>
       <Card.Body>
         {loaded ? (
@@ -44,14 +56,29 @@ Character.propTypes = {
   name: PropTypes.string.isRequired,
   pending: PropTypes.bool,
   loading: PropTypes.bool,
+  patchStatus: PropTypes.shape({
+    loading: PropTypes.bool,
+    error: PropTypes.shape({
+      message: PropTypes.string,
+    }),
+  }),
+  // deleteStatus: PropTypes.shape({
+  //   loading: PropTypes.bool,
+  //   error: PropTypes.shape({
+  //     message: PropTypes.string,
+  //   }),
+  // }),
   // From mapDispatchToProps
-  setName: PropTypes.func.isRequired,
+  patchCharacter: PropTypes.func.isRequired,
+  // deleteCharacter: PropTypes.func.isRequired,
   getCharacterById: PropTypes.func.isRequired,
 };
 
 Character.defaultProps = {
   pending: false,
   loading: false,
+  patchStatus: {},
+  // deleteStatus: {},
 };
 
 export default Character;
