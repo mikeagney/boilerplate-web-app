@@ -24,6 +24,19 @@ describe('ClickableEdit common component', () => {
     expect(toJson(wrapper)).toMatchSnapshot();
   });
 
+  it('will disable the edit button if loading is true with edit mode off', () => {
+    // Arrange
+    const props = { ...defaultProps, loading: true };
+
+    // Act
+    const wrapper = shallow(<ClickableEdit {...props} />);
+
+    // Assert
+    expect(toJson(wrapper)).toMatchSnapshot();
+    const editButton = wrapper.find('.edit-button');
+    expect(editButton.props('disabled')).toBeTruthy();
+  });
+
   it('will render the expected edit mode when edit is clicked', () => {
     // Arrange
     const props = defaultProps;
@@ -34,6 +47,23 @@ describe('ClickableEdit common component', () => {
 
     // Assert
     expect(toJson(wrapper)).toMatchSnapshot();
+  });
+
+  it('will disable the save and cancel buttons if loading is true with edit mode on', () => {
+    // Arrange
+    const props = defaultProps;
+    const wrapper = shallow(<ClickableEdit {...props} />);
+    wrapper.find('.edit-button').simulate('click');
+
+    // Act
+    wrapper.setProps({ loading: true });
+
+    // Assert
+    expect(toJson(wrapper)).toMatchSnapshot();
+    const cancelButton = wrapper.find('.cancel-button');
+    expect(cancelButton.props('disabled')).toBeTruthy();
+    const saveButton = wrapper.find('.save-button');
+    expect(saveButton.props('disabled')).toBeTruthy();
   });
 
   it('will render expected text changes in edit mode', () => {

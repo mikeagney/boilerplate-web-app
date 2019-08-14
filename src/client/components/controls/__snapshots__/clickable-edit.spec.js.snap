@@ -1,5 +1,116 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`ClickableEdit common component will disable the edit button if loading is true with edit mode off 1`] = `
+<div>
+  <Bootstrap(Row)>
+    <Col
+      as="div"
+    >
+      foo
+    </Col>
+    <Col
+      as="div"
+      className="px-0"
+      xs="auto"
+    >
+      <Bootstrap(Spinner)
+        animation="border"
+        className="test-loading-spinner"
+        role="status"
+        size="sm"
+        variant="secondary"
+      />
+    </Col>
+    <Col
+      as="div"
+      className="px-0"
+      xs="auto"
+    >
+      <Button
+        active={false}
+        className="edit-button"
+        disabled={true}
+        onClick={[Function]}
+        size="sm"
+        type="button"
+        variant="primary"
+      >
+        <MdEdit />
+      </Button>
+    </Col>
+  </Bootstrap(Row)>
+</div>
+`;
+
+exports[`ClickableEdit common component will disable the save and cancel buttons if loading is true with edit mode on 1`] = `
+<Form
+  as="form"
+  inline={false}
+>
+  <Bootstrap(Row)>
+    <Col
+      as="div"
+    >
+      <FormControl
+        as="input"
+        className="textbox"
+        onChange={[Function]}
+        size="sm"
+        type="text"
+        value="foo"
+      />
+    </Col>
+    <Col
+      as="div"
+      className="px-0"
+      xs="auto"
+    >
+      <Bootstrap(Spinner)
+        animation="border"
+        className="test-loading-spinner"
+        role="status"
+        size="sm"
+        variant="secondary"
+      />
+    </Col>
+    <Col
+      as="div"
+      className="px-0"
+      xs="auto"
+    >
+      <Button
+        active={false}
+        className="cancel-button"
+        disabled={true}
+        onClick={[Function]}
+        size="sm"
+        type="button"
+        variant="primary"
+      >
+        <MdCancel />
+      </Button>
+    </Col>
+    <Col
+      as="div"
+      className="px-0"
+      xs="auto"
+    >
+      <Button
+        active={false}
+        className="save-button"
+        disabled={true}
+        onClick={[Function]}
+        size="sm"
+        type="button"
+        variant="primary"
+      >
+        <MdSave />
+      </Button>
+    </Col>
+  </Bootstrap(Row)>
+</Form>
+`;
+
 exports[`ClickableEdit common component will not set text when cancel is clicked 1`] = `
 <div>
   <Bootstrap(Row)>

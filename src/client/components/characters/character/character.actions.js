@@ -1,3 +1,7 @@
-import { getCharacterById, setName } from '../../../store/characters/characters.actions';
+import {
+  getCharacterById,
+  patchCharacter,
+  // deleteCharacter,
+} from '../../../store/characters/characters.actions';
 
-export default { getCharacterById, setName };
+export default { getCharacterById, patchCharacter /* , deleteCharacter */ };
