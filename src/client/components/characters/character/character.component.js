@@ -57,13 +57,13 @@ Character.propTypes = {
   pending: PropTypes.bool,
   loading: PropTypes.bool,
   patchStatus: PropTypes.shape({
-    loading: PropTypes.bool.isRequired,
+    loading: PropTypes.bool,
     error: PropTypes.shape({
       message: PropTypes.string,
     }),
   }),
   // deleteStatus: PropTypes.shape({
-  //   loading: PropTypes.bool.isRequired,
+  //   loading: PropTypes.bool,
   //   error: PropTypes.shape({
   //     message: PropTypes.string,
   //   }),
