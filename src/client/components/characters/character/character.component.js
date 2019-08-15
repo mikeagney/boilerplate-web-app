@@ -1,7 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { Card, Spinner } from 'react-bootstrap';
+import {
+  Card, Row, Col, Spinner, Button,
+} from 'react-bootstrap';
+import { MdDelete } from 'react-icons/md';
 import ClickableEdit from '../../controls/clickable-edit';
+import DeleteCharacterModal from './delete-character-modal';
 
 const Character = ({
   characterId,
@@ -9,10 +13,10 @@ const Character = ({
   pending,
   loading,
   patchStatus: { loading: patchLoading },
-  // deleteStatus: { loading: deleteLoading },
+  deleteStatus: { loading: deleteLoading },
   getCharacterById,
   patchCharacter,
-  // deleteCharacter,
+  deleteCharacter,
 }) => {
   // Using namespace so that we can spy on it. This may be changed if we find a better way
   // to access React hooks in the shallow renderer.
@@ -21,15 +25,49 @@ const Character = ({
       getCharacterById(characterId);
     }
   }, [pending]);
+  const [isDeleteModal, setDeleteModal] = useState(false);
+
   const loaded = !(pending || loading);
   return (
     <Card key={characterId} className="character">
       <Card.Header as="h5" className="bg-primary text-white">
-        <ClickableEdit
-          text={name}
-          setText={newName => patchCharacter(characterId, { name: newName })}
-          loading={patchLoading}
-        />
+        <Row>
+          <Col>
+            <ClickableEdit
+              text={name}
+              setText={newName => patchCharacter(characterId, { name: newName })}
+              loading={patchLoading}
+            />
+          </Col>
+          <Col xs="auto" className="px-0">
+            {deleteLoading ? (
+              <Spinner
+                className="test-deleting-spinner"
+                size="sm"
+                animation="border"
+                variant="light"
+                role="status"
+              >
+                <span className="sr-only">Deleting...</span>
+              </Spinner>
+            ) : (
+              <>
+                <Button className="delete-button" size="sm" onClick={() => setDeleteModal(true)}>
+                  <MdDelete />
+                </Button>
+                <DeleteCharacterModal
+                  name={name}
+                  show={isDeleteModal}
+                  onCancel={() => setDeleteModal(false)}
+                  onConfirm={() => {
+                    deleteCharacter(characterId);
+                    setDeleteModal(false);
+                  }}
+                />
+              </>
+            )}
+          </Col>
+        </Row>
       </Card.Header>
       <Card.Body>
         {loaded ? (
@@ -62,15 +100,15 @@ Character.propTypes = {
       message: PropTypes.string,
     }),
   }),
-  // deleteStatus: PropTypes.shape({
-  //   loading: PropTypes.bool,
-  //   error: PropTypes.shape({
-  //     message: PropTypes.string,
-  //   }),
-  // }),
+  deleteStatus: PropTypes.shape({
+    loading: PropTypes.bool,
+    error: PropTypes.shape({
+      message: PropTypes.string,
+    }),
+  }),
   // From mapDispatchToProps
   patchCharacter: PropTypes.func.isRequired,
-  // deleteCharacter: PropTypes.func.isRequired,
+  deleteCharacter: PropTypes.func.isRequired,
   getCharacterById: PropTypes.func.isRequired,
 };
 
@@ -78,7 +116,7 @@ Character.defaultProps = {
   pending: false,
   loading: false,
   patchStatus: {},
-  // deleteStatus: {},
+  deleteStatus: {},
 };
 
 export default Character;

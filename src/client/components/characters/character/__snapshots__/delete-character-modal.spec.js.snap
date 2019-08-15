@@ -1,0 +1,83 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Modal dialog box for deleting a character will render hidden if show is false 1`] = `
+<Bootstrap(Modal)
+  onHide={[MockFunction]}
+  show={false}
+>
+  <ModalHeader
+    closeButton={true}
+    closeLabel="Close"
+  >
+    <ModalTitle>
+      Confirm Delete
+    </ModalTitle>
+  </ModalHeader>
+  <ModalBody>
+    Really delete character John Doe?
+  </ModalBody>
+  <ModalFooter>
+    <Button
+      active={false}
+      className="delete-button-cancel"
+      disabled={false}
+      onClick={[MockFunction]}
+      type="button"
+      variant="secondary"
+    >
+      Keep
+    </Button>
+    <Button
+      active={false}
+      className="delete-button-confirm"
+      disabled={false}
+      onClick={[MockFunction]}
+      type="button"
+      variant="primary"
+    >
+      Delete
+    </Button>
+  </ModalFooter>
+</Bootstrap(Modal)>
+`;
+
+exports[`Modal dialog box for deleting a character will render normally if show is false 1`] = `
+<Bootstrap(Modal)
+  onHide={[MockFunction]}
+  show={true}
+>
+  <ModalHeader
+    closeButton={true}
+    closeLabel="Close"
+  >
+    <ModalTitle>
+      Confirm Delete
+    </ModalTitle>
+  </ModalHeader>
+  <ModalBody>
+    Really delete character John Doe?
+  </ModalBody>
+  <ModalFooter>
+    <Button
+      active={false}
+      className="delete-button-cancel"
+      disabled={false}
+      onClick={[MockFunction]}
+      type="button"
+      variant="secondary"
+    >
+      Keep
+    </Button>
+    <Button
+      active={false}
+      className="delete-button-confirm"
+      disabled={false}
+      onClick={[MockFunction]}
+      type="button"
+      variant="primary"
+    >
+      Delete
+    </Button>
+  </ModalFooter>
+</Bootstrap(Modal)>
+`;

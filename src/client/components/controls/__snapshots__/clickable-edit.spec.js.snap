@@ -18,7 +18,7 @@ exports[`ClickableEdit common component will disable the edit button if loading 
         className="test-loading-spinner"
         role="status"
         size="sm"
-        variant="secondary"
+        variant="light"
       />
     </Col>
     <Col
@@ -70,7 +70,7 @@ exports[`ClickableEdit common component will disable the save and cancel buttons
         className="test-loading-spinner"
         role="status"
         size="sm"
-        variant="secondary"
+        variant="light"
       />
     </Col>
     <Col
