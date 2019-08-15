@@ -1,7 +1,7 @@
 import {
   getCharacterById,
   patchCharacter,
-  // deleteCharacter,
+  deleteCharacter,
 } from '../../../store/characters/characters.actions';
 
-export default { getCharacterById, patchCharacter /* , deleteCharacter */ };
+export default { getCharacterById, patchCharacter, deleteCharacter };

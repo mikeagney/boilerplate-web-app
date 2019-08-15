@@ -37,7 +37,7 @@ const ClickableEdit = ({ text, setText, loading }) => {
               className="test-loading-spinner"
               size="sm"
               animation="border"
-              variant="secondary"
+              variant="light"
               role="status"
             />
           </Col>
@@ -64,7 +64,7 @@ const ClickableEdit = ({ text, setText, loading }) => {
               className="test-loading-spinner"
               size="sm"
               animation="border"
-              variant="secondary"
+              variant="light"
               role="status"
             />
           </Col>

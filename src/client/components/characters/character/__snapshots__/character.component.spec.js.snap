@@ -1,5 +1,59 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`Character component will bring up delete modal dialog if delete button is clicked 1`] = `
+<Card
+  as="div"
+  body={false}
+  className="character"
+  key="b2b"
+>
+  <CardHeader
+    as="h5"
+    className="bg-primary text-white"
+  >
+    <Bootstrap(Row)>
+      <Col
+        as="div"
+      >
+        <ClickableEdit
+          loading={false}
+          setText={[Function]}
+          text="Mock name"
+        />
+      </Col>
+      <Col
+        as="div"
+        className="px-0"
+        xs="auto"
+      >
+        <Button
+          active={false}
+          className="delete-button"
+          disabled={false}
+          onClick={[Function]}
+          size="sm"
+          type="button"
+          variant="primary"
+        >
+          <MdDelete />
+        </Button>
+        <DeleteCharacterModal
+          name="Mock name"
+          onCancel={[Function]}
+          onConfirm={[Function]}
+          show={true}
+        />
+      </Col>
+    </Bootstrap(Row)>
+  </CardHeader>
+  <CardBody>
+    <CardText>
+      Skills go here
+    </CardText>
+  </CardBody>
+</Card>
+`;
+
 exports[`Character component will display a loading spinner if loading is true 1`] = `
 <Card
   as="div"
@@ -11,11 +65,40 @@ exports[`Character component will display a loading spinner if loading is true 1
     as="h5"
     className="bg-primary text-white"
   >
-    <ClickableEdit
-      loading={false}
-      setText={[Function]}
-      text="Mock name"
-    />
+    <Bootstrap(Row)>
+      <Col
+        as="div"
+      >
+        <ClickableEdit
+          loading={false}
+          setText={[Function]}
+          text="Mock name"
+        />
+      </Col>
+      <Col
+        as="div"
+        className="px-0"
+        xs="auto"
+      >
+        <Button
+          active={false}
+          className="delete-button"
+          disabled={false}
+          onClick={[Function]}
+          size="sm"
+          type="button"
+          variant="primary"
+        >
+          <MdDelete />
+        </Button>
+        <DeleteCharacterModal
+          name="Mock name"
+          onCancel={[Function]}
+          onConfirm={[Function]}
+          show={false}
+        />
+      </Col>
+    </Bootstrap(Row)>
   </CardHeader>
   <CardBody>
     <Bootstrap(Spinner)
@@ -45,11 +128,40 @@ exports[`Character component will display a loading spinner if pending is true 1
     as="h5"
     className="bg-primary text-white"
   >
-    <ClickableEdit
-      loading={false}
-      setText={[Function]}
-      text="Mock name"
-    />
+    <Bootstrap(Row)>
+      <Col
+        as="div"
+      >
+        <ClickableEdit
+          loading={false}
+          setText={[Function]}
+          text="Mock name"
+        />
+      </Col>
+      <Col
+        as="div"
+        className="px-0"
+        xs="auto"
+      >
+        <Button
+          active={false}
+          className="delete-button"
+          disabled={false}
+          onClick={[Function]}
+          size="sm"
+          type="button"
+          variant="primary"
+        >
+          <MdDelete />
+        </Button>
+        <DeleteCharacterModal
+          name="Mock name"
+          onCancel={[Function]}
+          onConfirm={[Function]}
+          show={false}
+        />
+      </Col>
+    </Bootstrap(Row)>
   </CardHeader>
   <CardBody>
     <Bootstrap(Spinner)
@@ -79,11 +191,90 @@ exports[`Character component will render Character component 1`] = `
     as="h5"
     className="bg-primary text-white"
   >
-    <ClickableEdit
-      loading={false}
-      setText={[Function]}
-      text="Mock name"
-    />
+    <Bootstrap(Row)>
+      <Col
+        as="div"
+      >
+        <ClickableEdit
+          loading={false}
+          setText={[Function]}
+          text="Mock name"
+        />
+      </Col>
+      <Col
+        as="div"
+        className="px-0"
+        xs="auto"
+      >
+        <Button
+          active={false}
+          className="delete-button"
+          disabled={false}
+          onClick={[Function]}
+          size="sm"
+          type="button"
+          variant="primary"
+        >
+          <MdDelete />
+        </Button>
+        <DeleteCharacterModal
+          name="Mock name"
+          onCancel={[Function]}
+          onConfirm={[Function]}
+          show={false}
+        />
+      </Col>
+    </Bootstrap(Row)>
+  </CardHeader>
+  <CardBody>
+    <CardText>
+      Skills go here
+    </CardText>
+  </CardBody>
+</Card>
+`;
+
+exports[`Character component will replace delete button with a spinner if deleteCharacter is in progress 1`] = `
+<Card
+  as="div"
+  body={false}
+  className="character"
+  key="b2b"
+>
+  <CardHeader
+    as="h5"
+    className="bg-primary text-white"
+  >
+    <Bootstrap(Row)>
+      <Col
+        as="div"
+      >
+        <ClickableEdit
+          loading={false}
+          setText={[Function]}
+          text="Mock name"
+        />
+      </Col>
+      <Col
+        as="div"
+        className="px-0"
+        xs="auto"
+      >
+        <Bootstrap(Spinner)
+          animation="border"
+          className="test-deleting-spinner"
+          role="status"
+          size="sm"
+          variant="light"
+        >
+          <span
+            className="sr-only"
+          >
+            Deleting...
+          </span>
+        </Bootstrap(Spinner)>
+      </Col>
+    </Bootstrap(Row)>
   </CardHeader>
   <CardBody>
     <CardText>
@@ -104,11 +295,40 @@ exports[`Character component will set ClickableEdit.loading to true if patchChar
     as="h5"
     className="bg-primary text-white"
   >
-    <ClickableEdit
-      loading={true}
-      setText={[Function]}
-      text="Mock name"
-    />
+    <Bootstrap(Row)>
+      <Col
+        as="div"
+      >
+        <ClickableEdit
+          loading={true}
+          setText={[Function]}
+          text="Mock name"
+        />
+      </Col>
+      <Col
+        as="div"
+        className="px-0"
+        xs="auto"
+      >
+        <Button
+          active={false}
+          className="delete-button"
+          disabled={false}
+          onClick={[Function]}
+          size="sm"
+          type="button"
+          variant="primary"
+        >
+          <MdDelete />
+        </Button>
+        <DeleteCharacterModal
+          name="Mock name"
+          onCancel={[Function]}
+          onConfirm={[Function]}
+          show={false}
+        />
+      </Col>
+    </Bootstrap(Row)>
   </CardHeader>
   <CardBody>
     <CardText>
