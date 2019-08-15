@@ -12,7 +12,7 @@ const Character = ({
   name,
   pending,
   loading,
-  patchStatus: { loading: patchLoading },
+  patchStatus: { loading: patchLoading, error: { message: patchError } = {} },
   deleteStatus: { loading: deleteLoading },
   getCharacterById,
   patchCharacter,
@@ -35,6 +35,7 @@ const Character = ({
           <Col>
             <ClickableEdit
               text={name}
+              errorMessage={patchError}
               setText={newName => patchCharacter(characterId, { name: newName })}
               loading={patchLoading}
             />

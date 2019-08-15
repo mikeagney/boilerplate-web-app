@@ -88,11 +88,14 @@ export function createApiAction(type, payloadCreator, metaCreator) {
         onResponse(dispatch, getState, response);
       }
     } catch (error) {
+      // TODO: Uncomment the bits to get the server error message into the state?
+      // const { response: { data: errorResponseData } = {} } = error;
       dispatch({
         type: `${type}.ERROR`,
         payload: {
           ...payload,
           error,
+          // error: errorResponseData || error,
         },
         meta,
         error: true,

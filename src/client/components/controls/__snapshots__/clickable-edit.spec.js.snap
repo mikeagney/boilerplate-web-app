@@ -1,48 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`ClickableEdit common component will disable the edit button if loading is true with edit mode off 1`] = `
-<div>
-  <Bootstrap(Row)>
-    <Col
-      as="div"
-    >
-      foo
-    </Col>
-    <Col
-      as="div"
-      className="px-0"
-      xs="auto"
-    >
-      <Bootstrap(Spinner)
-        animation="border"
-        className="test-loading-spinner"
-        role="status"
-        size="sm"
-        variant="light"
-      />
-    </Col>
-    <Col
-      as="div"
-      className="px-0"
-      xs="auto"
-    >
-      <Button
-        active={false}
-        className="edit-button"
-        disabled={true}
-        onClick={[Function]}
-        size="sm"
-        type="button"
-        variant="primary"
-      >
-        <MdEdit />
-      </Button>
-    </Col>
-  </Bootstrap(Row)>
-</div>
-`;
-
-exports[`ClickableEdit common component will disable the save and cancel buttons if loading is true with edit mode on 1`] = `
+exports[`ClickableEdit common component EditView will disable the save and cancel buttons if loading is true with edit mode on 1`] = `
 <Form
   as="form"
   inline={false}
@@ -54,11 +12,34 @@ exports[`ClickableEdit common component will disable the save and cancel buttons
       <FormControl
         as="input"
         className="textbox"
+        disabled={true}
+        isInvalid={false}
         onChange={[Function]}
         size="sm"
         type="text"
         value="foo"
       />
+      <Feedback
+        as="div"
+        type="invalid"
+      />
+    </Col>
+    <Col
+      as="div"
+      className="px-0"
+      xs="auto"
+    >
+      <Button
+        active={false}
+        className="cancel-button"
+        disabled={true}
+        onClick={[MockFunction]}
+        size="sm"
+        type="button"
+        variant="primary"
+      >
+        <MdCancel />
+      </Button>
     </Col>
     <Col
       as="div"
@@ -73,6 +54,34 @@ exports[`ClickableEdit common component will disable the save and cancel buttons
         variant="light"
       />
     </Col>
+  </Bootstrap(Row)>
+</Form>
+`;
+
+exports[`ClickableEdit common component EditView will render the expected initial state 1`] = `
+<Form
+  as="form"
+  inline={false}
+>
+  <Bootstrap(Row)>
+    <Col
+      as="div"
+    >
+      <FormControl
+        as="input"
+        className="textbox"
+        disabled={false}
+        isInvalid={false}
+        onChange={[Function]}
+        size="sm"
+        type="text"
+        value="foo"
+      />
+      <Feedback
+        as="div"
+        type="invalid"
+      />
+    </Col>
     <Col
       as="div"
       className="px-0"
@@ -81,8 +90,8 @@ exports[`ClickableEdit common component will disable the save and cancel buttons
       <Button
         active={false}
         className="cancel-button"
-        disabled={true}
-        onClick={[Function]}
+        disabled={false}
+        onClick={[MockFunction]}
         size="sm"
         type="button"
         variant="primary"
@@ -98,8 +107,8 @@ exports[`ClickableEdit common component will disable the save and cancel buttons
       <Button
         active={false}
         className="save-button"
-        disabled={true}
-        onClick={[Function]}
+        disabled={false}
+        onClick={[MockFunction]}
         size="sm"
         type="button"
         variant="primary"
@@ -111,7 +120,96 @@ exports[`ClickableEdit common component will disable the save and cancel buttons
 </Form>
 `;
 
-exports[`ClickableEdit common component will not set text when cancel is clicked 1`] = `
+exports[`ClickableEdit common component EditView will render the expected validation error if edit fails 1`] = `
+<Form
+  as="form"
+  inline={false}
+>
+  <Bootstrap(Row)>
+    <Col
+      as="div"
+    >
+      <FormControl
+        as="input"
+        className="textbox"
+        disabled={false}
+        isInvalid={true}
+        onChange={[Function]}
+        size="sm"
+        type="text"
+        value="foo"
+      />
+      <Feedback
+        as="div"
+        type="invalid"
+      >
+        Mock error
+      </Feedback>
+    </Col>
+    <Col
+      as="div"
+      className="px-0"
+      xs="auto"
+    >
+      <Button
+        active={false}
+        className="cancel-button"
+        disabled={false}
+        onClick={[MockFunction]}
+        size="sm"
+        type="button"
+        variant="primary"
+      >
+        <MdCancel />
+      </Button>
+    </Col>
+    <Col
+      as="div"
+      className="px-0"
+      xs="auto"
+    >
+      <Button
+        active={false}
+        className="save-button"
+        disabled={false}
+        onClick={[MockFunction]}
+        size="sm"
+        type="button"
+        variant="primary"
+      >
+        <MdSave />
+      </Button>
+    </Col>
+  </Bootstrap(Row)>
+</Form>
+`;
+
+exports[`ClickableEdit common component StaticView will hide the edit button if loading is true with edit mode off 1`] = `
+<div>
+  <Bootstrap(Row)>
+    <Col
+      as="div"
+    >
+      foo
+    </Col>
+    <Col
+      as="div"
+      className="px-0"
+      xs="auto"
+    >
+      <Bootstrap(Spinner)
+        animation="border"
+        className="test-loading-spinner"
+        role="status"
+        size="sm"
+        variant="light"
+      />
+    </Col>
+  </Bootstrap(Row)>
+</div>
+`;
+
+exports[`ClickableEdit common component StaticView will render the expected edit mode when edit is clicked 1`] = `
 <div>
   <Bootstrap(Row)>
     <Col
@@ -140,23 +238,13 @@ exports[`ClickableEdit common component will not set text when cancel is clicked
 </div>
 `;
 
-exports[`ClickableEdit common component will render expected text changes in edit mode 1`] = `
-<Form
-  as="form"
-  inline={false}
->
+exports[`ClickableEdit common component StaticView will render the expected initial state 1`] = `
+<div>
   <Bootstrap(Row)>
     <Col
       as="div"
     >
-      <FormControl
-        as="input"
-        className="textbox"
-        onChange={[Function]}
-        size="sm"
-        type="text"
-        value="bar"
-      />
+      foo
     </Col>
     <Col
       as="div"
@@ -165,147 +253,35 @@ exports[`ClickableEdit common component will render expected text changes in edi
     >
       <Button
         active={false}
-        className="cancel-button"
+        className="edit-button"
         disabled={false}
         onClick={[Function]}
         size="sm"
         type="button"
         variant="primary"
       >
-        <MdCancel />
-      </Button>
-    </Col>
-    <Col
-      as="div"
-      className="px-0"
-      xs="auto"
-    >
-      <Button
-        active={false}
-        className="save-button"
-        disabled={false}
-        onClick={[Function]}
-        size="sm"
-        type="button"
-        variant="primary"
-      >
-        <MdSave />
+        <MdEdit />
       </Button>
     </Col>
   </Bootstrap(Row)>
-</Form>
+</div>
 `;
 
 exports[`ClickableEdit common component will render the expected edit mode when edit is clicked 1`] = `
-<Form
-  as="form"
-  inline={false}
->
-  <Bootstrap(Row)>
-    <Col
-      as="div"
-    >
-      <FormControl
-        as="input"
-        className="textbox"
-        onChange={[Function]}
-        size="sm"
-        type="text"
-        value="foo"
-      />
-    </Col>
-    <Col
-      as="div"
-      className="px-0"
-      xs="auto"
-    >
-      <Button
-        active={false}
-        className="cancel-button"
-        disabled={false}
-        onClick={[Function]}
-        size="sm"
-        type="button"
-        variant="primary"
-      >
-        <MdCancel />
-      </Button>
-    </Col>
-    <Col
-      as="div"
-      className="px-0"
-      xs="auto"
-    >
-      <Button
-        active={false}
-        className="save-button"
-        disabled={false}
-        onClick={[Function]}
-        size="sm"
-        type="button"
-        variant="primary"
-      >
-        <MdSave />
-      </Button>
-    </Col>
-  </Bootstrap(Row)>
-</Form>
+<EditView
+  currentText="foo"
+  errorMessage={null}
+  loading={false}
+  onCancel={[Function]}
+  onSave={[Function]}
+  setCurrentText={[Function]}
+/>
 `;
 
-exports[`ClickableEdit common component will render the expected initial state 1`] = `
-<div>
-  <Bootstrap(Row)>
-    <Col
-      as="div"
-    >
-      foo
-    </Col>
-    <Col
-      as="div"
-      className="px-0"
-      xs="auto"
-    >
-      <Button
-        active={false}
-        className="edit-button"
-        disabled={false}
-        onClick={[Function]}
-        size="sm"
-        type="button"
-        variant="primary"
-      >
-        <MdEdit />
-      </Button>
-    </Col>
-  </Bootstrap(Row)>
-</div>
-`;
-
-exports[`ClickableEdit common component will set text when save is clicked 1`] = `
-<div>
-  <Bootstrap(Row)>
-    <Col
-      as="div"
-    >
-      foo
-    </Col>
-    <Col
-      as="div"
-      className="px-0"
-      xs="auto"
-    >
-      <Button
-        active={false}
-        className="edit-button"
-        disabled={false}
-        onClick={[Function]}
-        size="sm"
-        type="button"
-        variant="primary"
-      >
-        <MdEdit />
-      </Button>
-    </Col>
-  </Bootstrap(Row)>
-</div>
+exports[`ClickableEdit common component will render the static view by default 1`] = `
+<StaticView
+  loading={false}
+  setEditing={[Function]}
+  text="foo"
+/>
 `;
