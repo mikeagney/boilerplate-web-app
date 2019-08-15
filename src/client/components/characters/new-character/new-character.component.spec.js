@@ -54,6 +54,24 @@ describe('NewCharacter component', () => {
     expect(wrapper.find('.name-clickable-edit').props().text).toEqual('Changed Character');
   });
 
+  it('will set error message when name is committed if it is empty', () => {
+    // Arrange
+    const props = defaultProps;
+    const wrapper = shallow(<NewCharacter {...props} />);
+
+    // Act
+    wrapper
+      .find('.name-clickable-edit')
+      .props()
+      .setText('');
+
+    // Assert
+    expect(wrapper.find('.name-clickable-edit').props()).toMatchObject({
+      text: 'New Character',
+      errorMessage: 'Name must have a value.',
+    });
+  });
+
   it('will reset to default name and reset selected character ID on cancel', () => {
     // Arrange
     const props = defaultProps;

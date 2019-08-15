@@ -9,6 +9,7 @@ const NewCharacter = ({
   const defaultCharacterName = 'New Character';
   const [firstCharacterId = ''] = characterIds;
   const [name, setName] = useState(defaultCharacterName);
+  const [nameError, setNameError] = useState('');
 
   const onCancel = () => {
     setName(defaultCharacterName);
@@ -18,11 +19,25 @@ const NewCharacter = ({
     setName(defaultCharacterName);
     createCharacter({ name });
   };
+  const onSetName = (newName) => {
+    if (!newName) {
+      setNameError('Name must have a value.');
+      return true;
+    }
+    setName(newName);
+    setNameError('');
+    return false;
+  };
 
   return (
     <Card className="character">
       <Card.Header as="h5" className="bg-primary text-white">
-        <ClickableEdit className="name-clickable-edit" text={name} setText={setName} />
+        <ClickableEdit
+          className="name-clickable-edit"
+          text={name}
+          errorMessage={nameError}
+          setText={onSetName}
+        />
       </Card.Header>
       <Card.Body>
         <Card.Text>Creating a new character</Card.Text>

@@ -16,6 +16,7 @@ exports[`Character component will bring up delete modal dialog if delete button 
         as="div"
       >
         <ClickableEdit
+          errorMessage={null}
           loading={false}
           setText={[Function]}
           text="Mock name"
@@ -70,6 +71,7 @@ exports[`Character component will display a loading spinner if loading is true 1
         as="div"
       >
         <ClickableEdit
+          errorMessage={null}
           loading={false}
           setText={[Function]}
           text="Mock name"
@@ -133,6 +135,7 @@ exports[`Character component will display a loading spinner if pending is true 1
         as="div"
       >
         <ClickableEdit
+          errorMessage={null}
           loading={false}
           setText={[Function]}
           text="Mock name"
@@ -196,6 +199,7 @@ exports[`Character component will render Character component 1`] = `
         as="div"
       >
         <ClickableEdit
+          errorMessage={null}
           loading={false}
           setText={[Function]}
           text="Mock name"
@@ -250,6 +254,7 @@ exports[`Character component will replace delete button with a spinner if delete
         as="div"
       >
         <ClickableEdit
+          errorMessage={null}
           loading={false}
           setText={[Function]}
           text="Mock name"
@@ -300,6 +305,7 @@ exports[`Character component will set ClickableEdit.loading to true if patchChar
         as="div"
       >
         <ClickableEdit
+          errorMessage={null}
           loading={true}
           setText={[Function]}
           text="Mock name"
